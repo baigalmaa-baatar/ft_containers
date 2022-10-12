@@ -12,8 +12,6 @@
 
 #ifndef STACK_HPP
 # define STACK_HPP
-# include <iostream>
-# include <string>
 # include <vector>
 
 namespace ft
@@ -29,7 +27,7 @@ namespace ft
         Container c;
 
     public:
-        explicit stack(const Container & = Container());
+        explicit stack(const Container & = Container()) {}
         bool empty() const { return c.empty(); }
         size_type size() const { return c.size(); }
         value_type &top() { return c.back(); }

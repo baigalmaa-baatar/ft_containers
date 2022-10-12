@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = stack
-SRCS = ./tester/stack_tester.cpp
+NAME = vector
+SRCS = ./tester/vector_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
