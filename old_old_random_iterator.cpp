@@ -1,7 +1,7 @@
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 #define RANDOM_ACCESS_ITERATOR_HPP
 
-#include "utils.hpp"
+// #include "utils.hpp"
 
 namespace ft
 {
@@ -133,16 +133,6 @@ namespace ft
     {
         return (lhs.base() != rhs.base());
     }
-
-    /*
-    ** @brief Check if the pointer of "lhs"
-    ** is lower than "rhs" in the memory.
-    **
-    ** @param lhs the random access iterator to compare.
-    ** @param rhs the random access iterator with who check.
-    ** @return true if the pointer of lhs
-    ** if lower than "rhs", otherwise false.
-    */
     template <typename T>
     typename ft::random_access_iterator<T>::difference_type
     operator<(const ft::random_access_iterator<T> lhs,
@@ -151,7 +141,6 @@ namespace ft
         return (lhs.base() < rhs.base());
     }
 
-    /* For iterator < const_iterator */
     template <typename T_L, typename T_R>
     typename ft::random_access_iterator<T_L>::difference_type
     operator<(const ft::random_access_iterator<T_L> lhs,
@@ -160,15 +149,6 @@ namespace ft
         return (lhs.base() < rhs.base());
     }
 
-    /*
-    ** @brief Check if the pointer of "lhs"
-    ** is upper than "rhs" in the memory.
-    **
-    ** @param lhs the random access iterator to compare.
-    ** @param rhs the random access iterator with who check.
-    ** @return true if the pointer of lhs
-    ** if upper than "rhs", otherwise false.
-    */
     template <typename T>
     typename ft::random_access_iterator<T>::difference_type
     operator>(const ft::random_access_iterator<T> lhs,
@@ -186,16 +166,6 @@ namespace ft
     {
         return (lhs.base() > rhs.base());
     }
-
-    /*
-    ** @brief Check if the pointer of "lhs"
-    ** is lower or equal than "rhs" in the memory.
-    **
-    ** @param lhs the random access iterator to compare.
-    ** @param rhs the random access iterator with who check.
-    ** @return true if the pointer of lhs
-    ** if lower or equal than "rhs", otherwise false.
-    */
     template <typename T>
     typename ft::random_access_iterator<T>::difference_type
     operator<=(const ft::random_access_iterator<T> lhs,
@@ -204,7 +174,6 @@ namespace ft
         return (lhs.base() <= rhs.base());
     }
 
-    /* For iterator <= const_iterator */
     template <typename T_L, typename T_R>
     typename ft::random_access_iterator<T_L>::difference_type
     operator<=(const ft::random_access_iterator<T_L> lhs,
@@ -212,16 +181,6 @@ namespace ft
     {
         return (lhs.base() <= rhs.base());
     }
-
-    /*
-    ** @brief Check if the pointer of "lhs"
-    ** is upper or equal than "rhs" in the memory.
-    **
-    ** @param lhs the random access iterator to compare.
-    ** @param rhs the random access iterator with who check.
-    ** @return true if the pointer of lhs
-    ** if upper or equal than "rhs", otherwise false.
-    */
     template <typename T>
     typename ft::random_access_iterator<T>::difference_type
     operator>=(const ft::random_access_iterator<T> lhs,
@@ -230,7 +189,6 @@ namespace ft
         return (lhs.base() >= rhs.base());
     }
 
-    /* For iterator >= const_iterator */
     template <typename T_L,
               typename T_R>
     typename ft::random_access_iterator<T_L>::difference_type
@@ -240,16 +198,6 @@ namespace ft
         return (lhs.base() >= rhs.base());
     }
 
-    /*
-    ** @brief Give a random access iterator pointing to
-    ** "rai" plus "n".
-    **
-    ** @param n The number of location away the element pointed
-    ** by rai.
-    ** @param rai The random access iterator.
-    ** @return A random access iterator pointing to n element
-    ** after rai pointed element.
-    */
     template <typename T>
     ft::random_access_iterator<T> operator+(
         typename ft::random_access_iterator<T>::difference_type n,
@@ -258,14 +206,6 @@ namespace ft
         return (&(*rai) + n);
     }
 
-    /*
-    ** @brief Give the difference between the address
-    ** of two random access iterators.
-    **
-    ** @param lhs,rhs the two random access iterator with whom
-    ** to make a difference.
-    ** @return The difference.
-    */
     template <typename T>
     typename ft::random_access_iterator<T>::difference_type
     operator-(const ft::random_access_iterator<T> lhs,
@@ -274,7 +214,6 @@ namespace ft
         return (lhs.base() - rhs.base());
     }
 
-    /* For iterator - const_iterator */
     template <typename T_L, typename T_R>
     typename ft::random_access_iterator<T_L>::difference_type
     operator-(const ft::random_access_iterator<T_L> lhs,

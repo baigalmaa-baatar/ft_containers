@@ -6,9 +6,9 @@ template <typename T>
 void my_reverse(T first, T last)
 {
     int n = 5;
-    int tmp = *first;
     for (--n; n > 0; n -= 2)
     {
+        int tmp = *first;
         *first++ = *--last;
         *last = tmp;
     }
