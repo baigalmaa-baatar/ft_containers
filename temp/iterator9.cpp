@@ -1,8 +1,8 @@
 #include <iostream>
 #include <iterator>
 
-template <typename T>
-class MyIterator : std::iterator<std::input_iterator_tag T>
+// template <typename T>
+class MyIterator : std::iterator<std::input_iterator_tag, int>
 {
     int *_ptr;
 
