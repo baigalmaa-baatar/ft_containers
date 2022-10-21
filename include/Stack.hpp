@@ -63,7 +63,20 @@ namespace ft
         /**
          * Non-member functions
          */
-
+        /**
+         * About why we use friend function:
+         * 
+         * Since operator << will be called on an std::ostream, 
+         * you cannot define this procedure as a member function for my_class, 
+         * you have to define it as a global function, 
+         * since it's an operation for std::ostream, not my_class.
+         * By putting the friend keyword into the declaration, 
+         * you are saying that you want to declare the 
+         * operator << as a friend global function (not a member function!). 
+         * The C++ standard lets you put the definition of the friend function there, 
+         * but it won't be a member function. 
+         * It is the same as the following, which is more clear:
+        */
         template <class U, class Containerbis>
         friend bool operator==(const stack<T, Container> &lhs,
                                const stack<U, Containerbis> &rhs)

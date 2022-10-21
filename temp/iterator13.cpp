@@ -1,13 +1,14 @@
 #include <iostream>
 #include <iterator>
 
-class MyIterator : std::iterator<std::input_iterator_tag, int>
+template <typename T>
+class MyIterator : std::iterator<std::input_iterator_tag, T>
 {
 private:
-    int *_ptr;
+    T *_ptr;
 
 public:
-    MyIterator(int *x) : _ptr(x)
+    MyIterator(T *x) : _ptr(x)
     {
     }
     ~MyIterator(void) {}
@@ -19,7 +20,7 @@ public:
     {
         return (this->_ptr != rhs._ptr);
     }
-    int& operator*()
+    T& operator*()
     {
         return *_ptr;
     }
@@ -38,11 +39,11 @@ public:
 
 int main(void)
 {
-    int numbers[] = {10, 20, 30, 40, 50};
+    float numbers[] = {10.1, 20.1, 30.1, 40.1, 50.1};
 
-    MyIterator from(numbers);
-    MyIterator until(numbers + 5);
-    for (MyIterator it = from; it != until; it++)
+    MyIterator<float> from(numbers);
+    MyIterator<float> until(numbers + 5);
+    for (MyIterator<float> it = from; it != until; it++)
     {
         std::cout << *it << '\n';
     }

@@ -1,20 +1,27 @@
-class Array 
+#include <iostream>
+#include <string>
+
+class Test
 {
+    std::string _name;
 public:
-    int& operator[] (unsigned i) 
-        { 
-        if (i > 99) 
-            error(); 
-        return data[i]; 
-        }
-private:
-    int data[100];
+    Test(std::string name) : _name(name) { }
+    ~Test()
+    {
+        std::cout << "Destructor " << _name << std::endl;
+    }
+    Test& operator=(const Test& fellow)
+    {
+        // avoid changing the name of the object
+        // std::cout << "Assignment operator " 
+        //     << _name << "=" << fellow._name << std::endl;
+        return *this;
+    }
 };
 
 int main()
 {
-  Array a;
-  a[10] = 42;
-  a[12] += a[13];
-  // ...
+    Test t1("t1"), t2("t2");
+    t1 = t2;
+    return 0;
 }

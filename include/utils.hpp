@@ -1,13 +1,10 @@
 #ifndef UTILS_HPP
-# define UTILS_HPP
-# include <cstddef>
+#define UTILS_HPP
+#include <cstddef>
 
 namespace ft
 {
-    class random_access_iterator_tag
-    {
-    };
-    template <class Category, class T, class Distance = std::ptrdiff_t,
+    template <class Category, class T, class Distance = ptrdiff_t,
               class Pointer = T *, class Reference = T &>
     struct iterator
     {
@@ -16,6 +13,9 @@ namespace ft
         typedef Pointer pointer;
         typedef Reference reference;
         typedef Category iterator_category;
+    };
+    class random_access_iterator_tag
+    {
     };
 }
 
