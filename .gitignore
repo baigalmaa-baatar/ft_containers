@@ -1,2 +1,3 @@
 .vscode
-a.out
+*/*.out
+tester/vector_tester.o

@@ -13,51 +13,135 @@
 #define VECTOR_HPP
 #include "./utils/randomAccessIterator.hpp"
 #include "./utils/reverseIterator.hpp"
+#include <vector>
 
 namespace ft
 {
-    template <class T, class Allocator = std::allocator<T>> // ask Marwa
+    /**
+     * generic template
+    */
+    template < class T, class Alloc = std::allocator<T> > 
     class vector
     {
     public:
         // types:
+        /**
+         * 	The first template parameter (T)
+        */
         typedef T value_type;
-        typedef typename Allocator::reference reference;
-        typedef typename Allocator::const_reference const_reference;
-        // typedef ft::RandomAccessIterator<value_type> iterator; ask Marwa
-        typedef ft::RandomAccessIterator<T *> iterator;
-        // typedef typename ft::RandomAccessIterator<const T*> const_iterator; ask Marwa
+        /**
+         * The second template parameter (Alloc)
+        */
+        typedef Alloc allocator_type;
+
+        /**
+         * Reference for the default allocator: value_type&
+        */
+        typedef typename allocator_type::reference reference;
+
+        /**
+         * Refernce for the default allocator: const value_type&
+        */
+        typedef typename allocator_type::const_reference const_reference;
+
+        /**
+         * Pointer for the default allocator: value_type*
+        */
+        typedef typename allocator_type::pointer pointer;
+        
+        /**
+         * Const pointer for the default allocator: const value_type*
+        */
+        typedef typename allocator_type::const_pointer const_pointer typedef ft::reverse_iterator<iterator> reverse_iterator;
+
+        /**
+        * A random access iterator to value_type
+        */
+        typedef ft::RandomAccessIterator<value_type> iterator;
+        // typedef ft::RandomAccessIterator<T *> iterator; ask Marwa which one to use
+
+        /**
+        * A random access iterator to const value_type
+        */        
         typedef typename ft::RandomAccessIterator<const value_type> const_iterator;
-        typedef typename std::size_type size_type;
-        typedef typename std::difference_type difference_type;
-        typedef Allocator allocator_type;
-        typedef typename Allocator::pointer pointer;
-        typedef typename Allocator::const_pointer const_pointer typedef ft::reverse_iterator<iterator> reverse_iterator;
-        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
         /**
-         * Default Constructors
+        * reverse_iterator<iterator>
+        */  
+        typedef ft::reverse_iterator<iterator> reverse_iterator;
+        
+        /**
+        * Const reverse_iterator<iterator>
+        */  
+        typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+        
+        /**
+        * A signed integral type, 
+        * identical to: iterator_traits<iterator>::difference_type
+        * Usually the same as ptrdiff_t
+        */
+        typedef typename ft::iterator_traits<iterator>::difference_type difference_type;
+        
+        /**
+        * An unsigned integral type that can represent 
+        * any non-negative value of difference_type
+        * Usually the same as size_t
+        */
+        typedef typename allocator_type::size_type size_type;
+
+        /**
+         * Private members
+        */
+      private:
+        pointer _allocator;
+        size_t  _size;
+        size_t  _capacity;
+
+        /**
+         * 1. Default constructor
+         * Empty container constructor (default constructor)
+           Constructs an empty container, with no elements.
          */
-        explicit vector(const Allocator & = Allocator())
+        explicit vector (const allocator_type& alloc = allocator_type())
         {
+
+
         }
 
         /**
-         * Default Constructors
+         * 2. Fill constructor
+         * Constructs a container with n elements.
+         * Each element is a copy of val.
          */
-        explicit vector(size_type n, const T &value = T(),
-                        const Allocator & = Allocator())
+        explicit vector (size_type n, const value_type& val = value_type(),
+                 const allocator_type& alloc = allocator_type()) : 
+                 size_type(n), value_type(val), allocator_type(alloc) 
         {
+            if (n > _capacity)
+              std::cout << "size is too small, need to increase the capacity" << '\n';
+            push_back(val); //ene hurtel hiisen.
         }
 
+        /**
+         * 3. Range constructor
+         * Constructs a container with as many elements as the range [first,last), 
+         * with each element constructed from its corresponding element in that range, 
+         * in the same order.
+         */
         template <class InputIterator>
-        vector(InputIterator first, InputIterator last,
-               const Allocator & = Allocator())
+         vector (InputIterator first, InputIterator last,
+                 const allocator_type& alloc = allocator_type())
         {
         }
 
-        vector(const vector<T, Allocator> &x)
-        {
+        /**
+         * 4. Copy constructor
+         * Constructs a container with a copy of each of the elements in x, 
+         * in the same order.
+         */        
+        
+        vector (const vector& x) {
+
         }
 
         /**
