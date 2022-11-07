@@ -13,10 +13,11 @@
 #include <iostream>
 #include <string>
 #include <vector> // std::vector
-// #include "../include/Vector.hpp"
+#include "../include/Vector.hpp"
 
 int main(void)
 {
+  /*
   {
     std::vector<int> ft_vector;
     std::vector<int> std_vector;
@@ -96,6 +97,7 @@ int main(void)
       myvector.get_allocator().destroy(&p[i]);
     myvector.get_allocator().deallocate(p, 5);
   }
+  */
   {
     std::cout << "\n***************************************" << '\n';
     std::cout << "\n          Vector container test" << '\n';
@@ -114,7 +116,7 @@ int main(void)
     std::vector<int> fourth(third);                       // a copy of third
 
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n     The contents of fifth are:;" << '\n';
+    std::cout << "\n     The contents of first_ft are:;" << '\n';
     std::cout << "\n***************************************" << '\n';
     // the iterator constructor can also be used to construct from arrays:
     int myints[] = {16, 2, 77, 29};
@@ -122,6 +124,18 @@ int main(void)
     for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
       std::cout << ' ' << *it;
     std::cout << '\n';
+  }
+  {
+    // constructors used in the same order as described above:
+    ft::vector<int> first_ft;
+    std::vector<int> first_std; // four ints with value 100
+
+    first_ft.push_back(42);
+    first_std.push_back(42);
+    for (std::vector<int>::iterator it = first_ft.begin(); it != first_ft.end(); ++it)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    //ene hurtel hiisen, begin, end hoyoriig hiihgui bol print lej chadahgui
   }
   return 0;
 }

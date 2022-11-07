@@ -1,3 +1,4 @@
 .vscode
 */*.out
-tester/vector_tester.o
+*/*.o
+ft_container
