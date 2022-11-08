@@ -15,8 +15,152 @@
 #include <vector> // std::vector
 #include "../include/Vector.hpp"
 
+void comparisonFunc(std::string testName, int std, int ft)
+{
+  std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+
+  std::cout << "Standard result: "
+            << std << '\n';
+  std::cout << "ft result: "
+            << ft << '\n';
+  if (std == ft)
+    std::cout << "✅" << '\n';
+  else
+    std::cout << "❌" << '\n';
+}
+
+void nonMemberComparison(std::string testName, bool std, bool ft)
+{
+  std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+  if (std == true)
+    std::cout << "Standard result: "
+              << "true" << '\n';
+  else
+    std::cout << "Standard result: "
+              << "false" << '\n';
+  if (ft == true)
+    std::cout << "ft result: "
+              << "true" << '\n';
+  else
+    std::cout << "ft result: "
+              << "false" << '\n';
+  if (std == ft)
+    std::cout << "✅" << '\n';
+  else
+    std::cout << "❌" << '\n';
+}
+
 int main(void)
 {
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      1. Default constructor" << '\n';
+    std::cout << "\n***************************************" << '\n';
+    /**
+     * Empty vector test
+     */
+
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
+
+    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      2. Fill constructor" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1(4, 100);
+    ft::vector<int> ft_vector1(4, 100);
+
+    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+      std::cout << "Elements of STD: " << *it << '\n';
+    for (ft::vector<int>::iterator it = ft_vector1.begin(); it != ft_vector1.end(); it++)
+      std::cout << "Elements of FT: " << *it << '\n';
+    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      3. Range constructor" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1;
+    std::vector<int> std_vector2;
+    std::vector<int> ft_vector1;
+    std::vector<int> ft_vector2;
+
+    std_vector1.assign(7, 100);
+    ft_vector1.assign(7, 100);
+
+    std::vector<int>::iterator it;
+    ft::vector<int>::iterator ft_it;
+    it = std_vector1.begin() + 1;
+    ft_it = ft_vector1.begin() + 1;
+
+    std_vector2.assign(it, std_vector1.end() - 1);
+    ft_vector2.assign(ft_it, ft_vector1.end() - 1);
+
+    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+      std::cout << "Elements of STD: " << *it << '\n';
+    for (ft::vector<int>::iterator it = ft_vector1.begin(); it != ft_vector1.end(); it++)
+      std::cout << "Elements of FT: " << *it << '\n';
+    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      n. Bla bla bla " << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> first;
+    std::vector<int> second;
+    std::vector<int> third;
+
+    first.assign(7, 100); // 7 ints with a value of 100
+
+    std::vector<int>::iterator it;
+    it = first.begin() + 1;
+
+    // test for ft functions:
+
+    // first.clear();
+    // first.push_back(5);
+
+    second.assign(it, first.end() - 1); // the 5 central values of first
+
+    int myints[] = {1776, 7, 4};
+    third.assign(myints, myints + 3); // assigning from array.
+
+    std::cout << "\nElements of BEFORE assigning again: " << '\n';
+
+    for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+      std::cout << "Elements of third: " << *it << '\n';
+
+    third.assign(5, 1);
+    std::cout << "Size of first: " << int(first.size()) << '\n';
+    std::cout << "Size of second: " << int(second.size()) << '\n';
+    std::cout << "Size of third: " << int(third.size()) << '\n';
+    for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+      std::cout << "Elements of third: " << *it << '\n';
+  }
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      2. Parameter constructor" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+  //   /**
+  //    * Empty vector test
+  //    */
+
+  //   std::vector<int> std_vector1(4, 100); // four ints with value 100
+  //   ft::vector<int> ft_vector1(4, 100); // four ints with value 100
+
+  //   for (int i = 0; i < 42; i++)
+  //   {
+  //     std_vector1.push_back(i);
+  //     ft_vector1.push_back(i);
+  //   }
+
+  //   comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  // }
   /*
   {
     std::vector<int> ft_vector;
@@ -98,44 +242,51 @@ int main(void)
     myvector.get_allocator().deallocate(p, 5);
   }
   */
-  {
-    std::cout << "\n***************************************" << '\n';
-    std::cout << "\n          Vector container test" << '\n';
-    std::cout << "\n***************************************" << '\n';
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n          Vector container test" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
 
-    // constructors used in the same order as described above:
-    std::vector<int> first;          // empty vector of ints
-    std::vector<int> second(4, 100); // four ints with value 100
+  //   // constructors used in the same order as described above:
+  //   std::vector<int> first;          // empty vector of ints
+  //   std::vector<int> second(4, 100); // four ints with value 100
 
-    /**
-     *         explicit vector (size_type n, const value_type& val = value_type(),
-                 const allocator_type& alloc = allocator_type()) :
-                 size_type(n), value_type(val), allocator_type(alloc)
-    */
-    std::vector<int> third(second.begin(), second.end()); // iterating through second
-    std::vector<int> fourth(third);                       // a copy of third
+  //   /**
+  //    *         explicit vector (size_type n, const value_type& val = value_type(),
+  //                const allocator_type& alloc = allocator_type()) :
+  //                size_type(n), value_type(val), allocator_type(alloc)
+  //   */
+  //   std::vector<int> third(second.begin(), second.end()); // iterating through second
+  //   std::vector<int> fourth(third);                       // a copy of third
 
-    std::cout << "\n***************************************" << '\n';
-    std::cout << "\n     The contents of first_ft are:;" << '\n';
-    std::cout << "\n***************************************" << '\n';
-    // the iterator constructor can also be used to construct from arrays:
-    int myints[] = {16, 2, 77, 29};
-    std::vector<int> fifth(myints, myints + sizeof(myints) / sizeof(int));
-    for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
-      std::cout << ' ' << *it;
-    std::cout << '\n';
-  }
-  {
-    // constructors used in the same order as described above:
-    ft::vector<int> first_ft;
-    std::vector<int> first_std; // four ints with value 100
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n     The contents of first_ft are:;" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+  //   // the iterator constructor can also be used to construct from arrays:
+  //   int myints[] = {16, 2, 77, 29};
+  //   std::vector<int> fifth(myints, myints + sizeof(myints) / sizeof(int));
+  //   for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+  //     std::cout << ' ' << *it;
+  //   std::cout << '\n';
+  // }
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      1. Default constructor" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+  //   ft::vector<int> first_ft;
+  //   std::vector<int> first_std; // four ints with value 100
 
-    first_ft.push_back(42);
-    first_std.push_back(42);
-    for (std::vector<int>::iterator it = first_ft.begin(); it != first_ft.end(); ++it)
-      std::cout << ' ' << *it;
-    std::cout << '\n';
-    //ene hurtel hiisen, begin, end hoyoriig hiihgui bol print lej chadahgui
-  }
+  //   first_ft.push_back(21);
+  //   first_ft.push_back(42);
+  //   first_std.push_back(21);
+  //   first_std.push_back(42);
+  //   for (ft::vector<int>::iterator it = first_ft.begin(); it != first_ft.end(); ++it)
+  //     std::cout << ' ' << *it;
+  //   std::cout << '\n';
+
+  //   for (std::vector<int>::iterator it = first_std.begin(); it != first_std.end(); ++it)
+  //     std::cout << ' ' << *it;
+  //   std::cout << '\n';
+  // }
   return 0;
 }

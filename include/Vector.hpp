@@ -20,7 +20,7 @@ namespace ft
   /**
    * generic template
    */
-  template <class T, class Alloc = std::allocator<T> >
+  template <class T, class Alloc = std::allocator<T>>
   class vector
   {
   public:
@@ -94,10 +94,13 @@ namespace ft
      */
   private:
     Alloc _allocator;
-    pointer _first;
-    pointer _last;
-    size_type _size;
-    size_type _capacity;
+    pointer _start;
+    pointer _finish;
+    pointer _end_of_storage;
+    /**
+     * capacity = _end_of_storage - _start
+     * size = _finish - _start
+     */
 
   public:
     /**
@@ -105,7 +108,11 @@ namespace ft
      * Empty container constructor (default constructor)
        Constructs an empty container, with no elements.
      */
-    explicit vector() : _first(ft_nullptr), _last(ft_nullptr), _size(0), _capacity(0)
+    explicit vector(const allocator_type &alloc = allocator_type())
+        : _allocator(alloc),
+          _start(ft_nullptr),
+          _finish(ft_nullptr),
+          _end_of_storage(ft_nullptr)
     {
     }
 
@@ -115,11 +122,23 @@ namespace ft
      * Each element is a copy of val.
      */
     explicit vector(size_type n, const value_type &val = value_type(),
-                    const allocator_type &alloc = allocator_type()) : size_type(n), value_type(val), allocator_type(alloc)
+                    const allocator_type &alloc = allocator_type())
+        : _allocator(alloc),
+          _start(ft_nullptr),
+          _finish(ft_nullptr),
+          _end_of_storage(ft_nullptr)
     {
-      if (n > _capacity)
-        std::cout << "size is too small, need to increase the capacity" << '\n';
-      push_back(val);
+      if (n > this->max_size())
+        throw(std::length_error("cannot create std::vector larger than max_size()"));
+      // returns a pointer to the initial element in the block of storage
+      _start = _allocator.allocate(n);
+      _finish = _start;
+      _end_of_storage = _start + n;
+      while (n--)
+      {
+        _allocator.construct(_finish, val);
+        _finish++;
+      }
     }
 
     // /**
@@ -128,11 +147,21 @@ namespace ft
     //  * with each element constructed from its corresponding element in that range,
     //  * in the same order.
     //  */
-    // template <class InputIterator>
-    // vector(InputIterator first, InputIterator last,
-    //        const allocator_type &alloc = allocator_type())
-    // {
-    // }
+    template <class InputIterator>
+    vector(InputIterator first, InputIterator last,
+           const allocator_type &alloc = allocator_type())
+        : _allocator(alloc)
+    {
+      difference_type n = last - first;
+      _start = _allocator.allocate(n);
+      _finish = _start;
+      _end_of_storage = _start + n;
+      while (n--)
+      {
+        _allocator.construct(_finish, *(_finish));
+        _finish++;
+      }
+    }
 
     // /**
     //  * 4. Copy constructor
@@ -149,56 +178,127 @@ namespace ft
     //  */
     // ~vector();
 
-    // vector<T, Alloc> &operator=(const vector<T, Alloc> &x);
+    vector &operator=(const vector &x)
+    {
+      if (x == *this)
+        return (*this);
+      this->clear();
+      this->insert(this->end(), x.begin(), x.end());
+      return (*this);
+    }
     // template <class InputIterator>
     // void assign(InputIterator first, InputIterator last);
-    // void assign(size_type n, const T &u);
+    /**
+     *  @brief  Assigns a given value to a %vector.
+     *  @param  __n  Number of elements to be assigned.
+     *  @param  __val  Value to be assigned.
+     *
+     *  This function fills a %vector with @a __n copies of the given
+     *  value.  Note that the assignment completely changes the
+     *  %vector and that the resulting %vector's size is the same as
+     *  the number of elements assigned.
+     */
+    void assign(size_type n, const T &val)
+    {
+      this->clear();
+      if (n > this->capacity())
+      {
+        _start = _allocator.allocate(n);
+      }
+      else
+      {
+        _start = _allocator.allocate(this->capacity());
+      }
+      _finish = _start;
+      while (n--)
+      {
+        _allocator.construct(_finish, val);
+        _finish++;
+      }
+      _end_of_storage = _start + n;
+    }
     // allocator_type get_allocator() const;
 
-    // // iterators:
-    // iterator begin();
-    // const_iterator begin() const;
-    // iterator end();
-    // const_iterator end() const;
-    // reverse_iterator rbegin();
-    // const_reverse_iterator rbegin() const;
-    // reverse_iterator rend();
-    // const_reverse_iterator rend() const;
+    // iterators:
+    iterator begin()
+    {
+      return (iterator(this->_start));
+    }
+    const_iterator begin() const
+    {
+      return (const_iterator(this->_start));
+    }
+    iterator end()
+    {
+      return (iterator(this->_finish));
+    }
+    const_iterator end() const
+    {
+      return (const_iterator(this->_finish));
+    }
+    reverse_iterator rbegin()
+    {
+      return (reverse_iterator(end()));
+    }
+    const_reverse_iterator rbegin() const
+    {
+      return (const_reverse_iterator(end()));
+    }
+    reverse_iterator rend()
+    {
+      return (reverse_iterator(begin()));
+    }
+    const_reverse_iterator rend() const
+    {
+      return (const_reverse_iterator(begin()));
+    }
 
-    // // 23.2.4.2 capacity:
-    // size_type size() const;
+    // 23.2.4.2 capacity:
+    size_type size() const
+    {
+      return size_type(this->_finish - this->_start);
+    }
     size_type max_size() const
     {
       return (Alloc().max_size());
     }
-    // void resize(size_type sz, T c = T());
-    // size_type capacity() const;
+    // void resize(size_type sz, T c = T())
+    // {
+
+    // }
+    /**
+     *  Returns the total number of elements that the %vector can
+     *  hold before needing to allocate more memory.
+     */
+    size_type capacity() const
+    {
+      return size_type(_end_of_storage - _start);
+    }
     // bool empty() const;
     void reserve(size_type n)
     {
       if (n > this->max_size())
         throw(std::length_error("vector::reserve"));
-      if (n > _capacity)
+      if (n > this->capacity())
       {
-        pointer new_first;
-        new_first = _allocator.allocate(n);
-        for (size_t i = 0; i < _size; i++)
+        pointer new_start;
+        new_start = _allocator.allocate(n);
+        for (size_t i = 0; i < this->size(); i++)
         {
-          _allocator.construct((new_first + i), *(_first + i));
+          _allocator.construct((new_start + i), *(_start + i));
         }
-        for (size_t i = 0; i < _size; i++)
+        for (size_t i = 0; i < this->size(); i++)
         {
-          _allocator.destroy(_first + i);
+          _allocator.destroy(_start + i);
         }
-        if (_capacity)
-          _allocator.deallocate(_first, _capacity);
-        _first = new_first;
-        _last = new_first + _size;
-        _capacity = n;
+        _allocator.deallocate(_start, this->capacity());
+        _start = new_start;
+        _finish = new_start + this->size();
+        _end_of_storage = _start + n;
       }
     }
 
-    // // element access:
+    // element access:
     // reference operator[](size_type n);
     // const_reference operator[](size_type n) const;
     // const_reference at(size_type n) const;
@@ -217,29 +317,50 @@ namespace ft
     */
     void push_back(const value_type &val)
     {
-      if (_size == _capacity)
+      if (_finish == _end_of_storage)
       {
         int new_capacity;
-        if (_size > 0)
-          new_capacity = (int)_size * 2;
+        if (this->size() > 0)
+          new_capacity = (int)this->size() * 2;
         else
           new_capacity = 1;
         this->reserve(new_capacity);
       }
-      _allocator.construct(_last, val);
-      _last++;
+      _allocator.construct(_finish, val);
+      _finish++; // which one is correct? ++_finish or _finish++??
     }
 
     // void pop_back();
     // iterator insert(iterator position, const T &x);
     // void insert(iterator position, size_type n, const T &x);
     // template <class InputIterator>
-    // void insert(iterator position,
-    //             InputIterator first, InputIterator last);
+    void insert(iterator position,
+                InputIterator first, InputIterator last)
+    {
+        
+    }
+    //ene hurtel hiisen
     // iterator erase(iterator position);
     // iterator erase(iterator first, iterator last);
     // void swap(vector<T, Alloc> &);
-    // void clear();
+    /**
+     *  Erases all the elements.  Note that this function only erases the
+     *  elements, and that if the elements themselves are pointers, the
+     *  pointed-to memory is not touched in any way.  Managing the pointer is
+     *  the user's responsibility.
+     */
+    // { _M_erase_at_end(this->_M_impl._M_start); }
+    // clear (_start) _start pointer-s ehelj destroy hiine.
+    void clear()
+    {
+      // _allocator.destroy(_start, _finish);
+      // _finish = _start;
+      while (_finish != _start)
+      {
+        _finish--;
+        _allocator.destroy(_finish);
+      }
+    }
   };
   // template <class T, class Alloc>
   // bool operator==(const vector<T, Alloc> &x,
@@ -250,6 +371,11 @@ namespace ft
   // template <class T, class Alloc>
   // bool operator!=(const vector<T, Alloc> &x,
   //                 const vector<T, Alloc> &y);
+  template <typename T>
+  bool operator!=(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    return (!(lhs == rhs));
+  }
   // template <class T, class Alloc>
   // bool operator>(const vector<T, Alloc> &x,
   //                const vector<T, Alloc> &y);
@@ -259,7 +385,7 @@ namespace ft
   // template <class T, class Alloc>
   // bool operator<=(const vector<T, Alloc> &x,
   //                 const vector<T, Alloc> &y);
-  // // specialized algorithms:
+  // specialized algorithms:
   // template <class T, class Alloc>
   // void swap(vector<T, Alloc> &x, vector<T, Alloc> &y);
 }
