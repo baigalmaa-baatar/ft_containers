@@ -331,18 +331,74 @@ namespace ft
     }
 
     // void pop_back();
-    // iterator insert(iterator position, const T &x);
+    /**
+     *  @brief  Inserts given rvalue into %vector before specified iterator.
+     *  @param  position  A const_iterator into the %vector.
+     *  @param  val  Data to be inserted.
+     *  @return  An iterator that points to the inserted data.
+     *
+     *  This function will insert a copy of the given rvalue before
+     *  the specified location.  Note that this kind of operation
+     *  could be expensive for a %vector and if it is frequently
+     *  used the user should consider using std::list.
+     */
+    iterator insert(iterator position, const T &val)
+    {
+      const size_type n = &(*position) - _start;
+      // if (_finish != _end_of_storage)
+      if (size_type(_end_of_storage - _finish) >= this->size() + 1)
+      {
+        // inserting 1 element at the start/head of the vector
+        for (size_type i = 0; i < n; i++)
+        {
+          _allocator.construct(_finish - i, *(_finish - i - 1));
+        }
+        ++_finish;
+        _allocator.construct(position, val);
+      }
+      else
+      {
+        iterator new_start;
+        iterator new_finish = _finish;
+        iterator new_end_of_storage = _end_of_storage;
+        int new_capacity;
+        if (this->size() > 0)
+          new_capacity = (int)this->size() * 2;
+        else
+          new_capacity = 1;
+        new_start = _allocator.allocate(new_capacity);
+        for (size_type i = 0; i < n; i++)
+        {
+          _allocator.construct(new_start + i, *(_start + i));
+        }
+        _allocator.construct(position, val);
+        for (size_type i = 1; i < n; i++)
+        {
+          _allocator.construct(new_start + n + i, *(_start + n + i - 1));
+        }
+        for (size_type i = 0; i < this->size(); i++)
+        {
+          _allocator.destroy(_start + i);
+        }
+        _allocator.deallocate(_start, this->size());
+        _start = new_start;
+        _finish = _start + this->size() + 1;
+        _end_of_storage = 
+      }
+      return iterator(_start + n);
+    }
     // void insert(iterator position, size_type n, const T &x);
     // template <class InputIterator>
-    void insert(iterator position,
-                InputIterator first, InputIterator last)
-    {
-        
-    }
-    //ene hurtel hiisen
-    // iterator erase(iterator position);
-    // iterator erase(iterator first, iterator last);
-    // void swap(vector<T, Alloc> &);
+    // template <class InputIterator>
+    // void insert(iterator position,
+    //             InputIterator first, InputIterator last)
+    //             {
+
+    //             }
+
+    //  iterator erase(iterator position);
+    //  iterator erase(iterator first, iterator last);
+    //  void swap(vector<T, Alloc> &);
     /**
      *  Erases all the elements.  Note that this function only erases the
      *  elements, and that if the elements themselves are pointers, the

@@ -95,53 +95,81 @@ int main(void)
     std::vector<int>::iterator it;
     ft::vector<int>::iterator ft_it;
     it = std_vector1.begin() + 1;
-    ft_it = ft_vector1.begin() + 1;
+    // ft_it = ft_vector1.begin() + 1;
 
-    std_vector2.assign(it, std_vector1.end() - 1);
-    ft_vector2.assign(ft_it, ft_vector1.end() - 1);
+    // std_vector2.assign(it, std_vector1.end() - 1);
+    // ft_vector2.assign(ft_it, ft_vector1.end() - 1);
 
-    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
-      std::cout << "Elements of STD: " << *it << '\n';
-    for (ft::vector<int>::iterator it = ft_vector1.begin(); it != ft_vector1.end(); it++)
-      std::cout << "Elements of FT: " << *it << '\n';
-    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+    // for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+    //   std::cout << "Elements of STD: " << *it << '\n';
+    // for (ft::vector<int>::iterator it = ft_vector1.begin(); it != ft_vector1.end(); it++)
+    //   std::cout << "Elements of FT: " << *it << '\n';
+    // comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
   }
   {
     std::cout << "\n***************************************" << '\n';
     std::cout << "\n      n. Bla bla bla " << '\n';
     std::cout << "\n***************************************" << '\n';
 
-    std::vector<int> first;
-    std::vector<int> second;
-    std::vector<int> third;
-
-    first.assign(7, 100); // 7 ints with a value of 100
-
+    std::vector<int> myvector(3, 100);
     std::vector<int>::iterator it;
-    it = first.begin() + 1;
 
-    // test for ft functions:
+    it = myvector.begin();
+    it = myvector.insert(it, 200);
 
-    // first.clear();
-    // first.push_back(5);
+    myvector.insert(it, 2, 300);
 
-    second.assign(it, first.end() - 1); // the 5 central values of first
+    // "it" no longer valid, get a new one:
+    it = myvector.begin();
 
-    int myints[] = {1776, 7, 4};
-    third.assign(myints, myints + 3); // assigning from array.
+    std::vector<int> anothervector(2, 400);
+    myvector.insert(it + 2, anothervector.begin(), anothervector.end());
 
-    std::cout << "\nElements of BEFORE assigning again: " << '\n';
+    int myarray[] = {501, 502, 503};
+    myvector.insert(myvector.begin(), myarray, myarray + 3);
 
-    for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
-      std::cout << "Elements of third: " << *it << '\n';
-
-    third.assign(5, 1);
-    std::cout << "Size of first: " << int(first.size()) << '\n';
-    std::cout << "Size of second: " << int(second.size()) << '\n';
-    std::cout << "Size of third: " << int(third.size()) << '\n';
-    for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
-      std::cout << "Elements of third: " << *it << '\n';
+    std::cout << "myvector contains:";
+    for (it = myvector.begin(); it < myvector.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
   }
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      n. Bla bla bla " << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+
+  //   std::vector<int> first;
+  //   std::vector<int> second;
+  //   std::vector<int> third;
+
+  //   first.assign(7, 100); // 7 ints with a value of 100
+
+  //   std::vector<int>::iterator it;
+  //   it = first.begin() + 1;
+
+  //   // test for ft functions:
+
+  //   // first.clear();
+  //   // first.push_back(5);
+
+  //   second.assign(it, first.end() - 1); // the 5 central values of first
+
+  //   int myints[] = {1776, 7, 4};
+  //   third.assign(myints, myints + 3); // assigning from array.
+
+  //   std::cout << "\nElements of BEFORE assigning again: " << '\n';
+
+  //   for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+  //     std::cout << "Elements of third: " << *it << '\n';
+
+  //   third.assign(5, 1);
+  //   std::cout << "Size of first: " << int(first.size()) << '\n';
+  //   std::cout << "Size of second: " << int(second.size()) << '\n';
+  //   std::cout << "Size of third: " << int(third.size()) << '\n';
+  //   for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+  //     std::cout << "Elements of third: " << *it << '\n';
+  // }
+
   // {
   //   std::cout << "\n***************************************" << '\n';
   //   std::cout << "\n      2. Parameter constructor" << '\n';
