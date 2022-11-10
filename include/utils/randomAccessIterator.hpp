@@ -1,5 +1,5 @@
 #ifndef RANDOMACCESSITERATOR_HPP
-# define RANDOMACCESSITERATOR_HPP
+#define RANDOMACCESSITERATOR_HPP
 #include <iostream>
 #include "utils.hpp"
 
@@ -30,8 +30,10 @@ namespace ft
         RandomAccessIterator(RandomAccessIterator const &obj) : _ptr(obj._ptr)
         {
         }
-        RandomAccessIterator &operator=(RandomAccessIterator &rhs)
+        RandomAccessIterator &operator=(const RandomAccessIterator &rhs)
         {
+            if (this == &rhs)
+                return (*this);
             this->_ptr = rhs._ptr;
             return (*this);
         }
@@ -181,48 +183,48 @@ namespace ft
             RandomAccessIterator tmp = operator+(n);
             return (*tmp);
         }
-    bool operator==(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr == y._ptr);
-    }
-    bool operator<(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr < y._ptr);
-    }
-    bool operator!=(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr != y._ptr);
-    }
-    bool operator>(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr > y._ptr);
-    }
-    bool operator>=(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr >= y._ptr);
-    }
-    bool operator<=(
-        const RandomAccessIterator<T> &y)
-    {
-        return (this->_ptr <= y._ptr);
-    }
-    // typename RandomAccessIterator<T>::difference_type operator-(
-    //     const RandomAccessIterator<T> &x,
-    //     const RandomAccessIterator<T> &y)
-    // {
-    //     // return (x._ptr == y._ptr);
-    // }
-    // typename RandomAccessIterator<T>::difference_type operator+(
-    //     const RandomAccessIterator<T> &x,
-    //     const RandomAccessIterator<T> &y)
-    // {
-    //     // return (x._ptr == y._ptr);
-    // }
+        bool operator==(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr == y._ptr);
+        }
+        bool operator<(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr < y._ptr);
+        }
+        bool operator!=(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr != y._ptr);
+        }
+        bool operator>(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr > y._ptr);
+        }
+        bool operator>=(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr >= y._ptr);
+        }
+        bool operator<=(
+            const RandomAccessIterator<T> &y)
+        {
+            return (this->_ptr <= y._ptr);
+        }
+        // typename RandomAccessIterator<T>::difference_type operator-(
+        //     const RandomAccessIterator<T> &x,
+        //     const RandomAccessIterator<T> &y)
+        // {
+        //     // return (x._ptr == y._ptr);
+        // }
+        // typename RandomAccessIterator<T>::difference_type operator+(
+        //     const RandomAccessIterator<T> &x,
+        //     const RandomAccessIterator<T> &y)
+        // {
+        //     // return (x._ptr == y._ptr);
+        // }
     };
 }
 #endif

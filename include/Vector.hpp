@@ -20,7 +20,7 @@ namespace ft
   /**
    * generic template
    */
-  template <class T, class Alloc = std::allocator<T>>
+  template <class T, class Alloc = std::allocator<T> >
   class vector
   {
   public:
@@ -121,16 +121,13 @@ namespace ft
      * Constructs a container with n elements.
      * Each element is a copy of val.
      */
-    explicit vector(size_type n, const value_type &val = value_type(),
-                    const allocator_type &alloc = allocator_type())
-        : _allocator(alloc),
-          _start(ft_nullptr),
+    explicit vector(size_type n, const value_type &val = value_type())
+        : _start(ft_nullptr),
           _finish(ft_nullptr),
           _end_of_storage(ft_nullptr)
     {
       if (n > this->max_size())
         throw(std::length_error("cannot create std::vector larger than max_size()"));
-      // returns a pointer to the initial element in the block of storage
       _start = _allocator.allocate(n);
       _finish = _start;
       _end_of_storage = _start + n;
@@ -147,8 +144,7 @@ namespace ft
     //  * with each element constructed from its corresponding element in that range,
     //  * in the same order.
     //  */
-    template <class InputIterator>
-    vector(InputIterator first, InputIterator last,
+    vector(iterator first, iterator last,
            const allocator_type &alloc = allocator_type())
         : _allocator(alloc)
     {
@@ -176,7 +172,7 @@ namespace ft
     // /**
     //  * Destructor
     //  */
-    // ~vector();
+    ~vector() {}
 
     vector &operator=(const vector &x)
     {
@@ -252,7 +248,6 @@ namespace ft
     {
       return (const_reverse_iterator(begin()));
     }
-
     // 23.2.4.2 capacity:
     size_type size() const
     {
@@ -267,7 +262,7 @@ namespace ft
 
     // }
     /**
-     *  Returns the total number of elements that the %vector can
+     *  Returns the total number of elements that the vector can
      *  hold before needing to allocate more memory.
      */
     size_type capacity() const
@@ -344,57 +339,132 @@ namespace ft
      */
     iterator insert(iterator position, const T &val)
     {
+      this->insert(position, 1, val);
+
+      return (++position);
+    }
+
+    void insert(iterator position, size_type insert_size, const T &val)
+    {
       const size_type n = &(*position) - _start;
-      // if (_finish != _end_of_storage)
-      if (size_type(_end_of_storage - _finish) >= this->size() + 1)
+      // std::cout << "$$$$$$$$$$here$$$$$$$$$$" << "\tn is : " << n << '\n';
+      std::cout << "BEFORE: this size is : " << this->size() << '\n';
+      std::cout << "BEFORE: capacity is : " << size_type(_end_of_storage - this->size()) << '\n';
+      std::cout << "BEFORE: insert_size is : " << insert_size << '\n';
+
+      if (size_type(_end_of_storage - this->size()) <= insert_size)
       {
-        // inserting 1 element at the start/head of the vector
+
+        // if current capacity is not enough then need to reserve allocation and construction
+        pointer new_start;
+        pointer new_finish;
+        pointer new_end_of_storage;
+        int new_capacity = this->size() + insert_size;
+        new_start = _allocator.allocate(new_capacity);
+        new_end_of_storage = new_start + new_capacity;
+        new_finish = new_start + this->size() + insert_size;
+
         for (size_type i = 0; i < n; i++)
         {
-          _allocator.construct(_finish - i, *(_finish - i - 1));
+          _allocator.construct(new_start + i, *(_start + i));
         }
-        ++_finish;
-        _allocator.construct(position, val);
+
+        for (size_type j = 0; j < insert_size; j++)
+        {
+          _allocator.construct(new_start + n + j, val);
+        }
+            std::cout << "size is : " << this->size() << '\n';
+            // std::cout << "value : " << *(_start) << '\n';
+
+        if (*(_start) && this->size())
+        {
+          for (size_type k = 0; k < n + insert_size; k++)
+          {
+            std::cout << "n is : " << n << '\n';
+            std::cout << "insert_size is : " << insert_size << '\n';
+            std::cout << "111111111111111111k is : " << k << '\n';
+            _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
+            //ene hurtel hiisen. 
+          }
+        }
+        std::cout << "n is : " << n << '\n';
+
+        // destroy and deallocate old vector's memory
+        for (size_type i = 0; i < this->size(); i++)
+        {
+          _allocator.destroy(_start + i);
+        }
+
+        _allocator.deallocate(_start, this->size());
+        _start = new_start;
+        _finish = new_finish;
+        _end_of_storage = new_end_of_storage;
       }
       else
       {
-        iterator new_start;
-        iterator new_finish = _finish;
-        iterator new_end_of_storage = _end_of_storage;
-        int new_capacity;
-        if (this->size() > 0)
-          new_capacity = (int)this->size() * 2;
-        else
-          new_capacity = 1;
+        pointer new_start = _start;
+        for (size_type i = 0; i < (this->size() - n); i++)
+        {
+          _allocator.construct(new_start + insert_size + i, *(_start + n + i));
+        }
+        for (size_type j = 0; j < insert_size; j++)
+        {
+          _allocator.construct(new_start + n + j, val);
+        }
+        _finish = new_start + this->size() + insert_size;
+      }
+
+    }
+
+    void insert(iterator position, iterator another_first, iterator another_last)
+    {
+      const size_type n = &(*position) - _start;
+      size_type insert_size = another_last - another_first;
+      if (this->capacity() <= this->size() + insert_size)
+      {
+        // if current capacity is not enough then need to reserve allocation and construction
+        pointer new_start;
+        pointer new_finish = _finish;
+        pointer new_end_of_storage;
+        int new_capacity = this->size() + insert_size;
+        new_end_of_storage = new_start + new_capacity;
         new_start = _allocator.allocate(new_capacity);
         for (size_type i = 0; i < n; i++)
         {
           _allocator.construct(new_start + i, *(_start + i));
         }
-        _allocator.construct(position, val);
-        for (size_type i = 1; i < n; i++)
+        for (size_type j = 0; j < insert_size; j++)
         {
-          _allocator.construct(new_start + n + i, *(_start + n + i - 1));
+          _allocator.construct(new_start + n + j, *(another_first + j));
         }
+        for (size_type k = 0; k < n + insert_size; k++)
+        {
+          _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
+        }
+        // destroy and deallocate old vector's memory
         for (size_type i = 0; i < this->size(); i++)
         {
           _allocator.destroy(_start + i);
         }
         _allocator.deallocate(_start, this->size());
         _start = new_start;
-        _finish = _start + this->size() + 1;
-        _end_of_storage = 
+        _finish = _start + this->size() + insert_size;
+        _end_of_storage = new_end_of_storage;
       }
-      return iterator(_start + n);
+      else
+      {
+        pointer new_start = _start;
+        for (size_type i = 0; i < (this->size() - n); i++)
+        {
+          _allocator.construct(new_start + insert_size + i, *(_start + n + i));
+        }
+        for (size_type j = 0; j < insert_size; j++)
+        {
+          _allocator.construct(new_start + n + j, *(another_first + j));
+        }
+        _finish = _start + this->size() + insert_size;
+      }
     }
-    // void insert(iterator position, size_type n, const T &x);
-    // template <class InputIterator>
-    // template <class InputIterator>
-    // void insert(iterator position,
-    //             InputIterator first, InputIterator last)
-    //             {
-
-    //             }
 
     //  iterator erase(iterator position);
     //  iterator erase(iterator first, iterator last);
@@ -418,9 +488,16 @@ namespace ft
       }
     }
   };
-  // template <class T, class Alloc>
-  // bool operator==(const vector<T, Alloc> &x,
-  //                 const vector<T, Alloc> &y);
+  template <typename T>
+  bool operator==(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    if (lhs.size() != rhs.size())
+      return (false);
+    for (size_t i = 0; i < lhs.size(); i++)
+      if (lhs[i] != rhs[i])
+        return (false);
+    return (true);
+  }
   // template <class T, class Alloc>
   // bool operator<(const vector<T, Alloc> &x,
   //                const vector<T, Alloc> &y);
