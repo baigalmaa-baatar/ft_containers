@@ -15,6 +15,17 @@
 #include <vector> // std::vector
 #include "../include/Vector.hpp"
 
+template <typename T>
+void comparisonFuncVec(std::string testName, std::vector<T> std_vector1, ft::vector<T> ft_vector1)
+{
+  std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+
+  if (std_vector1 == ft_vector1)
+  {
+    std::cout << "matched" << std::endl;
+  }
+}
+
 void comparisonFunc(std::string testName, int std, int ft)
 {
   std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
@@ -139,82 +150,83 @@ int main(void)
     std::cout << "\n            single element  " << '\n';
     std::cout << "\n***************************************" << '\n';
 
-    std::vector<int> std_vector1(4, 200);
-    ft::vector<int> ft_vector1(4, 200);
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
 
     std::vector<int>::iterator it = std_vector1.begin();
     ft::vector<int>::iterator ft_it = ft_vector1.begin();
-    std::cout << "std size : " << std_vector1.size() << " : "
-              << "std capacity : " << std_vector1.capacity() << '\n';
-    std::cout << " ft size : " << ft_vector1.size() << " : "
-              << " ft capacity : " << ft_vector1.capacity() << '\n';
-    std_vector1.insert(it, 2, 100);
-    ft_vector1.insert(ft_it, 2, 100);
-    std::cout << "std size : " << std_vector1.size() << " : "
-              << "std capacity : " << std_vector1.capacity() << '\n';
-    std::cout << " ft size : " << ft_vector1.size() << " : "
-              << " ft capacity : " << ft_vector1.capacity() << '\n';
-    // it = std_vector1.begin();
-    // ft_it = ft_vector1.begin();
-    // std::cout << "std size : " << std_vector1.size() << " : "
-    //           << "std capacity : " << std_vector1.capacity() << '\n';
-    // std_vector1.insert(it, 200);
-    // std::cout << " ft size : " << ft_vector1.size() << " : "
-    //           << " ft capacity : " << ft_vector1.capacity() << '\n';
-    // ft_vector1.insert(ft_it, 200);
-    // std::cout << "std size : " << std_vector1.size() << " : "
-    //           << "std capacity : " << std_vector1.capacity() << '\n';
-    // std::cout << " ft size : " << ft_vector1.size() << " : "
-    //           << " ft capacity : " << ft_vector1.capacity() << '\n';
-    // it = std_vector1.begin();
-    // ft_it = ft_vector1.begin();
-    // std_vector1.insert(it, 300);
-    // ft_vector1.insert(ft_it, 300);
+    std_vector1.insert(it, 3, 100);
+    ft_vector1.insert(ft_it, 3, 100);
     for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
       std::cout << "Elements of STD: " << *it << '\t';
     std::cout << '\n';
     for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
       std::cout << "Elements of  FT: " << *ft_it << '\t';
     std::cout << '\n';
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
+    std_vector1.insert(it, 1, 200);
+    ft_vector1.insert(ft_it, 1, 200);
+    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+      std::cout << "Elements of STD: " << *it << '\t';
+    std::cout << '\n';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
+      std::cout << "Elements of  FT: " << *ft_it << '\t';
+    std::cout << '\n';
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
+    std_vector1.insert(it, 5, 300);
+    ft_vector1.insert(ft_it, 5, 300);
+    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+      std::cout << "Elements of STD: " << *it << '\t';
+    std::cout << '\n';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
+      std::cout << "Elements of  FT: " << *ft_it << '\t';
+    std::cout << '\n';
+    std::cout << "std size : " << std_vector1.size() << " : "
+              << "std capacity : " << std_vector1.capacity() << '\n';
+    std::cout << " ft size : " << ft_vector1.size() << " : "
+              << " ft capacity : " << ft_vector1.capacity() << '\n';
+    // comparisonFuncVec("test every members",std_vector1, ft_vector1); //eniig asuuh
     comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
   }
-  // {
-  //   std::cout << "\n***************************************" << '\n';
-  //   std::cout << "\n      2-2.  vector::insert() " << '\n';
-  //   std::cout << "\n            fill " << '\n';
-  //   std::cout << "\n***************************************" << '\n';
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      2-2.  vector::insert() " << '\n';
+    std::cout << "\n            fill " << '\n';
+    std::cout << "\n***************************************" << '\n';
 
-  //   std::vector<int> std_vector1;
-  //   std::vector<int> ft_vector1;
+    std::vector<int> std_vector1;
+    std::vector<int> ft_vector1;
 
-  //   std::vector<int>::iterator it = std_vector1.begin();
-  //   std::vector<int>::iterator ft_it = ft_vector1.begin();
-  //   std::cout << "std size : " << std_vector1.size() << " : "
-  //             << "std capacity : " << std_vector1.capacity() << '\n';
-  //   std_vector1.insert(it, 2, 100);
-  //   std::cout << " ft size : " << ft_vector1.size() << " : "
-  //             << " ft capacity : " << ft_vector1.capacity() << '\n';
-  //   ft_vector1.insert(ft_it, 2, 100);
-  //   it = std_vector1.begin();
-  //   ft_it = ft_vector1.begin();
-  //   std::cout << "std size : " << std_vector1.size() << " : "
-  //             << "std capacity : " << std_vector1.capacity() << '\n';
-  //   std_vector1.insert(it, 5, 200);
-  //   std::cout << " ft size : " << ft_vector1.size() << " : "
-  //             << " ft capacity : " << ft_vector1.capacity() << '\n';
-  //   ft_vector1.insert(ft_it, 5, 200);
-  //   std::cout << "std size : " << std_vector1.size() << " : "
-  //             << "std capacity : " << std_vector1.capacity() << '\n';
-  //   std::cout << " ft size : " << ft_vector1.size() << " : "
-  //             << " ft capacity : " << ft_vector1.capacity() << '\n';
-  //   for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
-  //     std::cout << "Elements of STD: " << *it << '\t';
-  //   std::cout << '\n';
-  //   for (std::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
-  //     std::cout << "Elements of  FT: " << *ft_it << '\t';
-  //   std::cout << '\n';
-  //   comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
-  // }
+    std::vector<int>::iterator it = std_vector1.begin();
+    std::vector<int>::iterator ft_it = ft_vector1.begin();
+    std::cout << "std size : " << std_vector1.size() << " : "
+              << "std capacity : " << std_vector1.capacity() << '\n';
+    std_vector1.insert(it, 2, 100);
+    std::cout << " ft size : " << ft_vector1.size() << " : "
+              << " ft capacity : " << ft_vector1.capacity() << '\n';
+    ft_vector1.insert(ft_it, 2, 100);
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
+    std::cout << "std size : " << std_vector1.size() << " : "
+              << "std capacity : " << std_vector1.capacity() << '\n';
+    std_vector1.insert(it + 1, 5, 200);
+    std::cout << " ft size : " << ft_vector1.size() << " : "
+              << " ft capacity : " << ft_vector1.capacity() << '\n';
+    ft_vector1.insert(ft_it + 1, 5, 200);
+    std::cout << "std size : " << std_vector1.size() << " : "
+              << "std capacity : " << std_vector1.capacity() << '\n';
+    std::cout << " ft size : " << ft_vector1.size() << " : "
+              << " ft capacity : " << ft_vector1.capacity() << '\n';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it != std_vector1.end(); it++)
+      std::cout << "Elements of STD: " << *it << '\t';
+    std::cout << '\n';
+    for (std::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
+      std::cout << "Elements of  FT: " << *ft_it << '\t';
+    std::cout << '\n';
+    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  }
   {
     std::cout << "\n***************************************" << '\n';
     std::cout << "\n      2-3.  vector::insert() " << '\n';
@@ -222,27 +234,52 @@ int main(void)
     std::cout << "\n***************************************" << '\n';
 
     std::vector<int> std_vector1(3, 100);
-    std::vector<int> myvector(3, 100);
+    ft::vector<int> ft_vector1(3, 100);
+    // ft::vector<int> ft_vector1; //ene tohioldold ajillahgui bgaa
     std::vector<int>::iterator it;
+    ft::vector<int>::iterator ft_it;
 
-    it = myvector.begin();
-    it = myvector.insert(it, 200);
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
 
-    myvector.insert(it, 2, 300);
-
-    // "it" no longer valid, get a new one:
-
-    std::vector<int> anothervector(2, 400);
-    std::cout << "before:" << '\n';
-    for (it = myvector.begin(); it < myvector.end(); it++)
+    it = std_vector1.insert(it+1, 200);
+    ft_it = ft_vector1.insert(ft_it+1, 200);
+    std::cout << "std: " << '\t';
+    for (it = std_vector1.begin(); it < std_vector1.end(); it++)
       std::cout << ' ' << *it;
     std::cout << '\n';
-    it = myvector.begin();
-    myvector.insert(it + 2, anothervector.begin(), anothervector.end());
-    std::cout << "after:" << '\n';
-    for (it = myvector.begin(); it < myvector.end(); it++)
+    std::cout << " ft: " << '\t';
+    for (ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
+    std_vector1.insert(it+4, 300);
+    ft_vector1.insert(ft_it+4, 300);
+    std::cout << "std: " << '\t';
+    for (it = std_vector1.begin(); it < std_vector1.end(); it++)
       std::cout << ' ' << *it;
     std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    std::vector<int> std_vector2(2, 400);
+    ft::vector<int> ft_vector2(2, 400);
+    it = std_vector1.begin();
+    ft_it = ft_vector1.begin();
+    std_vector1.insert(it + 2, std_vector2.begin(), std_vector2.end());
+    ft_vector1.insert(ft_it + 2, ft_vector2.begin(), ft_vector2.end());
+    // std::cout << "after:" << '\n';
+    std::cout << "std: " << '\t';
+    for (it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
 
     // int myarray[] = {501, 502, 503};
     // myvector.insert(myvector.begin(), myarray, myarray + 3);
@@ -251,9 +288,6 @@ int main(void)
     // for (it = myvector.begin(); it < myvector.end(); it++)
     //   std::cout << ' ' << *it;
     // std::cout << '\n';
-
-    return 0;
-  }
   {
     std::cout << "\n***************************************" << '\n';
     std::cout << "\n      2. vector::reserve " << '\n';

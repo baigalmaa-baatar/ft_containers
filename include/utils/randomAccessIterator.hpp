@@ -145,7 +145,7 @@ namespace ft
          */
         RandomAccessIterator &operator+=(difference_type n)
         {
-            std::cout << "calling here a += n" << '\n';
+            // std::cout << "calling here a += n" << '\n';
             this->_ptr += n;
             return (*this);
         }
@@ -161,18 +161,18 @@ namespace ft
         /**
          * "a + n"
          */
-        RandomAccessIterator operator+(difference_type n) const
+        RandomAccessIterator operator+(difference_type value) const
         {
-            std::cout << "calling here a + n" << '\n';
-            return (this->_ptr + n);
+            RandomAccessIterator tmp(*this);
+            return (tmp += value);
         }
         /**
          * "a - n"
          */
-        RandomAccessIterator operator-(difference_type n) const
+        RandomAccessIterator operator-(difference_type value) const
         {
-            std::cout << "calling here a - n" << '\n';
-            return (this->_ptr - n);
+            RandomAccessIterator tmp(*this);
+            return (tmp -= value);
         }
         /**
          * "a[n]"
@@ -212,6 +212,10 @@ namespace ft
             const RandomAccessIterator<T> &y)
         {
             return (this->_ptr <= y._ptr);
+        }
+        difference_type operator-(RandomAccessIterator const &y) const
+        {
+            return (this->_ptr - y._ptr);
         }
         // typename RandomAccessIterator<T>::difference_type operator-(
         //     const RandomAccessIterator<T> &x,

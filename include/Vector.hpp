@@ -340,130 +340,75 @@ namespace ft
     iterator insert(iterator position, const T &val)
     {
       this->insert(position, 1, val);
-
       return (++position);
     }
 
     void insert(iterator position, size_type insert_size, const T &val)
     {
       const size_type n = &(*position) - _start;
-      // std::cout << "$$$$$$$$$$here$$$$$$$$$$" << "\tn is : " << n << '\n';
-      std::cout << "BEFORE: this size is : " << this->size() << '\n';
-      std::cout << "BEFORE: capacity is : " << size_type(_end_of_storage - this->size()) << '\n';
-      std::cout << "BEFORE: insert_size is : " << insert_size << '\n';
-
-      if (size_type(_end_of_storage - this->size()) <= insert_size)
+      pointer new_start;
+      pointer new_finish;
+      pointer new_end_of_storage;
+      int new_capacity = this->size() + insert_size;
+      new_start = _allocator.allocate(new_capacity);
+      new_end_of_storage = new_start + new_capacity;
+      new_finish = new_start + this->size() + insert_size;
+      for (size_type i = 0; i < n; i++)
       {
-
-        // if current capacity is not enough then need to reserve allocation and construction
-        pointer new_start;
-        pointer new_finish;
-        pointer new_end_of_storage;
-        int new_capacity = this->size() + insert_size;
-        new_start = _allocator.allocate(new_capacity);
-        new_end_of_storage = new_start + new_capacity;
-        new_finish = new_start + this->size() + insert_size;
-
-        for (size_type i = 0; i < n; i++)
-        {
-          _allocator.construct(new_start + i, *(_start + i));
-        }
-
-        for (size_type j = 0; j < insert_size; j++)
-        {
-          _allocator.construct(new_start + n + j, val);
-        }
-            std::cout << "size is : " << this->size() << '\n';
-            // std::cout << "value : " << *(_start) << '\n';
-
-        if (*(_start) && this->size())
-        {
-          for (size_type k = 0; k < n + insert_size; k++)
-          {
-            std::cout << "n is : " << n << '\n';
-            std::cout << "insert_size is : " << insert_size << '\n';
-            std::cout << "111111111111111111k is : " << k << '\n';
-            _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
-            //ene hurtel hiisen. 
-          }
-        }
-        std::cout << "n is : " << n << '\n';
-
-        // destroy and deallocate old vector's memory
-        for (size_type i = 0; i < this->size(); i++)
-        {
-          _allocator.destroy(_start + i);
-        }
-
-        _allocator.deallocate(_start, this->size());
-        _start = new_start;
-        _finish = new_finish;
-        _end_of_storage = new_end_of_storage;
+        _allocator.construct(new_start + i, *(_start + i));
       }
-      else
+      for (size_type j = 0; j < insert_size; j++)
       {
-        pointer new_start = _start;
-        for (size_type i = 0; i < (this->size() - n); i++)
-        {
-          _allocator.construct(new_start + insert_size + i, *(_start + n + i));
-        }
-        for (size_type j = 0; j < insert_size; j++)
-        {
-          _allocator.construct(new_start + n + j, val);
-        }
-        _finish = new_start + this->size() + insert_size;
+        _allocator.construct(new_start + n + j, val);
       }
-
+      for (size_type k = 0; k < (this->size() - n); k++)
+      {
+        _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
+      }
+      for (size_type i = 0; i < this->size(); i++)
+      {
+        _allocator.destroy(_start + i);
+      }
+      if (_start)
+        _allocator.deallocate(_start, this->capacity());
+      _start = new_start;
+      _finish = new_finish;
+      _end_of_storage = new_end_of_storage;
     }
 
     void insert(iterator position, iterator another_first, iterator another_last)
     {
       const size_type n = &(*position) - _start;
       size_type insert_size = another_last - another_first;
-      if (this->capacity() <= this->size() + insert_size)
+      pointer new_start;
+      pointer new_finish = _finish;
+      pointer new_end_of_storage;
+      int new_capacity = this->size() + insert_size;
+      new_start = _allocator.allocate(new_capacity);
+      new_end_of_storage = new_start + new_capacity;
+      new_finish = new_start + this->size() + insert_size;
+      for (size_type i = 0; i < n; i++)
       {
-        // if current capacity is not enough then need to reserve allocation and construction
-        pointer new_start;
-        pointer new_finish = _finish;
-        pointer new_end_of_storage;
-        int new_capacity = this->size() + insert_size;
-        new_end_of_storage = new_start + new_capacity;
-        new_start = _allocator.allocate(new_capacity);
-        for (size_type i = 0; i < n; i++)
-        {
-          _allocator.construct(new_start + i, *(_start + i));
-        }
-        for (size_type j = 0; j < insert_size; j++)
-        {
-          _allocator.construct(new_start + n + j, *(another_first + j));
-        }
-        for (size_type k = 0; k < n + insert_size; k++)
-        {
-          _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
-        }
-        // destroy and deallocate old vector's memory
-        for (size_type i = 0; i < this->size(); i++)
-        {
-          _allocator.destroy(_start + i);
-        }
+        _allocator.construct(new_start + i, *(_start + i));
+      }
+      for (size_type j = 0; j < insert_size; j++)
+      {
+        _allocator.construct(new_start + n + j, *(another_first + j));
+      }
+      for (size_type k = 0; k < (this->size() - n); k++)
+      {
+        _allocator.construct(new_start + n + insert_size + k, *(_start + n + k));
+      }
+      // destroy and deallocate old vector's memory
+      for (size_type i = 0; i < this->size(); i++)
+      {
+        _allocator.destroy(_start + i);
+      }
+      if (_start)
         _allocator.deallocate(_start, this->size());
-        _start = new_start;
-        _finish = _start + this->size() + insert_size;
-        _end_of_storage = new_end_of_storage;
-      }
-      else
-      {
-        pointer new_start = _start;
-        for (size_type i = 0; i < (this->size() - n); i++)
-        {
-          _allocator.construct(new_start + insert_size + i, *(_start + n + i));
-        }
-        for (size_type j = 0; j < insert_size; j++)
-        {
-          _allocator.construct(new_start + n + j, *(another_first + j));
-        }
-        _finish = _start + this->size() + insert_size;
-      }
+      _start = new_start;
+      _finish = new_finish;
+      _end_of_storage = new_end_of_storage;
     }
 
     //  iterator erase(iterator position);
