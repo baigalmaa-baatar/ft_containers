@@ -161,25 +161,28 @@ namespace ft
 
     // /**
     //  * 4. Copy constructor
-    //  * Constructs a container with a copy of each of the elements in x,
+    //  * Constructs a container with a copy of each of the elements in other,
     //  * in the same order.
     //  */
 
-    // vector(const vector &x)
-    // {
-    // }
-
+    vector(const vector &other)
+    {
+      this->_allocator = other._allocator;
+      this->_start = other._start;
+      this->_finish = other._finish;
+      this->_end_of_storage = other._end_of_storage;
+    }
     // /**
     //  * Destructor
     //  */
     ~vector() {}
 
-    vector &operator=(const vector &x)
+    vector &operator=(const vector &other)
     {
-      if (x == *this)
+      if (other == *this)
         return (*this);
       this->clear();
-      this->insert(this->end(), x.begin(), x.end());
+      this->insert(this->end(), other.begin(), other.end());
       return (*this);
     }
     // template <class InputIterator>
@@ -269,41 +272,70 @@ namespace ft
     {
       return size_type(_end_of_storage - _start);
     }
-    // bool empty() const;
+
+    bool empty() const
+    {
+      return ((this->size() == 0) ? true : false);
+    }
     void reserve(size_type n)
     {
       if (n > this->max_size())
         throw(std::length_error("vector::reserve"));
       if (n > this->capacity())
       {
-        pointer new_start;
-        new_start = _allocator.allocate(n);
-        for (size_t i = 0; i < this->size(); i++)
-        {
-          _allocator.construct((new_start + i), *(_start + i));
-        }
-        for (size_t i = 0; i < this->size(); i++)
-        {
-          _allocator.destroy(_start + i);
-        }
-        _allocator.deallocate(_start, this->capacity());
-        _start = new_start;
-        _finish = new_start + this->size();
+        pointer prev_start = _start;
+        pointer prev_finish = _finish;
+        size_type prev_size = this->size();
+        size_type prev_capacity = this->capacity();
+        _start = _allocator.allocate(n);
         _end_of_storage = _start + n;
+        _finish = _start;
+        while (prev_start != prev_finish)
+        {
+          _allocator.construct(_finish, *prev_start);
+          _finish++;
+          prev_start++;
+        }
+        for (size_t i = 0; i < prev_size; i++)
+        {
+          _allocator.destroy(prev_start - prev_size + i);
+        }
+        _allocator.deallocate(prev_start - prev_size, prev_capacity);
       }
     }
-
     // element access:
-    // reference operator[](size_type n);
-    // const_reference operator[](size_type n) const;
-    // const_reference at(size_type n) const;
-    // reference at(size_type n);
-    // reference front();
-    // const_reference front() const;
-    // reference back();
-    // const_reference back() const;
-    // 23.2.4.3 modifiers:
-
+    reference operator[](size_type n)
+    {
+      return (*(_start + n));
+    }
+    const_reference operator[](size_type n) const
+    {
+      return (*(_start + n));
+    }
+    const_reference at(size_type n) const
+    {
+      return (*(_start + n));
+    }
+    reference at(size_type n)
+    {
+      return (*(_start + n));
+    }
+    reference front()
+    {
+      return (*(_start));
+    }
+    const_reference front() const
+    {
+      return (*(_start));
+    }
+    reference back()
+    {
+      return (*(_finish - 1));
+    }
+    const_reference back() const
+    {
+      return (*(_finish - 1));
+    }
     /*
     ** @brief Add new element at the end of the vector.
     ** The content of "val" is copied (moved) to the new element.
@@ -322,10 +354,13 @@ namespace ft
         this->reserve(new_capacity);
       }
       _allocator.construct(_finish, val);
-      _finish++; // which one is correct? ++_finish or _finish++??
+      _finish++;
     }
 
-    // void pop_back();
+    void pop_back()
+    {
+      _allocator.destroy(_finish--);
+    }
     /**
      *  @brief  Inserts given rvalue into %vector before specified iterator.
      *  @param  position  A const_iterator into the %vector.
@@ -411,9 +446,56 @@ namespace ft
       _end_of_storage = new_end_of_storage;
     }
 
-    //  iterator erase(iterator position);
-    //  iterator erase(iterator first, iterator last);
-    //  void swap(vector<T, Alloc> &);
+    iterator erase(iterator position)
+    {
+      pointer new_start = _start;
+      size_type n = &(*position) - _start;
+      for (size_type i = 0; i < this->size() - n; i++)
+      {
+        _allocator.construct((&(*position) + i), *(&(*position) + i + 1));
+        _allocator.destroy((&(*position) + i));
+      }
+      _allocator.destroy(_finish--);
+      _start = new_start;
+      return (position);
+    }
+    iterator erase(iterator first, iterator last)
+    {
+      pointer new_start = _start;
+      size_type n = &(*last) - &(*first);
+      for (size_type i = 0; i < this->size() - n; i++)
+      {
+        _allocator.construct((&(*first) + i), *(&(*first) + i + n));
+        _allocator.destroy((&(*first) + i));
+      }
+      for (size_type i = 0; i < n; i++)
+      {
+        _allocator.destroy(_finish);
+        _finish--;
+      }
+      _start = new_start;
+      return (iterator(_start + n));
+    }
+    void swap(vector &other)
+    {
+      if (*this != other)
+      {
+        pointer tmp_start = this->_start;
+        pointer tmp_finish = this->_finish;
+        pointer tmp_end_of_storage = this->_end_of_storage;
+        Alloc tmp_allocator = this->_allocator;
+
+        this->_start = other._start;
+        this->_finish = other._finish;
+        this->_end_of_storage = other._end_of_storage;
+        this->_allocator = other._allocator;
+
+        other._start = tmp_start;
+        other._finish = tmp_finish;
+        other._end_of_storage = tmp_end_of_storage;
+        other._allocator = tmp_allocator;
+      }
+    }
     /**
      *  Erases all the elements.  Note that this function only erases the
      *  elements, and that if the elements themselves are pointers, the

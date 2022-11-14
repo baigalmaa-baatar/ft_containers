@@ -65,7 +65,8 @@ int main(void)
 {
   {
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n      1. Default constructor" << '\n';
+    std::cout << "\n      1-1.  Constructor" << '\n';
+    std::cout << "\n            Default" << '\n';
     std::cout << "\n***************************************" << '\n';
     /**
      * Empty vector test
@@ -78,7 +79,8 @@ int main(void)
   }
   {
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n      2. Fill constructor" << '\n';
+    std::cout << "\n      1-2.  Constructor" << '\n';
+    std::cout << "\n            Fill" << '\n';
     std::cout << "\n***************************************" << '\n';
 
     std::vector<int> std_vector1(4, 100);
@@ -92,7 +94,8 @@ int main(void)
   }
   {
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n      3. Range constructor" << '\n';
+    std::cout << "\n      1-3.  Constructor" << '\n';
+    std::cout << "\n            Range" << '\n';
     std::cout << "\n***************************************" << '\n';
 
     std::vector<int> std_vector1;
@@ -117,6 +120,7 @@ int main(void)
     //   std::cout << "Elements of FT: " << *it << '\n';
     // comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
   }
+
   // {
   //   std::cout << "\n***************************************" << '\n';
   //   std::cout << "\n      n. Bla bla bla " << '\n';
@@ -144,6 +148,29 @@ int main(void)
   //     std::cout << ' ' << *it;
   //   std::cout << '\n';
   // }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      2-1. push-back " << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
+
+    for (int i = 0; i < 10; i++)
+    {
+      std_vector1.push_back(i);
+      ft_vector1.push_back(i);
+    }
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    comparisonFunc("Member function size() test", std_vector1.size(), ft_vector1.size());
+  }
   {
     std::cout << "\n***************************************" << '\n';
     std::cout << "\n      2-1.  vector::insert() " << '\n';
@@ -242,8 +269,8 @@ int main(void)
     it = std_vector1.begin();
     ft_it = ft_vector1.begin();
 
-    it = std_vector1.insert(it+1, 200);
-    ft_it = ft_vector1.insert(ft_it+1, 200);
+    it = std_vector1.insert(it + 1, 200);
+    ft_it = ft_vector1.insert(ft_it + 1, 200);
     std::cout << "std: " << '\t';
     for (it = std_vector1.begin(); it < std_vector1.end(); it++)
       std::cout << ' ' << *it;
@@ -254,8 +281,8 @@ int main(void)
     std::cout << '\n';
     it = std_vector1.begin();
     ft_it = ft_vector1.begin();
-    std_vector1.insert(it+4, 300);
-    ft_vector1.insert(ft_it+4, 300);
+    std_vector1.insert(it + 4, 300);
+    ft_vector1.insert(ft_it + 4, 300);
     std::cout << "std: " << '\t';
     for (it = std_vector1.begin(); it < std_vector1.end(); it++)
       std::cout << ' ' << *it;
@@ -280,38 +307,381 @@ int main(void)
       std::cout << ' ' << *ft_it;
     std::cout << '\n';
   }
+  // { //after fixing insert function
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      3-1. vector::reserve " << '\n';
+  //   std::cout << "\n***************************************" << '\n';
 
-    // int myarray[] = {501, 502, 503};
-    // myvector.insert(myvector.begin(), myarray, myarray + 3);
+  //   std::vector<int> std_vector1(3, 100);
+  //   ft::vector<int> ft_vector1(3, 100);
+  //   std::vector<int>::iterator it;
+  //   ft::vector<int>::iterator ft_it;
 
-    // std::cout << "myvector contains:";
-    // for (it = myvector.begin(); it < myvector.end(); it++)
-    //   std::cout << ' ' << *it;
-    // std::cout << '\n';
+  //   it = std_vector1.begin();
+  //   it = std_vector1.insert(it, 200);
+  //   ft_it = ft_vector1.begin();
+  //   ft_it = ft_vector1.insert(ft_it, 200);
+
+  //   std_vector1.insert(it, 2, 300);
+  //   ft_vector1.insert(ft_it, 2, 300);
+
+  //   // "it" no longer valid, get a new one:
+  //   it = std_vector1.begin();
+  //   ft_it = ft_vector1.begin();
+
+  //   std::vector<int> anothervector(2, 400);
+  //   ft::vector<int> ft_anothervector(2, 400);
+  //   std_vector1.insert(it + 2, anothervector.begin(), anothervector.end());
+  //   ft_vector1.insert(ft_it + 2, ft_anothervector.begin(), ft_anothervector.end());
+
+  //   // int myarray[] = {501, 502, 503};
+  //   // myvector.insert(myvector.begin(), myarray, myarray + 3);
+
+  //   // std::cout << "myvector contains:";
+  //   // for (it = myvector.begin(); it < myvector.end(); it++)
+  //   //   std::cout << ' ' << *it;
+  //   // std::cout << '\n';
+  //   std::cout << "std: " << '\t';
+  //   for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+  //     std::cout << ' ' << *it;
+  //   std::cout << '\n';
+  //   std::cout << " ft: " << '\t';
+  //   for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+  //     std::cout << ' ' << *ft_it;
+  //   std::cout << '\n';
+  // }
   {
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n      2. vector::reserve " << '\n';
+    std::cout << "\n      4-1.  erase " << '\n';
+    std::cout << "\n            position " << '\n';
     std::cout << "\n***************************************" << '\n';
 
-    std::vector<int> myvector(3, 100);
-    std::vector<int>::iterator it;
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
 
-    it = myvector.begin();
-    it = myvector.insert(it, 200);
+    for (int i = 0; i < 10; i++)
+    {
+      std_vector1.push_back(i);
+      ft_vector1.push_back(i);
+    }
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    // 0 1 2 3 4 5 6 7 8 9 10
+    std::cout << "erase the 6th element:" << '\n';
 
-    myvector.insert(it, 2, 300);
+    std_vector1.erase(std_vector1.begin() + 5);
+    ft_vector1.erase(ft_vector1.begin() + 5);
 
-    // "it" no longer valid, get a new one:
-    it = myvector.begin();
+    // erase the first 3 elements:
+    // std_vector1.erase(std_vector1.begin(), std_vector1.begin() + 3);
+    // ft_vector1.erase(ft_vector1.begin(), ft_vector1.begin() + 3);
 
-    std::vector<int> anothervector(2, 400);
-    myvector.insert(it + 2, anothervector.begin(), anothervector.end());
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
 
-    int myarray[] = {501, 502, 503};
-    myvector.insert(myvector.begin(), myarray, myarray + 3);
+    std::cout << "erase the 9th element:" << '\n';
 
-    std::cout << "myvector contains:";
-    for (it = myvector.begin(); it < myvector.end(); it++)
+    std_vector1.erase(std_vector1.begin() + 8);
+    ft_vector1.erase(ft_vector1.begin() + 8);
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std::cout << "erase the first element:" << '\n';
+
+    std_vector1.erase(std_vector1.begin());
+    ft_vector1.erase(ft_vector1.begin());
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std::cout << "Testing if the returning position is right:" << '\n';
+
+    std::vector<int>::iterator it = std_vector1.erase(std_vector1.begin());
+    ft::vector<int>::iterator ft_it = ft_vector1.erase(ft_vector1.begin());
+    std_vector1.erase(it);
+    ft_vector1.erase(ft_it);
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std::vector<int> std_vector2;
+    ft::vector<int> ft_vector2;
+
+    std::cout << "erase the on in vector has only one element" << '\n';
+
+    std_vector2.push_back(42);
+    ft_vector2.push_back(42);
+    std_vector2.erase(std_vector2.begin());
+    ft_vector2.erase(ft_vector2.begin());
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector2.begin(); it < std_vector2.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector2.begin(); ft_it < ft_vector2.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      4-2.  erase " << '\n';
+    std::cout << "\n            range " << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
+
+    for (int i = 0; i < 10; i++)
+    {
+      std_vector1.push_back(i);
+      ft_vector1.push_back(i);
+    }
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    // 0 1 2 3 4 5 6 7 8 9 10
+
+    std::cout << "Erase the first 3 elements : " << '\n';
+    std_vector1.erase(std_vector1.begin(), std_vector1.begin() + 3);
+    ft_vector1.erase(ft_vector1.begin(), ft_vector1.begin() + 3);
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      4-2.  pop_back " << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
+
+    int sum(0);
+    int ft_sum(0);
+    std_vector1.push_back(100);
+    std_vector1.push_back(200);
+    std_vector1.push_back(300);
+    ft_vector1.push_back(100);
+    ft_vector1.push_back(200);
+    ft_vector1.push_back(300);
+
+    while (!std_vector1.empty())
+    {
+      sum += std_vector1.back();
+      std_vector1.pop_back();
+    }
+    while (!ft_vector1.empty())
+    {
+      ft_sum += ft_vector1.back();
+      ft_vector1.pop_back();
+    }
+    std_vector1.push_back(300);
+    ft_vector1.push_back(300);
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      5-1. operator[]" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    // std::vector<int> std_vector1{2, 4, 6, 8};
+    int numbers[] = {2, 4, 6, 8};
+    std::vector<int> std_vector1(numbers, numbers + 4);
+    ft::vector<int> ft_vector1;
+    for (int i = 2; i < 10; i += 2)
+    {
+      ft_vector1.push_back(i);
+    }
+    std::cout << "Before accessing operator[]: \n";
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    // ft::vector<int> ft_vector1(numbers[0], numbers + 4); aldaag ni daraa zasah. yagaad bolohgui baigaag oloh
+
+    std::cout << "Second element: " << std_vector1[1] << '\n';
+    std::cout << " Second element: " << ft_vector1[1] << '\n';
+
+    std_vector1[0] = 5;
+    ft_vector1[0] = 5;
+
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      6-1. swap" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<int> std_vector1(3, 100); // three ints with a value of 100
+    std::vector<int> std_vector2(5, 200); // five ints with a value of 200
+    ft::vector<int> ft_vector1(3, 100);   // three ints with a value of 100
+    ft::vector<int> ft_vector2(5, 200);   // five ints with a value of 200
+
+    std::cout << "BEFORE swap std_vector1 : ";
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << "BEFORE swap  ft_vector1 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    std::cout << "BEFORE swap std_vector2 : ";
+    for (std::vector<int>::iterator it = std_vector2.begin(); it < std_vector2.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << "BEFORE swap  ft_vector2 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector2.begin(); ft_it < ft_vector2.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std_vector1.swap(std_vector2);
+    ft_vector1.swap(ft_vector2);
+
+    std::cout << " AFTER swap std_vector1 : ";
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " AFTER swap  ft_vector1 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    std::cout << " AFTER swap std_vector2 : ";
+    for (std::vector<int>::iterator it = std_vector2.begin(); it < std_vector2.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " AFTER swap  ft_vector2 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector2.begin(); ft_it < ft_vector2.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std::cout << "swaping same vector:" << '\n';
+    std::cout << "BEFORE swap std_vector1 : ";
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << "BEFORE swap  ft_vector1 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+    std_vector1.swap(std_vector1);
+    ft_vector1.swap(ft_vector1);
+    std::cout << " AFTER swap std_vector1 : ";
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " AFTER swap  ft_vector1 : ";
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      1-4.  Constructor" << '\n';
+    std::cout << "\n            Copy" << '\n';
+    std::cout << "\n***************************************" << '\n';
+    // Initializing vector with values
+
+    std::vector<int> std_vector1;
+    ft::vector<int> ft_vector1;
+    for (int i = 2; i < 10; i += 2)
+    {
+      std_vector1.push_back(i);
+      ft_vector1.push_back(i);
+    }
+    // Declaring new vector and copying
+    // element of old vector
+    // constructor method, Deep copy
+    std::cout << "Previous vector elements are : \n";
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    std::vector<int> std_vector2(std_vector1);
+    ft::vector<int> ft_vector2(ft_vector1);
+
+    std::cout << "New vector elements are : \n";
+    std::cout << "std: " << '\t';
+    for (std::vector<int>::iterator it = std_vector2.begin(); it < std_vector2.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+    std::cout << " ft: " << '\t';
+    for (ft::vector<int>::iterator ft_it = ft_vector2.begin(); ft_it < ft_vector2.end(); ft_it++)
+      std::cout << ' ' << *ft_it;
+    std::cout << '\n';
+
+    // constructors used in the same order as described above:
+    std::vector<int> first;                               // empty vector of ints
+    std::vector<int> second(4, 100);                      // four ints with value 100
+    std::vector<int> third(second.begin(), second.end()); // iterating through second
+    std::vector<int> fourth(third);                       // a copy of third
+
+    // the iterator constructor can also be used to construct from arrays:
+    int myints[] = {16, 2, 77, 29};
+    std::vector<int> fifth(myints, myints + sizeof(myints) / sizeof(int));
+
+    std::cout << "The contents of fifth are:";
+    for (std::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
@@ -320,36 +690,22 @@ int main(void)
   //   std::cout << "\n      n. Bla bla bla " << '\n';
   //   std::cout << "\n***************************************" << '\n';
 
-  //   std::vector<int> first;
-  //   std::vector<int> second;
-  //   std::vector<int> third;
+  //   // second.assign(it, first.end() - 1); // the 5 central values of first
 
-  //   first.assign(7, 100); // 7 ints with a value of 100
+  //   // int myints[] = {1776, 7, 4};
+  //   // third.assign(myints, myints + 3); // assigning from array.
 
-  //   std::vector<int>::iterator it;
-  //   it = first.begin() + 1;
+  //   // std::cout << "\nElements of BEFORE assigning again: " << '\n';
 
-  //   // test for ft functions:
+  //   // for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+  //   //   std::cout << "Elements of third: " << *it << '\n';
 
-  //   // first.clear();
-  //   // first.push_back(5);
-
-  //   second.assign(it, first.end() - 1); // the 5 central values of first
-
-  //   int myints[] = {1776, 7, 4};
-  //   third.assign(myints, myints + 3); // assigning from array.
-
-  //   std::cout << "\nElements of BEFORE assigning again: " << '\n';
-
-  //   for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
-  //     std::cout << "Elements of third: " << *it << '\n';
-
-  //   third.assign(5, 1);
-  //   std::cout << "Size of first: " << int(first.size()) << '\n';
-  //   std::cout << "Size of second: " << int(second.size()) << '\n';
-  //   std::cout << "Size of third: " << int(third.size()) << '\n';
-  //   for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
-  //     std::cout << "Elements of third: " << *it << '\n';
+  //   // third.assign(5, 1);
+  //   // std::cout << "Size of first: " << int(first.size()) << '\n';
+  //   // std::cout << "Size of second: " << int(second.size()) << '\n';
+  //   // std::cout << "Size of third: " << int(third.size()) << '\n';
+  //   // for (std::vector<int>::iterator it = third.begin(); it != third.end(); it++)
+  //   //   std::cout << "Elements of third: " << *it << '\n';
   // }
 
   // {

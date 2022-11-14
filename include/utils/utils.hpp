@@ -4,26 +4,51 @@
 namespace ft
 {
     typedef __PTRDIFF_TYPE__ ptrdiff_t;
+    // static class nullptr_t
+    // {
+    // public:
+    //     template <class T>   /* convertible to any type       */
+    //     operator T *() const /* of null non-member            */
+    //     {
+    //         return 0;
+    //     } /* pointer...                    */
+
+    //     template <class C, class T> /* or any type of null           */
+    //     operator T C::*() const     /* member pointer...             */
+    //     {
+    //         return 0;
+    //     }
+
+    // private:
+    //     void operator&() const; /* Can't take address of nullptr */
+
+    // } ft_nullptr = {}; /* and whose name is nullptr     */
+
     static class nullptr_t
     {
     public:
-        template <class T>   /* convertible to any type       */
-        operator T *() const /* of null non-member            */
-        {
-            return 0;
-        } /* pointer...                    */
+        /*
+        ** @brief For conversion to any type
+        ** of null non-member pointer.
+        */
+        template <class T>
+        operator T *() const { return (0); }
 
-        template <class C, class T> /* or any type of null           */
-        operator T C::*() const     /* member pointer...             */
-        {
-            return 0;
-        }
+        /*
+        ** @brief For conversion to any type of null
+        ** member pointer.
+        */
+        template <class C, class T>
+        operator T C::*() const { return (0); }
 
     private:
-        void operator&() const; /* Can't take address of nullptr */
+        /*
+        ** @brief It's imposible to get an address of
+        ** a nullptr.
+        */
+        void operator&() const;
 
-    } ft_nullptr = {}; /* and whose name is nullptr     */
-
+    } ft_nullptr = {};
     struct random_access_iterator_tag
     {
     };
