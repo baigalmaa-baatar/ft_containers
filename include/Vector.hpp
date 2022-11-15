@@ -20,7 +20,7 @@ namespace ft
   /**
    * generic template
    */
-  template <class T, class Alloc = std::allocator<T> >
+  template <class T, class Alloc = std::allocator<T>>
   class vector
   {
   public:
@@ -144,11 +144,12 @@ namespace ft
     //  * with each element constructed from its corresponding element in that range,
     //  * in the same order.
     //  */
-    vector(iterator first, iterator last,
-           const allocator_type &alloc = allocator_type())
-        : _allocator(alloc)
+    template <class InputIterator>
+    vector(InputIterator first, InputIterator last,
+           typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
-      difference_type n = last - first;
+      // difference_type n = last - first;
+      size_type n = size_type(last - first);
       _start = _allocator.allocate(n);
       _finish = _start;
       _end_of_storage = _start + n;
@@ -185,18 +186,6 @@ namespace ft
       this->insert(this->end(), other.begin(), other.end());
       return (*this);
     }
-    // template <class InputIterator>
-    // void assign(InputIterator first, InputIterator last);
-    /**
-     *  @brief  Assigns a given value to a %vector.
-     *  @param  __n  Number of elements to be assigned.
-     *  @param  __val  Value to be assigned.
-     *
-     *  This function fills a %vector with @a __n copies of the given
-     *  value.  Note that the assignment completely changes the
-     *  %vector and that the resulting %vector's size is the same as
-     *  the number of elements assigned.
-     */
     void assign(size_type n, const T &val)
     {
       this->clear();
@@ -216,7 +205,45 @@ namespace ft
       }
       _end_of_storage = _start + n;
     }
-    // allocator_type get_allocator() const;
+
+    template <class InputIterator>
+    void assign(InputIterator first, InputIterator last,
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
+    {
+      this->clear();
+      size_type n = size_type(last - first);
+      if (n > this->capacity())
+      {
+        _start = _allocator.allocate(n);
+      }
+      else
+      {
+        _start = _allocator.allocate(this->capacity());
+      }
+      _finish = _start;
+      while (first != last)
+      {
+        _allocator.construct(_finish, *first);
+        _finish++;
+        first++;
+      }
+      _end_of_storage = _start + n;
+    }
+    /**
+     *  @brief  Assigns a given value to a %vector.
+     *  @param  __n  Number of elements to be assigned.
+     *  @param  __val  Value to be assigned.
+     *
+     *  This function fills a %vector with @a __n copies of the given
+     *  value.  Note that the assignment completely changes the
+     *  %vector and that the resulting %vector's size is the same as
+     *  the number of elements assigned.
+     */
+
+    allocator_type get_allocator() const
+    {
+      return (this->_allocator);
+    }
 
     // iterators:
     iterator begin()
@@ -260,10 +287,10 @@ namespace ft
     {
       return (Alloc().max_size());
     }
-    // void resize(size_type sz, T c = T())
-    // {
 
-    // }
+    void resize(size_type n, value_type val = value_type())
+    {
+    } //ene hurtel hiisen.
     /**
      *  Returns the total number of elements that the vector can
      *  hold before needing to allocate more memory.
@@ -411,7 +438,9 @@ namespace ft
       _end_of_storage = new_end_of_storage;
     }
 
-    void insert(iterator position, iterator another_first, iterator another_last)
+    template <class InputIterator>
+    void insert(iterator position, InputIterator another_first, InputIterator another_last,
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       const size_type n = &(*position) - _start;
       size_type insert_size = another_last - another_first;
@@ -506,8 +535,6 @@ namespace ft
     // clear (_start) _start pointer-s ehelj destroy hiine.
     void clear()
     {
-      // _allocator.destroy(_start, _finish);
-      // _finish = _start;
       while (_finish != _start)
       {
         _finish--;
@@ -525,29 +552,45 @@ namespace ft
         return (false);
     return (true);
   }
-  // template <class T, class Alloc>
-  // bool operator<(const vector<T, Alloc> &x,
-  //                const vector<T, Alloc> &y);
-  // template <class T, class Alloc>
-  // bool operator!=(const vector<T, Alloc> &x,
-  //                 const vector<T, Alloc> &y);
+
+  template <typename T>
+  bool operator<(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    // return (lhs < rhs)); not like this
+    //check for every elments
+  }
+
   template <typename T>
   bool operator!=(vector<T> const &lhs, vector<T> const &rhs)
   {
     return (!(lhs == rhs));
   }
-  // template <class T, class Alloc>
-  // bool operator>(const vector<T, Alloc> &x,
-  //                const vector<T, Alloc> &y);
-  // template <class T, class Alloc>
-  // bool operator>=(const vector<T, Alloc> &x,
-  //                 const vector<T, Alloc> &y);
-  // template <class T, class Alloc>
-  // bool operator<=(const vector<T, Alloc> &x,
-  //                 const vector<T, Alloc> &y);
-  // specialized algorithms:
-  // template <class T, class Alloc>
-  // void swap(vector<T, Alloc> &x, vector<T, Alloc> &y);
+
+  template <typename T>
+  bool operator>(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    return (lhs > rhs));
+  }
+
+  template <typename T>
+  bool operator>=(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    return (!(lhs < rhs)));// not like this
+    //check for every elments
+
+  }
+
+  template <typename T>
+  bool operator<=(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    return (!(lhs > rhs));
+  }
+
+  template <typename T>
+  void swap(vector<T> const &lhs, vector<T> const &rhs)
+  {
+    lhs.swap(rhs);
+  }
 }
 
 #endif

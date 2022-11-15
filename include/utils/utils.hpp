@@ -99,6 +99,47 @@ namespace ft
         typedef const T *pointer;
         typedef const T &reference;
     };
+
+    // https://medium.com/@sidbhasin82/c-templates-what-is-std-enable-if-and-how-to-use-it-fd76d3abbabe
+    /**
+     *  templated struct enable_if which takes in a boolean non-type parameter and T a type parameter:
+     */
+    template <bool B, class T = void>
+    struct enable_if
+    {
+    };
+    template <class T>
+    struct enable_if<true, T>
+    {
+        typedef T type;
+    };
+    /**
+     * Checking if the object is integral or not:
+     */
+    template <typename T>
+    struct is_integral { static const bool value = false;};
+    /*
+    ** @brief default template of the structure is_integral_type.
+    ** If the type given in argument is from the list, the structure
+    ** will be overide by nexts, in according to it type.
+    ** If the type given is argument isn't in the list,
+    ** stocked value will be false. So it's not a integral type.
+    */
+
+     template <> struct is_integral<bool> { static const bool value = false;};
+     template <> struct is_integral<char> { static const bool value = true;};
+     template <> struct is_integral<wchar_t> { static const bool value = true;};
+     template <> struct is_integral<signed char> { static const bool value = true;};
+     template <> struct is_integral<short int> { static const bool value = true;};
+     template <> struct is_integral<int> { static const bool value = true;};
+     template <> struct is_integral<long int> { static const bool value = true;};
+     template <> struct is_integral<long long int> { static const bool value = true;};
+     template <> struct is_integral<unsigned char> { static const bool value = true;};
+     template <> struct is_integral<unsigned short int> { static const bool value = true;};
+     template <> struct is_integral<unsigned int> { static const bool value = true;};
+     template <> struct is_integral<unsigned long int> { static const bool value = true;};
+     template <> struct is_integral<unsigned long long int> { static const bool value = true;};
+
 }
 
 #endif
