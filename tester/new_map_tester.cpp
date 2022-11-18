@@ -173,12 +173,12 @@ int main()
 
     /* Constructing tree given in
     the above figure */
-    root = insert(root, 10);
-    root = insert(root, 20);
-    root = insert(root, 30);
-    root = insert(root, 40);
-    root = insert(root, 50);
-    root = insert(root, 25);
+    // root = insert(root, 10);
+    // root = insert(root, 20);
+    // root = insert(root, 30);
+    // root = insert(root, 40);
+    // root = insert(root, 50);
+    // root = insert(root, 25);
 
     /* The constructed AVL Tree would be
                 30
@@ -187,9 +187,34 @@ int main()
             / \ \
         10 25 50
     */
-    cout << "Preorder traversal of the "
-            "constructed AVL tree is \n";
+    // cout << "Preorder traversal of the "
+    //         "constructed AVL tree is \n";
+    // preOrder(root);
+
+    std::cout << "first root : " << '\n';
+    root = insert(root, 10);
     preOrder(root);
+    std::cout << '\n';
+    std::cout << "second root : " << '\n';
+    root = insert(root, 20);
+    preOrder(root);
+    std::cout << '\n';
+    std::cout << "third root : " << '\n';
+    root = insert(root, 30);
+    preOrder(root);
+    std::cout << '\n';
+    std::cout << "fourth root : " << '\n';
+    root = insert(root, 40);
+    preOrder(root);
+    std::cout << '\n';
+    std::cout << "fifth root : " << '\n';
+    root = insert(root, 50);
+    preOrder(root);
+    std::cout << '\n';
+    std::cout << "last root : " << '\n';
+    root = insert(root, 25);
+    preOrder(root);
+    std::cout << '\n';
 
     return 0;
 }
