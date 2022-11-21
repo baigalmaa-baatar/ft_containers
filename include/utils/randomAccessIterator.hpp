@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   randomAccessIterator.hpp                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbaatar <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/21 16:53:41 by bbaatar           #+#    #+#             */
+/*   Updated: 2022/11/21 16:53:43 by bbaatar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RANDOMACCESSITERATOR_HPP
 #define RANDOMACCESSITERATOR_HPP
 #include <iostream>

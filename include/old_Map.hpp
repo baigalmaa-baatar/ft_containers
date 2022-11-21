@@ -12,7 +12,7 @@
 
 #ifndef MAP_HPP
 #define MAP_HPP
-#include "./utils/randomAccessIterator.hpp"
+#include "./utils/binarySearchTreeIterator.hpp"
 #include "./utils/reverseIterator.hpp"
 #include <map>
 
@@ -80,13 +80,13 @@ namespace std
         // 23.3.1.2 element access:
         T &operator[](const key_type &x);
         // modifiers:
-        pair<iterator, bool> insert(const value_type &x);
-        iterator insert(iterator position, const value_type &x);
-        template <class InputIterator>
-        void insert(InputIterator first, InputIterator last);
-        void erase(iterator position);
-        size_type erase(const key_type &x);
-        void erase(iterator first, iterator last);
+        // pair<iterator, bool> insert(const value_type &x);
+        // iterator insert(iterator position, const value_type &x);
+        // template <class InputIterator>
+        // void insert(InputIterator first, InputIterator last);
+        // void erase(iterator position);
+        // size_type erase(const key_type &x);
+        // void erase(iterator first, iterator last);
         void swap(map<Key, T, Compare, Allocator> &);
         void clear();
         // observers:

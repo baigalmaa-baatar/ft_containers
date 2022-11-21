@@ -1,180 +1,114 @@
-// http : // www.bradapp.net/ftp/src/libs/C++/AvlTrees.html
-
-// https : // www.youtube.com/watch?v=otiDcwZbCo4
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_tester.cpp                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbaatar <bbaatar@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/11 11:01:10 by bbaatar           #+#    #+#             */
+/*   Updated: 2022/10/11 11:01:11 by bbaatar          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <iostream>
+#include <string>
+#include <map> // std::map
+// #include "../include/Map.hpp"
 
-class TreeNode
+template <typename T>
+// void comparisonFuncVec(std::string testName, std::vector<T> std_vector1, ft::vector<T> ft_vector1)
+// {
+//   std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+
+//   if (std_vector1 == ft_vector1)
+//   {
+//     std::cout << "matched" << std::endl;
+//   }
+// }
+
+void comparisonFunc(std::string testName, int std, int ft)
 {
-public:
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    int height;
+    std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
 
-    TreeNode()
-    {
-        val = 0;
-        left = NULL;
-        right = NULL;
-        height = 0;
-    }
+    std::cout << "Standard result: "
+              << std << '\n';
+    std::cout << "ft result: "
+              << ft << '\n';
+    if (std == ft)
+        std::cout << "✅" << '\n';
+    else
+        std::cout << "❌" << '\n';
+}
 
-    TreeNode *newNode(int val)
-    {
-        TreeNode *node = new TreeNode();
-        node->val = val;
-        node->left = NULL;
-        node->right = NULL;
-        node->height = 1;
-        return (node);
-    }
-};
-
-class AVLTree
+void nonMemberComparison(std::string testName, bool std, bool ft)
 {
-public:
-    TreeNode *root;
-
-    AVLTree()
-    {
-        root = NULL;
-    }
-
-    int max(int a, int b)
-    {
-        return (a > b ? a : b);
-    }
-
-    int getHeight(TreeNode *root)
-    {
-        if (root == NULL)
-            return (0);
-        return (root->height);
-    }
-
-    int getBalance(TreeNode *root)
-    {
-        if (root == NULL)
-            return (0);
-        return (getHeight(root->left) - getHeight(root->right));
-    }
-
-    // rotateRight function
-    TreeNode *rotateRight(TreeNode *y)
-    {
-        TreeNode *x = y->left;
-        TreeNode *T3 = x->right;
-
-        x->right = y;
-        y->left = T3;
-
-        x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
-        y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
-
-        return (x);
-    }
-    // rotateLeft function
-    TreeNode *rotateLeft(TreeNode *x)
-    {
-        TreeNode *y = x->right;
-        TreeNode *T2 = y->left;
-
-        y->left = x;
-        x->right = T2;
-        
-        x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
-        y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
-
-        return (y);
-    }
-
-    // insert function
-    TreeNode *insert(TreeNode *root, int new_val)
-    {
-        // if root is NULL add new value as a root
-        if (root == NULL)
-        {
-            return (root->newNode(new_val));
-        }
-        // recursion of insert node in bottom(?)
-        if (new_val < root->val)
-            root->left = insert(root->left, new_val);
-        else if (new_val > root->val)
-            root->right = insert(root->right, new_val);
-        else
-            return (root); // if the value exists in tree, we don't add. AVL alogorithm
-
-        // Update the height after inserting new node:
-        root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
-
-        // get balance
-        int balance = getBalance(root);
-
-        // Left left case
-        if (balance > 1 && new_val < root->left->val)
-        {
-            return (rotateRight(root));
-        }
-        // Right right case
-        if (balance < -1 && new_val > root->right->val)
-        {
-            return (rotateLeft(root));
-        }
-        // Left right case
-        if (balance > 1 && new_val > root->left->val)
-        {
-            root->left = rotateLeft(root->left);
-            return (rotateRight(root));
-        }
-        // Right left case
-        if (balance < -1 && new_val < root->left->val)
-        {
-            root->right = rotateRight(root->right);
-            return (rotateLeft(root));
-        }
-        return (root);
-    }
-    void printPreOrder(TreeNode *root)
-    {
-        if (root != NULL)
-        {
-            std::cout << root->val << " ";
-            printPreOrder(root->left);
-            printPreOrder(root->right);
-        }
-    }
-};
+    std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+    if (std == true)
+        std::cout << "Standard result: "
+                  << "true" << '\n';
+    else
+        std::cout << "Standard result: "
+                  << "false" << '\n';
+    if (ft == true)
+        std::cout << "ft result: "
+                  << "true" << '\n';
+    else
+        std::cout << "ft result: "
+                  << "false" << '\n';
+    if (std == ft)
+        std::cout << "✅" << '\n';
+    else
+        std::cout << "❌" << '\n';
+}
 
 int main(void)
 {
-    AVLTree *tree = NULL;
-    TreeNode *root = NULL;
+    {
+        std::map<char, int> mymap;
 
-    std::cout << "first root : " << '\n';
-    root = tree->insert(root, 10);
-    tree->printPreOrder(root);
-    std::cout << '\n';
-    std::cout << "second root : " << '\n';
-    root = tree->insert(root, 20);
-    tree->printPreOrder(root);
-    std::cout << '\n';
-    std::cout << "third root : " << '\n';
-    root = tree->insert(root, 30);
-    tree->printPreOrder(root);
-    std::cout << '\n';
-    std::cout << "fourth root : " << '\n';
-    root = tree->insert(root, 40);
-    tree->printPreOrder(root);
-    std::cout << '\n';
-    std::cout << "fifth root : " << '\n';
-    root = tree->insert(root, 50);
-    tree->printPreOrder(root);
-    std::cout << '\n';
-    std::cout << "last root : " << '\n';
-    root = tree->insert(root, 25);
-    tree->printPreOrder(root);
-    std::cout << '\n';
+        // first insert function version (single parameter):
+        mymap.insert(std::pair<char, int>('a', 100));
+        mymap.insert(std::pair<char, int>('z', 200));
 
-    return (0);
+        std::pair<std::map<char, int>::iterator, bool> ret;
+        ret = mymap.insert(std::pair<char, int>('z', 500));
+        if (ret.second == false)
+        {
+            std::cout << "element 'z' already existed";
+            std::cout << " with a value of " << ret.first->second << '\n';
+        }
+
+        // second insert function version (with hint position):
+        std::map<char, int>::iterator it = mymap.begin();
+        mymap.insert(it, std::pair<char, int>('b', 300)); // max efficiency inserting
+        mymap.insert(it, std::pair<char, int>('c', 400)); // no max efficiency inserting
+
+        // third insert function version (range insertion):
+        std::map<char, int> anothermap;
+        anothermap.insert(mymap.begin(), mymap.find('c'));
+
+        // showing contents:
+        std::cout << "mymap contains:\n";
+        for (it = mymap.begin(); it != mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+
+        std::cout << "anothermap contains:\n";
+        for (it = anothermap.begin(); it != anothermap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+
+        return 0;
+    }
+    {
+        typedef const char cc;
+        std::remove_const<cc>::type a;           // char a
+        std::remove_const<const char *>::type b; // const char* b
+        std::remove_const<char *const>::type c;  // char* c
+
+        a = 'x';
+        b = "remove_const";
+        c = new char[10];
+
+        std::cout << b << std::endl;
+    }
+    
 }
