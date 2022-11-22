@@ -123,7 +123,7 @@ namespace ft
 		/**
 		 * "*a=t"?
 		 */
-		reference operator* const()
+		reference operator*()
 		{
 			// std::cout << "calling here *a=t" << '\n';
 			return (*(_node->value));
@@ -199,20 +199,20 @@ namespace ft
 			operator--();
 			return (tmp);
 		}
-		template <typename A, typename B>
-		bool operator==(
-			const BinarySearchTreeIterator<A> &lhs,
-			const BinarySearchTreeIterator<B> &rhs)
-		{
-			return (lhs._node == rhs._node);
-		}
-		template <typename A, typename B>
-		bool operator!=(
-			const BinarySearchTreeIterator<A> &lhs,
-			const BinarySearchTreeIterator<B> &rhs)
-		{
-			return !(lhs._node == rhs._node);
-		}
 	};
+	template <typename A, typename B>
+	bool operator==(
+		const BinarySearchTreeIterator<A> &lhs,
+		const BinarySearchTreeIterator<B> &rhs)
+	{
+		return (lhs._node == rhs._node);
+	}
+	template <typename A, typename B>
+	bool operator!=(
+		const BinarySearchTreeIterator<A> &lhs,
+		const BinarySearchTreeIterator<B> &rhs)
+	{
+		return !(lhs._node == rhs._node);
+	}
 }
 #endif

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-class TreeNode
+struct TreeNode
 {
 public:
     int val;

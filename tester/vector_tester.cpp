@@ -13,7 +13,7 @@
 #include <iostream>
 #include <string>
 #include <vector> // std::vector
-#include "../include/Vector.hpp"
+#include "../include/vector.hpp"
 
 template <typename T>
 void comparisonFuncVec(std::string testName, std::vector<T> std_vector1, ft::vector<T> ft_vector1)

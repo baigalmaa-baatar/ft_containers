@@ -184,24 +184,101 @@ namespace ft
     // https://cplusplus.com/reference/type_traits/remove_const/
 
     // const_remove is for removing constness, without it it is not possible to use erase function:
-    template <typename T>
-    struct remove_const<const T>
-    {
-        typedef T type;
-    };
+    // template <typename T>
+    // struct remove_const<const T>
+    // {
+    //     typedef T type;
+    // };
     template <typename T>
     struct remove_const
     {
         typedef T type;
     };
     template <typename T>
-    struct less : public binary_function<T, T, bool>
+    struct less : public std::binary_function<T, T, bool>
     {
         bool operator()(const T &x, const T &y) const
         {
             return (x < y);
         }
     };
+    template <typename T1, typename T2>
+    struct pair
+    {
+        typedef T1 first_type;  ///< The type of the `first` member
+        typedef T2 second_type; ///< The type of the `second` member
+
+        T1 first;  ///< The first member
+        T2 second; ///< The second member
+
+        pair() : first(), second() {}
+
+        pair(const pair &p) : first(p.first), second(p.second) {}
+
+        /// Two objects may be passed to a @c pair constructor to be copied.
+        pair(const T1 &a, const T2 &b) : first(a), second(b) {}
+
+        /// There is also a templated constructor to convert from other pairs.
+        template <typename U1, typename U2>
+        pair(const pair<U1, U2> &p) : first(p.first), second(p.second) {}
+
+        // mymap.insert(std::pair<char, int>('a', 100));
+
+        pair &operator=(const pair &p)
+        {
+            first = p.first;
+            second = p.second;
+            return *this;
+        }
+    };
+
+    /// Two pairs of the same type are equal iff their members are equal.
+    template <typename T1, typename T2>
+    bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return lhs.first == rhs.first && lhs.second == rhs.second;
+    }
+
+    /** Defines a lexicographical order for pairs.
+     *
+     * For two pairs of the same type, `P` is ordered before `Q` if
+     * `P.first` is less than `Q.first`, or if `P.first` and `Q.first`
+     * are equivalent (neither is less than the other) and `P.second` is less
+     * than `Q.second`.
+     */
+    template <typename T1, typename T2>
+    inline bool operator<(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second);
+    }
+    template <typename T1, typename T2>
+    bool operator!=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return !(lhs == rhs);
+    }
+    template <typename T1, typename T2>
+    bool operator>(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return rhs < lhs;
+    }
+
+    template <typename T1, typename T2>
+    bool operator<=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return !(rhs < lhs);
+    }
+
+    template <typename T1, typename T2>
+    bool operator>=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs)
+    {
+        return !(lhs < rhs);
+    }
+
+    template <class T1, class T2>
+    pair<T1, T2> make_pair(T1 x, T2 y)
+    {
+        return (pair<T1, T2>(x, y));
+    }
 }
 
 #endif
