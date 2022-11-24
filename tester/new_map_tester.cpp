@@ -151,11 +151,97 @@ Node *insert(Node *node, int key)
     /* return the (unchanged) node pointer */
     return node;
 }
+// Function to find the AVL_Node with minimum key value
+Node *minValueAVL_Node(Node *node)
+{
+    Node *current = node;
+    // Going to the left most side
+    while (current->left != NULL)
+        current = current->left;
+    return current;
+}
 
-// A utility function to print preorder
-// traversal of the tree.
-// The function also prints height
-// of every node
+// Function to delete an AVL_Node with the given key from the subtree
+Node *AVL_delete(Node *root, int key)
+{
+    // Perform normal BST deletion
+    if (root == NULL)
+        return root;
+    // Find the node to be deleted
+    // Left Side
+    if (key < root->key)
+        root->left = AVL_delete(root->left, key);
+
+    // Right Side
+    else if (key > root->key)
+        root->right = AVL_delete(root->right, key);
+    // Root Node
+    else
+    {
+        // AVL_Node with only one child or no child
+        if ((root->left == NULL) || (root->right == NULL))
+        {
+            Node *temp = root->left ? root->left : root->right;
+            // No child case
+            if (temp == NULL)
+            {
+                temp = root;
+                root = NULL;
+            }
+            else               // One child case
+                *root = *temp; // Copy the contents of the non-empty child
+            free(temp);
+        }
+        else
+        {
+            // AVL_Node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            Node *temp = minValueAVL_Node(root->right);
+
+            // Copy the inorder successor's
+            // data to this AVL_Node
+            root->key = temp->key;
+            // Delete the inorder successor
+            root->right = AVL_delete(root->right, temp->key);
+        }
+    }
+
+    // If the tree had only one AVL_Node then return
+    if (root == NULL)
+        return root;
+
+    // UPDATE HEIGHT OF THE CURRENT AVL_Node
+    root->height = 1 + max(height(root->left), height(root->right));
+
+    // GET THE BALANCE FACTOR OF THIS AVL_Node (to check whether this AVL_Node became unbalanced)
+    int balance = getBalance(root);
+
+    // If this AVL_Node becomes unbalanced, then there are 4 cases
+
+    // Left Left Case
+    if (balance > 1 && getBalance(root->left) >= 0)
+        return rightRotate(root);
+
+    // Left Right Case
+    if (balance > 1 && getBalance(root->left) < 0)
+    {
+        root->left = leftRotate(root->left);
+        return rightRotate(root);
+    }
+
+    // Right Right Case
+    if (balance < -1 && getBalance(root->right) <= 0)
+        return leftRotate(root);
+    // Right Left Case
+    if (balance < -1 && getBalance(root->right) > 0)
+    {
+        root->right = rightRotate(root->right);
+        return leftRotate(root);
+    }
+
+    return root;
+}
+
 void preOrder(Node *root)
 {
     if (root != NULL)
@@ -166,58 +252,38 @@ void preOrder(Node *root)
     }
 }
 
-// Driver Code
-int main()
-{
-    Node *root = NULL;
-
-    /* Constructing tree given in
-    the above figure */
-    // root = insert(root, 10);
-    // root = insert(root, 20);
-    // root = insert(root, 30);
-    // root = insert(root, 40);
-    // root = insert(root, 50);
-    // root = insert(root, 25);
-
-    /* The constructed AVL Tree would be
-                30
-            / \
-            20 40
-            / \ \
-        10 25 50
-    */
-    // cout << "Preorder traversal of the "
-    //         "constructed AVL tree is \n";
-    // preOrder(root);
-
-    std::cout << "first root : " << '\n';
+int main(){
+	Node *root = NULL;
+	//Constructing tree 
+	// root = insert(root, 40);
+	// root = insert(root, 20);
+	// root = insert(root, 10);
+	// root = insert(root, 30);
+	// root = insert(root, 25);
+	// root = insert(root, 60);
+	// root = insert(root, 45);
+	// root = insert(root, 42);
+	// root = insert(root, 52);
+	// root = insert(root, 50);
+	// root = insert(root, 55);
+	// root = insert(root, 75);
+	// root = insert(root, 70);
+	// root = insert(root, 80);
+	// root = insert(root, 85);
     root = insert(root, 10);
-    preOrder(root);
-    std::cout << '\n';
-    std::cout << "second root : " << '\n';
     root = insert(root, 20);
-    preOrder(root);
-    std::cout << '\n';
-    std::cout << "third root : " << '\n';
     root = insert(root, 30);
-    preOrder(root);
-    std::cout << '\n';
-    std::cout << "fourth root : " << '\n';
     root = insert(root, 40);
-    preOrder(root);
-    std::cout << '\n';
-    std::cout << "fifth root : " << '\n';
     root = insert(root, 50);
-    preOrder(root);
-    std::cout << '\n';
-    std::cout << "last root : " << '\n';
     root = insert(root, 25);
-    preOrder(root);
+
+	cout << "Preorder traversal of the above AVL tree is:\n"<<endl;
+	preOrder(root);
     std::cout << '\n';
-
-    return 0;
+	//Deleting the node 25
+    root = AVL_delete(root, 20);
+	cout <<endl<<"preOrder traversal after"<< " deletion of 25:\n"<<endl;
+	preOrder(root);
+    std::cout << '\n';
+	return 0;
 }
-
-// This code is contributed by
-// rathbhupendra

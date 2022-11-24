@@ -37,7 +37,7 @@
 
 namespace ft
 {
-    template <class T, class Compare = ft::less<T>, class Alloc = std::allocator<T>>
+    template <class T, class Compare, class Alloc = std::allocator<T> >
     class AVLTree
     {
     public:
@@ -45,8 +45,17 @@ namespace ft
         typedef T value_type;
         typedef Alloc allocator_type;
         typedef Compare value_compare;
-        typedef typename allocator_type::template rebind<Node<value_type>>::other node_allocator;
+
+    private: // for Nodes:
+        typedef typename allocator_type::template rebind<Node<value_type> >::other node_allocator;
         typedef typename node_allocator::pointer node_pointer;
+        typedef typename node_allocator::reference node_reference;
+        typedef typename node_allocator::const_reference node_const_reference;
+        typedef typename node_allocator::const_pointer node_const_pointer;
+        typedef typename node_allocator::size_type node_size_type;  // See 23.1
+
+        // for Iterators
+    public:
         typedef typename allocator_type::reference reference;
         typedef typename allocator_type::const_reference const_reference;
         typedef typename allocator_type::pointer pointer;
@@ -57,310 +66,358 @@ namespace ft
         // typedef BinarySearchTreeIterator<const value_type> const_iterator;  // See 23.1 //later need to test maybe? add the const type
         typedef ft::reverse_iterator<iterator> reverse_iterator;
         // typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; after creating const iterator
+        typedef typename value_type::first_type key_type;
+        typedef typename value_type::second_type mapped_type;
+        typedef ft::BinarySearchTreeIterator<pointer, node_pointer> iterator;
+        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
 
     private:
-        allocator_type _val_alloc;
         node_allocator _node_alloc;
         value_compare _compare;
-        node_pointer _nil;
-        node_pointer _header;
         node_pointer _root;
-        size_type _size;
-
-        // Private functions:
-        node_pointer minNode(node_pointer node) const
-        {
-            /* loop down to find the leftmost leaf */
-            while (node != NULL && !is_nil(node->left))
-                node = node->left;
-            return node;
-        }
-        node_pointer maxNode(node_pointer node) const
-        {
-            while (node != NULL && !is_nil(node->right))
-                node = node->right;
-            return node;
-        }
+        node_pointer _end;
+        int _size;
 
     public:
-        node_pointer rightRotate(node_pointer y)
+        // Default constructor:
+        AVLTree(const value_compare &compare = value_compare(), const node_allocator &alloc = node_allocator())
+            : _compare(compare),
+              _size(0)
         {
-            node_pointer x = y->left;
-            node_pointer T2 = x->right;
-
-            // Perform rotation
-            x->right = y;
-            y->left = T2;
-
-            // Update heights
-            y->height = max(height(y->left),
-                            height(y->right)) +
-                        1;
-            x->height = max(height(x->left),
-                            height(x->right)) +
-                        1;
-
-            // Return new root
-            return x;
+            this->_node_alloc = alloc;
+            this->_end = this->_createNewNode(value_type());
+            this->root = this->_end;
         }
-        // A utility function to left
-        // rotate subtree rooted with x
-        // See the diagram given above.
-        node_pointer leftRotate(node_pointer x)
+
+        ~AVLTree() {}
+        // _destroy, _remove, rebalance, reSetHeight??
+        //  newnode, getHeigth, getbalance, leftrotate, rightrotate, RLrotate, LRrotate, insert, search
+
+    private:
+        int _getHeight(node_pointer N)
+        {
+            if (N == ft_nullptr)
+                return 0;
+            return (N->height);
+        }
+
+        int _max(int a, int b)
+        {
+            return (a > b) ? a : b;
+        }
+
+        node_pointer _minValTree(node_pointer node)
+        {
+            node_pointer curr = node;
+            while (curr->left != ft_nullptr)
+                curr = curr->left;
+            return curr;
+        }
+
+        node_pointer _createNewNode(value_type key)
+        {
+            node_pointer node = _node_alloc.allocate(1);
+            _node_alloc.construct(node, key);
+            node->left = NULL;
+            node->right = NULL;
+            node->parent = NULL;
+            return (node);
+        }
+
+        // Left Rotate
+        node_pointer _leftRotate(node_pointer x)
         {
             node_pointer y = x->right;
             node_pointer T2 = y->left;
+            node_pointer tmp = x->parent;
 
-            // Perform rotation
             y->left = x;
             x->right = T2;
+            if (tmp != _end)
+            {
+                if (tmp->left == x)
+                    tmp->left = y;
+                else
+                    tmp->right = y;
+            }
+            // y->parent = tmp;
+            y->parent = x->parent;
+            x->parent = y;
 
-            // Update heights
-            x->height = max(height(x->left),
-                            height(x->right)) +
+            if (T2 != ft_nullptr)
+                T2->parent = x;
+            x->height = _max(_getHeight(x->left),
+                             _getHeight(x->right)) +
                         1;
-            y->height = max(height(y->left),
-                            height(y->right)) +
-                        1;
-
-            // Return new root
-            return y;
+            y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
+            return (y);
         }
 
-        // Get Balance factor of node N
-        int getBalance(node_pointer N)
+        // Right Rotate
+        node_pointer _rightRotate(node_pointer y)
         {
-            if (N == NULL)
-                return 0;
-            return height(N->left) - height(N->right);
+            node_pointer x = y->left;
+            node_pointer T3 = x->right;
+            node_pointer tmp = y->parent;
+
+            x->right = y;
+            y->left = T3;
+            if (tmp != _end)
+            {
+                if (tmp->left == y)
+                    tmp->left = x;
+                else
+                    tmp->right = x;
+            }
+            // x->parent = tmp;
+            x->parent = y->parent;
+            y->parent = x;
+            if (T3 != ft_nullptr)
+                T3->parent = y;
+            y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
+            x->height = _max(_getHeight(x->left), _getHeight(x->right)) + 1;
+            return (x);
         }
 
-        // Recursive function to insert a key
-        // in the subtree rooted with node and
-        // returns the new root of the subtree.
+        // Left Right Rotate
+        node_pointer _leftRightRotate(node_pointer node)
+        {
+            node->left = _leftRotate(node->left);
+            return (_rightRotate(node));
+        }
+
+        // Right Left Rotate
+        node_pointer _rightLeftRotate(node_pointer node)
+        {
+            node->right = _rightRotate(node->right);
+            return (_leftRotate(node));
+        }
+
+        int _getBalance(node_pointer node)
+        {
+            if (node == ft_nullptr)
+                return 0;
+            return (_getHeight(node->left) - _getheight(node->right));
+        }
+
+        node_pointer _balanceTree(node_pointer root)
+        {
+            int balance = _getBalance(root);
+            if (balance > 1)
+            {
+                if (_getBalance(root->left) >= 0) // Left Left Case
+                    return (_rightRotate(root));
+                else // Left Right Case
+                {
+                    root->left = _leftRotate(root->left);
+                    return (_rightRotate(root));
+                }
+            }
+            if (balance < -1)
+            {
+                if (_getBalance(root->right) <= 0) // Right Right Case
+                    return (_leftRotate(root));
+                else // Right Left Case
+                {
+                    root->right = _rightRotate(root->right);
+                    return (_leftRotate(root));
+                }
+            }
+            return (root);
+        }
 
         // single element (1)
-        ft::pair<iterator, bool> insert(const value_type &val)
+        // tmp : tmp root node, newNode : adding new node
+        // node_pointer insert(node_pointer tmp, value_type &key)
+        node_pointer _insert(node_pointer tmp, node_pointer newNode)
         {
             // 1. search if key exists
             // 2. if doesn't exist insert node
-            // Node *insert(Node * node, int key)
-            // {
             /* 1. Perform the normal BST insertion */
-            bool 
-            if (node == NULL)
-                return (newNode(key));
-
-            if (key < node->key)
-                node->left = insert(node->left, key);
-            else if (key > node->key)
-                node->right = insert(node->right, key);
-            else // Equal keys are not allowed in BST
-                return node;
-
-            /* 2. Update height of this ancestor node */
-            node->height = 1 + max(height(node->left),
-                                   height(node->right));
-
-            /* 3. Get the balance factor of this ancestor
-                node to check whether this node became
-                unbalanced */
-            int balance = getBalance(node);
-
-            // If this node becomes unbalanced, then
-            // there are 4 cases
-
-            // Left Left Case
-            if (balance > 1 && key < node->left->key)
-                return rightRotate(node);
-
-            // Right Right Case
-            if (balance < -1 && key > node->right->key)
-                return leftRotate(node);
-
-            // Left Right Case
-            if (balance > 1 && key > node->left->key)
+            // if the tree is empty, add first node in tree:
+            // ene hurte hiisen _end g sain sudlah heregtei.
+            if (tmp == ft_nullptr && this->_end == ft_nullptr)
+                return (newNode);
+            if (this->_compare(newNode->key.first, tmp->key.first))
             {
-                node->left = leftRotate(node->left);
-                return rightRotate(node);
-                // }
+                tmp->left = _insert(tmp->left, newNode->key);
+                if (tmp->left == newNode)
+                    newNode->parent = tmp;
             }
-            //    with hint (2)
-            iterator insert(iterator position, const value_type &val);
-            //    range (3)
-            template <class InputIterator>
-            void insert(InputIterator first, InputIterator last);
-
-            node_pointer insert(node_pointer node, value_type val)
+            else if (newNode->key > tmp->key)
             {
-                /* 1. Perform the normal BST insertion */
-                if (node == NULL)
-                    return (node(val));
+                tmp->right = _insert(tmp->right, newNode->key);
+                if (tmp->right == newNode)
+                    newNode->parent = tmp;
+            }
+            else
+                return tmp;
+            tmp->height = 1 + _max(_getHeight(tmp->left), _getHeight(tmp->right)); // do I need new funciton? in case of null subtrees?
+            tmp = _balanceTree(tmp);
+            return (tmp);
+        }
 
-                if (val < node->val)
-                    node->left = insert(node->left, val);
-                else if (val > node->val)
-                    node->right = insert(node->right, val);
-                else // Equal values are not allowed in BST
-                    return node;
+        // node deletetion in tree
+        node_pointer _remove(node_pointer root, value_type key)
+        {
+            if (root == ft_nullptr || root == this->_end)
+                return (root);
+            // Left Side
+            if (key < root->key)
+                root->left = _remove(root->left, key);
 
-                /* 2. Update height of this ancestor node_pointer /
-                node->height = 1 + max(height(node->left),
-                                       height(node->right));
-
-                  3. Get the balance factor of this ancestor
-                    node to check whether this node became
-                    unbalanced
-                */
-                int balance = getBalance(node);
-
-                // If this node becomes unbalanced, then
-                // there are 4 cases
-
-                // Left Left Case
-                if (balance > 1 && val < node->left->val)
-                    return rightRotate(node);
-
-                // Right Right Case
-                if (balance < -1 && val > node->right->val)
-                    return leftRotate(node);
-
-                // Left Right Case
-                if (balance > 1 && val > node->left->val)
+            // Right Side
+            else if (key > root->key)
+                root->right = _remove(root->right, key);
+            // Root Node
+            else
+            {
+                // Tree with only one child or no child
+                if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
-                    node->left = leftRotate(node->left);
-                    return rightRotate(node);
+                    _node_alloc.destroy(root);
+                    _node_alloc.deallocate(root, 1);
+                    root = ft_nullptr;
+                    return (root);
                 }
-
-                // Right Left Case
-                if (balance < -1 && val < node->right->val)
+                else if (root->right == ft_nullptr)
                 {
-                    node->right = rightRotate(node->right);
-                    return leftRotate(node);
+                    node_pointer tmp = root;
+                    root = root->left;
+                    root->parent = tmp->parent;
+                    _node_alloc.destroy(tmp);
+                    _node_alloc.deallocate(tmp, 1);
+                    tmp = ft_nullptr;
+                    return (root);
                 }
-
-                /* return the (unchanged) node pointer */
-                return node;
-            }
-            void init_nil_head()
-            {
-                _nil = _node_alloc.allocate(1);
-                _node_alloc.construct(_nil, Node<value_type>());
-                _nil->is_nil = true;
-                _header = _node_alloc.allocate(1);
-                _node_alloc.construct(_header, Node<value_type>());
-                _header->val = _val_alloc.allocate(1);
-                _val_alloc.construct(_header->val, value_type());
-            }
-
-            // Public
-        public:
-            // Default constructor
-            AVLTree(const Compare &comp, const allocator_type &a = allocator_type()) : _val_alloc(a), _node_alloc(node_allocator()), _compare(comp), _root(0), _size(0)
-            {
-                init_nil_head();
-                _root = _header;
-            }
-            // Fill constructor
-            AVLTree() : _root(0), _val_alloc(allocator_type()), _node_alloc(node_allocator()), _compare(value_compare()), _size(0)
-            {
-                init_nil_head();
-                _root = _header;
-            }
-            // Copy constructor
-            AVLTree(const AVLTree &src) : _compare(src._compare), _root(NULL)
-            {
-                *this = src;
-            }
-            // Range constructor
-            template <class InputIterator>
-            AVLTree(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last,
-                    const value_compare &comp, const allocator_type &alloc = allocator_type()) : _val_alloc(alloc),
-                                                                                                 _node_alloc(node_allocator()),
-                                                                                                 _compare(comp)
-            {
-                init_nil_head();
-                _root = _header;
-                (void)first;
-                (void)last;
-                // for (; first != last; ++first)
-                //     insert(*first); //add after adding ranges
-            }
-            // Print the nodes:
-            // void printInorder(node_pointer root)
-            // {
-            //     while (root != NULL)
-            //     {
-            //         printInorder(root->left);
-            //         std::cout << root->val << " ";
-            //         printInorder(root->right);
-            //     }
-            // }
-            void preOrder(node_pointer root)
-            {
-                if (root != NULL)
+                else if (root->left == ft_nullptr)
                 {
-                    std::cout << root->key << " ";
-                    preOrder(root->left);
-                    preOrder(root->right);
+                    node_pointer tmp = root;
+                    root = root->right;
+                    root->parent = tmp->parent;
+                    _node_alloc.destroy(tmp);
+                    _node_alloc.deallocate(tmp, 1);
+                    tmp = ft_nullptr;
+                    return (root);
                 }
-            }
-            iterator end()
-            {
-                return (iterator(_header));
-            }
-            // const_iterator end() const
-            // {
-
-            // }
-            iterator begin()
-            {
-                if (_size == 0)
-                    return (iterator(_header));
                 else
-                    return (iterator(minNode(_root)));
+                {
+                    // AVL_Node with two children: Get the inorder
+                    // successor (smallest in the right subtree)
+                    node_pointer tmp = _minValTree(root->right);
+                    root->key = tmp->key;
+                    // Copy the inorder successor's
+                    // data to this AVL_Node
+                    // Delete the inorder successor
+                    root->right = _remove(root->right, tmp->key);
+                    // this->_node_alloc.construct(root, k);
+                }
             }
-            // const_iterator begin() const
-            // {
+            root->height = 1 + _max(_getHeight(root->left), _getHeight(root->right));
+            root = _balanceTree(root);
+            return root;
+        }
 
-            // }
-            reverse_iterator rbegin()
-            {
-                return reverse_iterator(end());
-            }
-            // const_reverse_iterator rbegin() const
-            // {
+        node_pointer _search(node_pointer root, value_type key)
+        {
+            if (root == ft_nullptr)
+                return (this->_end);
+            if (root->key.first == key)
+                return (root);
+            else if (this->_compare(key.first, root->key.first))
+                root->left = _search(root->left, key);
+            else if (this->_compare(root->key.first, key.first))
+                root->right = _search(root->right, key);
+            else
+                return (this->_end);
+        }
 
-            // }
-            reverse_iterator rend()
-            {
-                return reverse_iterator(begin());
-            }
-            // const_reverse_iterator rend() const
-            // {
+        // Public
+    public:
+        iterator end()
+        {
+            // return (iterator(MinNode()));
+        }
+        // const_iterator end() const
+        // {
 
-            // }
-            bool empty() const
-            {
-                return (_size == 0 ? true : false);
-            }
-            size_type size() const
-            {
-                return (_size);
-            }
+        // }
+        iterator begin()
+        {
+            // if (_size == 0)
+            //     return (iterator(_header));
+            // else
+            //     return (iterator(minNode(_root)));
+        }
+        // const_iterator begin() const
+        // {
 
-            size_type max_size() const
+        // }
+        reverse_iterator rbegin()
+        {
+            // return reverse_iterator(end());
+        }
+        // const_reverse_iterator rbegin() const
+        // {
+
+        // }
+        reverse_iterator rend()
+        {
+            // return reverse_iterator(begin());
+        }
+        // const_reverse_iterator rend() const
+        // {
+
+        // }
+        bool empty() const
+        {
+            return (_size == 0 ? true : false);
+        }
+        size_type size() const
+        {
+            return (_size);
+        }
+
+        size_type max_size() const
+        {
+            return (_node_alloc.max_size());
+        }
+        void clear()
+        {
+        }
+        // iterator find(const value_type &x)
+        // {
+        // }
+        void printTree(node_pointer root)
+        {
+            if (root != NULL)
             {
-                return (_val_alloc.max_size());
+                std::cout << root->key << " ";
+                preOrder(root->left);
+                preOrder(root->right);
             }
-            void clear()
+        }
+        // node_allocator _node_alloc;
+        // value_compare _compare;
+        // node_pointer _root;
+        // node_pointer _end;
+        // int _size;
+        node_pointer insert(value_type key)
+        {
+            node_pointer newNode = _createNewNode(key);
+            // if tree is empty:
+            if (this->_root == this->_end)
             {
+                this->_root = newNode;
+                this->_end = this->_root;
+                this->_size = 1;
             }
-            iterator find(const key_type &x)
-            {
-                
-            }
-        };
-    }
+            // if there is already tree exists:
+            this->_root = _insert(this->_root, newNode);
+            this->_size++;
+            return (newNode);
+        }
+    };
+}
 
 #endif

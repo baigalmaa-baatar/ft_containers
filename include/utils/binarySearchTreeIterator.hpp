@@ -21,41 +21,17 @@ namespace ft
 	struct Node
 	{
 	public:
-		T *val;
+		typedef T	value_type;
+	public:
+		T	key;
 		Node *parent;
 		Node *left;
 		Node *right;
-		bool is_nil; // change nil to null to more understandable
+		int height;
 
 	public:
-		explicit Node(T *srcval = 0) : val(srcval),
-									   parent(ft_nullptr),
-									   left(ft_nullptr),
-									   right(ft_nullptr),
-									   is_nil(false){};
-		Node(Node const &obj)
-		{
-			this->val = obj.val;
-			this->parent = obj.parent;
-			this->left = obj.left;
-			this->right = obj.right;
-			this->is_nil = obj.is_nil;
-		};
-
-		Node &operator=(const Node &rhs)
-		{
-			if (this == &rhs)
-				return (*this);
-			this->val = rhs.val;
-			this->parent = rhs.parent;
-			this->left = rhs.left;
-			this->right = rhs.right;
-			this->is_nil = rhs.is_nil;
-			return (*this);
-		};
-
-		// Destructor
-		virtual ~Node(){};
+		explicit Node() : key() {};
+		Node(T key) : key(key) {};
 	};
 
 	template <typename T>
