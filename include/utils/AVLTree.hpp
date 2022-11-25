@@ -37,50 +37,50 @@
 
 namespace ft
 {
-    template <class T, class Compare, class Alloc = std::allocator<T> >
+    template <class T, class Compare = ft::less<T>, class Alloc = std::allocator<T> >
     class AVLTree
     {
     public:
         // types:
-        typedef T value_type;
-        typedef Alloc allocator_type;
-        typedef Compare value_compare;
+        typedef T       value_type;
+        typedef Alloc   allocator_type;
+        typedef Compare key_compare;
 
     private: // for Nodes:
-        typedef typename allocator_type::template rebind<Node<value_type> >::other node_allocator;
-        typedef typename node_allocator::pointer node_pointer;
-        typedef typename node_allocator::reference node_reference;
-        typedef typename node_allocator::const_reference node_const_reference;
-        typedef typename node_allocator::const_pointer node_const_pointer;
-        typedef typename node_allocator::size_type node_size_type;  // See 23.1
+        typedef typename allocator_type::template rebind<Node<T> >::other  node_allocator;
+        typedef typename node_allocator::reference                                  node_reference;
+        typedef typename node_allocator::const_reference                            node_const_reference;
+        typedef typename node_allocator::difference_type                            node_difference_type;
+        typedef typename node_allocator::pointer                                    node_alloc_pointer;
+        typedef typename node_allocator::const_pointer                              node_const_pointer;
+        typedef typename node_allocator::size_type                                  node_size_type;
+        typedef Node<value_type>											        node_type;
+		typedef node_type*													        node_pointer;
 
-        // for Iterators
     public:
-        typedef typename allocator_type::reference reference;
-        typedef typename allocator_type::const_reference const_reference;
-        typedef typename allocator_type::pointer pointer;
-        typedef typename allocator_type::const_pointer const_pointer;
-        typedef typename std::ptrdiff_t difference_type;       // See 23.1
-        typedef typename allocator_type::size_type size_type;  // See 23.1
-        typedef BinarySearchTreeIterator<value_type> iterator; // See 23.1
-        // typedef BinarySearchTreeIterator<const value_type> const_iterator;  // See 23.1 //later need to test maybe? add the const type
-        typedef ft::reverse_iterator<iterator> reverse_iterator;
-        // typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; after creating const iterator
-        typedef typename value_type::first_type key_type;
-        typedef typename value_type::second_type mapped_type;
-        typedef ft::BinarySearchTreeIterator<pointer, node_pointer> iterator;
-        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
+        typedef typename allocator_type::reference                                  reference;
+        typedef typename allocator_type::const_reference                            const_reference;
+        typedef typename allocator_type::pointer                                    pointer;
+        typedef typename allocator_type::const_pointer                              const_pointer;
+        typedef typename std::ptrdiff_t                                             difference_type;
+        typedef typename allocator_type::size_type                                  size_type;
+		// typedef typename value_type::first_type								        key_type;
+		// typedef typename value_type::second_type							        mapped_type;
+		typedef ft::BinarySearchTreeIterator<pointer, node_pointer>				    iterator;
+		// typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer>			const_iterator;
+		typedef ft::reverse_iterator<iterator>								        reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator>						        const_reverse_iterator;
 
     private:
         node_allocator _node_alloc;
-        value_compare _compare;
+        key_compare _compare;
         node_pointer _root;
         node_pointer _end;
         int _size;
 
     public:
         // Default constructor:
-        AVLTree(const value_compare &compare = value_compare(), const node_allocator &alloc = node_allocator())
+        AVLTree(const key_compare &compare = key_compare(), const node_allocator &alloc = node_allocator())
             : _compare(compare),
               _size(0)
         {
@@ -116,11 +116,12 @@ namespace ft
 
         node_pointer _createNewNode(value_type key)
         {
-            node_pointer node = _node_alloc.allocate(1);
-            _node_alloc.construct(node, key);
-            node->left = NULL;
-            node->right = NULL;
-            node->parent = NULL;
+            node_pointer node = this->_node_alloc.allocate(1);
+            this->_node_alloc.construct(node, key);
+            node->left = ft_nullptr;
+            node->right = ft_nullptr;
+            node->parent = ft_nullptr;
+            node->height = 1;
             return (node);
         }
 
@@ -197,7 +198,7 @@ namespace ft
         {
             if (node == ft_nullptr)
                 return 0;
-            return (_getHeight(node->left) - _getheight(node->right));
+            return (_getHeight(node->left) - _getHeight(node->right));
         }
 
         node_pointer _balanceTree(node_pointer root)
@@ -238,15 +239,16 @@ namespace ft
             // ene hurte hiisen _end g sain sudlah heregtei.
             if (tmp == ft_nullptr && this->_end == ft_nullptr)
                 return (newNode);
-            if (this->_compare(newNode->key.first, tmp->key.first))
+            // if (this->_compare(newNode->key.first, tmp->key.first))
+            if (newNode->key < tmp->key)
             {
-                tmp->left = _insert(tmp->left, newNode->key);
+                tmp->left = _insert(tmp->left, newNode);
                 if (tmp->left == newNode)
                     newNode->parent = tmp;
             }
             else if (newNode->key > tmp->key)
             {
-                tmp->right = _insert(tmp->right, newNode->key);
+                tmp->right = _insert(tmp->right, newNode);
                 if (tmp->right == newNode)
                     newNode->parent = tmp;
             }
@@ -388,33 +390,39 @@ namespace ft
         // iterator find(const value_type &x)
         // {
         // }
-        void printTree(node_pointer root)
+        void printTree(node_pointer root) //Pre order traversal
         {
             if (root != NULL)
             {
-                std::cout << root->key << " ";
-                preOrder(root->left);
-                preOrder(root->right);
+                std::cout << root->key << std::endl;
+                printTree(root->left);
+                printTree(root->right);
             }
         }
-        // node_allocator _node_alloc;
-        // value_compare _compare;
-        // node_pointer _root;
-        // node_pointer _end;
-        // int _size;
+
         node_pointer insert(value_type key)
         {
             node_pointer newNode = _createNewNode(key);
+            printTree(newNode);
             // if tree is empty:
-            if (this->_root == this->_end)
-            {
+
+            // if (this->_root != this->_end)
+            // {
                 this->_root = newNode;
-                this->_end = this->_root;
-                this->_size = 1;
-            }
-            // if there is already tree exists:
-            this->_root = _insert(this->_root, newNode);
-            this->_size++;
+                std::cout << "if here" << '\n';
+                
+                this->_root->parent = this->_end;
+                this->_end->left = this->_root;
+                ++this->_size;
+
+            // }
+            // else
+            // {
+            //     std::cout << "else here" << '\n';
+            //     // if there is already tree exists:
+            //     this->_root = _insert(this->_root, newNode);
+            //     this->_size++;
+            // }
             return (newNode);
         }
     };

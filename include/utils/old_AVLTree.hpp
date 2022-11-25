@@ -40,21 +40,13 @@ namespace ft
 	class Tree
 	{
 		public:
-			/***********************************************************/
-			/*                                                         */
-			/*             typedef all template parameters             */
-			/*                                                         */
-			/***********************************************************/
+			
 			typedef T															value_type;
 			typedef Compare														key_compare;
 			typedef Allocator													allocator_type;
 
-		private:
-			/***********************************************************/
-			/*                                                         */
-			/*              typedef member Types of Nodes              */
-			/*                                                         */
-			/***********************************************************/
+		private: //for nodes:
+	
 			typedef typename allocator_type::template rebind<Node<T> >::other	allocator_node;
 			typedef typename allocator_node::reference							node_reference;
 			typedef typename allocator_node::const_reference					node_const_reference;
@@ -66,11 +58,7 @@ namespace ft
 			typedef Node_type*													Node_ptr;
 
 		public:
-			/***********************************************************/
-			/*                                                         */
-			/*          typedef member Types of Tree iterator          */
-			/*                                                         */
-			/***********************************************************/
+			
 			typedef typename allocator_type::reference							reference;
 			typedef typename allocator_type::const_reference					const_reference;
 			typedef typename allocator_type::difference_type					difference_type;
@@ -86,22 +74,14 @@ namespace ft
 
 
 		private:
-			/***********************************************************/
-			/*                                                         */
-			/*          Declare all attributes needed in Tree          */
-			/*                                                         */
-			/***********************************************************/
+			
 			allocator_node								_alloc;
 			key_compare									_comp;
 			Node_ptr									_root;
 			Node_ptr									_end;
 			int											_size;
 		public:
-			/***********************************************************/
-			/*                                                         */
-			/*             Tree constructor and distructor             */
-			/*                                                         */
-			/***********************************************************/
+			
 			Tree(const key_compare &compare = key_compare(), const allocator_type& alloc = allocator_type()): _size(0), _comp(compare)
 			{
 				this->_alloc = alloc;

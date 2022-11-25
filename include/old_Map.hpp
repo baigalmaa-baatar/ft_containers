@@ -39,6 +39,7 @@ namespace std
         typedef typename Allocator::const_pointer const_pointer;
         typedef std::reverse_iterator<iterator> reverse_iterator;
         typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+        
         class value_compare
             : public binary_function<value_type, value_type, bool>
         {
@@ -89,9 +90,11 @@ namespace std
         // void erase(iterator first, iterator last);
         void swap(map<Key, T, Compare, Allocator> &);
         void clear();
+        
         // observers:
         key_compare key_comp() const;
         value_compare value_comp() const;
+        
         // 23.3.1.3 map operations:
         iterator find(const key_type &x);
         const_iterator find(const key_type &x) const;
@@ -120,6 +123,7 @@ namespace std
     template <class Key, class T, class Compare, class Allocator>
     bool operator>=(const map<Key, T, Compare, Allocator> &x,
                     const map<Key, T, Compare, Allocator> &y);
+                    
     template <class Key, class T, class Compare, class Allocator>
     bool operator<=(const map<Key, T, Compare, Allocator> &x,
                     const map<Key, T, Compare, Allocator> &y);
