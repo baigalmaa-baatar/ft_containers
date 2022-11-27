@@ -64,8 +64,8 @@ namespace ft
         typedef typename allocator_type::const_pointer                              const_pointer;
         typedef typename std::ptrdiff_t                                             difference_type;
         typedef typename allocator_type::size_type                                  size_type;
-		// typedef typename value_type::first_type								        key_type;
-		// typedef typename value_type::second_type							        mapped_type;
+		typedef typename value_type::first_type								        key_type;
+		typedef typename value_type::second_type							        mapped_type;
 		typedef ft::BinarySearchTreeIterator<pointer, node_pointer>				    iterator;
 		// typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer>			const_iterator;
 		typedef ft::reverse_iterator<iterator>								        reverse_iterator;
