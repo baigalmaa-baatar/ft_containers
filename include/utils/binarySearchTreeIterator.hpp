@@ -17,32 +17,18 @@
 
 namespace ft
 {
-	template <typename T>
-	struct Node
-	{
-	public:
-		typedef T	value_type;
-	public:
-		T	key;
-		Node *parent;
-		Node *left;
-		Node *right;
-		int height;
 
-	public:
-		explicit Node() : key() {};
-		Node(T key) : key(key) {};
-	};
 
 	template<class T, class Node_pointer>
 	class BinarySearchTreeIterator : public std::iterator<std::bidirectional_iterator_tag, T>
 	{
 	public:
-		typedef typename ft::iterator_traits<T *>::value_type		value_type;
-		typedef typename ft::iterator_traits<T *>::pointer			pointer;
-		typedef typename ft::iterator_traits<T *>::reference		reference;
-		typedef typename ft::iterator_traits<T *>::difference_type	difference_type;
-		typedef std::bidirectional_iterator_tag 					iterator_category;
+		typedef T												iterator_type;
+		typedef std::bidirectional_iterator_tag 				iterator_category;
+		typedef typename iterator_traits<T>::value_type			value_type;
+		typedef typename iterator_traits<T>::pointer			pointer;
+		typedef typename iterator_traits<T>::reference			reference;
+		typedef typename iterator_traits<T>::difference_type	difference_type;
 		// typedef Node<typename ft::remove_const<value_type>::type> 	*Node_pointer;
 
 	private:
@@ -71,7 +57,7 @@ namespace ft
 		BinarySearchTreeIterator() : _node(ft_nullptr) {}
 		explicit BinarySearchTreeIterator(Node_pointer node) : _node(node) {}
 		template <class Iterator>
-		BinarySearchTreeIterator(const BinarySearchTreeIterator<Iterator, Node_pointer> &obj) : _node(obj.base()) {}
+		BinarySearchTreeIterator(const BinarySearchTreeIterator<Iterator, Node_pointer>& obj) : _node(obj.base()) {}
 		//Copy operator
 		BinarySearchTreeIterator &operator=(const BinarySearchTreeIterator &rhs)
 		{
@@ -82,12 +68,13 @@ namespace ft
 		}
 		~BinarySearchTreeIterator(void) {}
 		Node_pointer	base() const							{	return (this->_node); };
-		bool operator==(const BinarySearchTreeIterator &obj)	{	return (this->_node == obj._node);}
-		bool operator!=(const BinarySearchTreeIterator &obj)	{	return (this->_node != obj._node);}
 		reference operator*() const 							{ 	return (this->_node->key);}
 		pointer operator->() const								{	return (&(operator*()));}
 		Node_pointer node() const								{	return _node;}
 		reference operator[]( difference_type n ) const			{ 	return (*(this->_node + n)); };
+		//which use case?
+		// bool operator==(const BinarySearchTreeIterator &obj)	{	return (this->_node == obj._node);}
+		// bool operator!=(const BinarySearchTreeIterator &obj)	{	return (this->_node != obj._node);}
 
 		// https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
 		/**
@@ -100,7 +87,7 @@ namespace ft
 		*/
 		BinarySearchTreeIterator &operator++()
 		{
-			if (_node->right != NULL && !_node->right->is_nil)
+			if (_node->right != NULL)
 				_node = minValue(_node->right);
 			else
 			{

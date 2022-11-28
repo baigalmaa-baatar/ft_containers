@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_tester.cpp                                  :+:      :+:    :+:   */
+/*   map_tester.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbaatar <bbaatar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 11:01:10 by bbaatar           #+#    #+#             */
-/*   Updated: 2022/10/11 11:01:11 by bbaatar          ###   ########.fr       */
+/*   Created: 2022/10/11 11:01:16 by bbaatar           #+#    #+#             */
+/*   Updated: 2022/10/11 11:01:17 by bbaatar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include <iostream>
 #include <string>
 #include <map> // std::map
-// #include "../include/Map.hpp"
+#include "../include/map.hpp"
 
-template <typename T>
-// void comparisonFuncVec(std::string testName, std::vector<T> std_vector1, ft::vector<T> ft_vector1)
+// template <typename T>
+// void comparisonFuncVec(std::string testName, std::map<T> std_vector1, ft::map<T> ft_vector1)
 // {
 //   std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
 
@@ -26,140 +25,121 @@ template <typename T>
 //   }
 // }
 
-void comparisonFunc(std::string testName, int std, int ft)
-{
-    std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <string>
+// using namespace std::literals;
 
-    std::cout << "Standard result: "
-              << std << '\n';
-    std::cout << "ft result: "
-              << ft << '\n';
-    if (std == ft)
-        std::cout << "✅" << '\n';
-    else
-        std::cout << "❌" << '\n';
+template <typename It>
+void print_insertion_status(It it, bool success)
+{
+    std::cout << "Insertion of " << it->first
+              << (success ? " succeeded\n" : " failed\n");
 }
 
-void nonMemberComparison(std::string testName, bool std, bool ft)
+// void comparisonFunc(std::string testName, int std, int ft)
+// {
+//     std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+
+//     std::cout << "Standard result: "
+//               << std << '\n';
+//     std::cout << "ft result: "
+//               << ft << '\n';
+//     if (std == ft)
+//         std::cout << "✅" << '\n';
+//     else
+//         std::cout << "❌" << '\n';
+// }
+
+// void nonMemberComparison(std::string testName, bool std, bool ft)
+// {
+//     std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
+//     if (std == true)
+//         std::cout << "Standard result: "
+//                   << "true" << '\n';
+//     else
+//         std::cout << "Standard result: "
+//                   << "false" << '\n';
+//     if (ft == true)
+//         std::cout << "ft result: "
+//                   << "true" << '\n';
+//     else
+//         std::cout << "ft result: "
+//                   << "false" << '\n';
+//     if (std == ft)
+//         std::cout << "✅" << '\n';
+//     else
+//         std::cout << "❌" << '\n';
+// }
+
+bool fncomp(char lhs, char rhs)
 {
-    std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
-    if (std == true)
-        std::cout << "Standard result: "
-                  << "true" << '\n';
-    else
-        std::cout << "Standard result: "
-                  << "false" << '\n';
-    if (ft == true)
-        std::cout << "ft result: "
-                  << "true" << '\n';
-    else
-        std::cout << "ft result: "
-                  << "false" << '\n';
-    if (std == ft)
-        std::cout << "✅" << '\n';
-    else
-        std::cout << "❌" << '\n';
+    return lhs < rhs;
 }
+
+struct classcomp
+{
+    bool operator()(const char &lhs, const char &rhs) const
+    {
+        return lhs < rhs;
+    }
+};
 
 int main(void)
 {
     {
-        std::map<char, int> mymap;
+        std::cout << "\n***************************************" << '\n';
+        std::cout << "\n      1-1.  Constructor" << '\n';
+        std::cout << "\n            Default" << '\n';
+        std::cout << "\n***************************************" << '\n';
 
-        // first insert function version (single parameter):
-        mymap.insert(std::pair<char, int>('a', 100));
-        mymap.insert(std::pair<char, int>('z', 200));
-
-        std::pair<std::map<char, int>::iterator, bool> ret;
-        ret = mymap.insert(std::pair<char, int>('z', 500));
-        if (ret.second == false)
-        {
-            std::cout << "element 'z' already existed";
-            std::cout << " with a value of " << ret.first->second << '\n';
-        }
-
-        // second insert function version (with hint position):
-        std::map<char, int>::iterator it = mymap.begin();
-        mymap.insert(it, std::pair<char, int>('b', 300)); // max efficiency inserting
-        mymap.insert(it, std::pair<char, int>('c', 400)); // no max efficiency inserting
-
-        // third insert function version (range insertion):
-        std::map<char, int> anothermap;
-        anothermap.insert(mymap.begin(), mymap.find('c'));
-
-        // showing contents:
-        std::cout << "mymap contains:\n";
-        for (it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-
-        std::cout << "anothermap contains:\n";
-        for (it = anothermap.begin(); it != anothermap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-
-        return 0;
+        ft::map<char, int> ft_first;
+        ft_first['a'] = 10;
+        ft::map<char, int>::iterator ft_it = ft_first.begin();
+        std::cout << '\n';
+        std::cout << ft_it->first << " => " << ft_it->second << '\n';
+     
     }
     {
-        typedef const char cc;
-        std::remove_const<cc>::type a;           // char a
-        std::remove_const<const char *>::type b; // const char* b
-        std::remove_const<char *const>::type c;  // char* c
+        // std::cout << "\n***************************************" << '\n';
+        // std::cout << "\n      2-1.  clear" << '\n';
+        // std::cout << "\n             " << '\n';
+        // std::cout << "\n***************************************" << '\n';
 
-        a = 'x';
-        b = "remove_const";
-        c = new char[10];
+        // std::map<char, int> mymap;
+        // mymap['x'] = 100;
+        // mymap['y'] = 200;
+        // mymap['z'] = 300;
 
-        std::cout << b << std::endl;
+        // ft::map<char, int> ft_mymap;
+        // ft_mymap['x'] = 100;
+        // ft_mymap['y'] = 200;
+        // ft_mymap['z'] = 300;
+
+        // std::cout << "  mymap contains:\n";
+        // for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        //     std::cout << it->first << " => " << it->second << '\n';
+
+        // std::cout << "ft_mymap contains:\n";
+        // for (ft::map<char, int>::iterator ft_it = ft_mymap.begin(); ft_it != ft_mymap.end(); ++ft_it)
+        //     std::cout << ft_it->first << " => " << ft_it->second << '\n';
+        // mymap.clear();
+        // ft_mymap.clear();
+
+        // mymap['a'] = 1101;
+        // mymap['b'] = 2202;
+
+        // ft_mymap['a'] = 1101;
+        // ft_mymap['b'] = 2202;
+
+        // std::cout << "  mymap contains:\n";
+        // for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+        //     std::cout << it->first << " => " << it->second << '\n';
+
+        // std::cout << "ft_mymap contains:\n";
+        // for (ft::map<char, int>::iterator ft_it = ft_mymap.begin(); ft_it != ft_mymap.end(); ++ft_it)
+        //     std::cout << ft_it->first << " => " << ft_it->second << '\n';
     }
-    {
-        std::map<char, int> mymap;
-
-        // first insert function version (single parameter):
-        mymap.insert(std::pair<char, int>('a', 100));
-        mymap.insert(std::pair<char, int>('z', 200));
-
-        std::pair<std::map<char, int>::iterator, bool> ret;
-        ret = mymap.insert(std::pair<char, int>('z', 500));
-        if (ret.second == false)
-        {
-            std::cout << "element 'z' already existed";
-            std::cout << " with a value of " << ret.first->second << '\n';
-        }
-
-        // second insert function version (with hint position):
-        std::map<char, int>::iterator it = mymap.begin();
-        mymap.insert(it, std::pair<char, int>('b', 300)); // max efficiency inserting
-        mymap.insert(it, std::pair<char, int>('c', 400)); // no max efficiency inserting
-
-        // third insert function version (range insertion):
-        std::map<char, int> anothermap;
-        anothermap.insert(mymap.begin(), mymap.find('c'));
-
-        // showing contents:
-        std::cout << "mymap contains:\n";
-        for (it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-
-        std::cout << "anothermap contains:\n";
-        for (it = anothermap.begin(); it != anothermap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-    }
-    {
-        std::map<char, int> mymap;
-
-        mymap['x'] = 100;
-        mymap['y'] = 200;
-        mymap['z'] = 300;
-
-        std::cout << "mymap contains:\n";
-        for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-
-        mymap.clear();
-        mymap['a'] = 1101;
-        mymap['b'] = 2202;
-
-        std::cout << "mymap contains:\n";
-        for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-    }
+    return 0;
 }

@@ -14,7 +14,8 @@ NAME = ft_container
 # SRCS = ./tester/latestavl_map_tester.cpp
 # SRCS = ./tester/new_map_tester.cpp
 # SRCS = ./tester/avlTree_tester.cpp
-SRCS = ./tester/old_map_tester.cpp
+# SRCS = ./tester/map_tester.cpp
+SRCS = ./tester/binarySearchIterator_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
