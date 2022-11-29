@@ -25,7 +25,7 @@ namespace ft
 	public:
 		typedef T												iterator_type;
 		typedef std::bidirectional_iterator_tag 				iterator_category;
-		typedef typename iterator_traits<T>::value_type			value_type;
+		typedef typename iterator_traits<T *>::value_type		value_type;
 		typedef typename iterator_traits<T>::pointer			pointer;
 		typedef typename iterator_traits<T>::reference			reference;
 		typedef typename iterator_traits<T>::difference_type	difference_type;
@@ -111,7 +111,7 @@ namespace ft
 
 		BinarySearchTreeIterator &operator--()
 		{
-			if (_node->left != NULL && !_node->left->is_nil)
+			if (_node->left != NULL && _node->left)
 				_node = maxValue(_node->left);
 			else
 			{

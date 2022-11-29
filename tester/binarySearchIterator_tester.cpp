@@ -20,11 +20,11 @@ int main(void)
     // std::cout << '\n';
     // std::cout << *itr << '\n';
 
-    ft::pair<char, int> p = ft::make_pair('a', 100);
-    ft::AVLTree<char, int> mytree;
+    // ft::pair<char, int> p = ft::make_pair('a', 100);
+    // ft::AVLTree<char, int> mytree;
     // mytree.insert(p);
-    ft::AVLTree<char, int>::iterator it = mytree.begin();
-    std::cout << *it << '\n';
+    // ft::AVLTree<char, int>::iterator it = mytree.begin();
+    // std::cout << *it << '\n';
 
     // ft::AVLTree<char, int> v(begin(p), end(p));
     // std::cout << v[0] << " " << v[1] << "\n";

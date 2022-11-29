@@ -10,16 +10,12 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_container
-# SRCS = ./tester/latestavl_map_tester.cpp
-# SRCS = ./tester/new_map_tester.cpp
-# SRCS = ./tester/avlTree_tester.cpp
-# SRCS = ./tester/map_tester.cpp
-SRCS = ./tester/binarySearchIterator_tester.cpp
+NAME = ft_ft_containers
+SRCS = ./tester/map_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
-CFLAGS	= -Wall -Wextra -Werror -std=c++98
+CFLAGS	= -Wall -Wextra -Werror -std=c++98 -D NS=ft
 RM		= rm -f
 
 all		:	$(NAME)

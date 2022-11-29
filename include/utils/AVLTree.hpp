@@ -15,7 +15,6 @@
 #include "./binarySearchTreeIterator.hpp"
 #include "./reverseIterator.hpp"
 #include "./utils.hpp"
-
 /**
  *  About custom allocators :
  *  need to create special allocators for node allocators:
@@ -136,8 +135,6 @@ namespace ft
         {
             node_pointer node = this->_node_alloc.allocate(1);
             this->_node_alloc.construct(node, key);
-            std::cout << "k:" << key.first << '\n';
-            std::cout << "v:" << key.second << '\n';
             node->left = ft_nullptr;
             node->right = ft_nullptr;
             node->parent = ft_nullptr;
@@ -230,18 +227,16 @@ namespace ft
                     return (_rightRotate(root));
                 else // Left Right Case
                 {
-                    root->left = _leftRotate(root->left);
-                    return (_rightRotate(root));
+                    return (_leftRightRotate(root));
                 }
             }
-            if (balance < -1)
+            else if (balance < -1)
             {
                 if (_getBalance(root->right) <= 0) // Right Right Case
                     return (_leftRotate(root));
                 else // Right Left Case
                 {
-                    root->right = _rightRotate(root->right);
-                    return (_leftRotate(root));
+                    return (_rightLeftRotate(root));
                 }
             }
             return (root);
@@ -257,38 +252,32 @@ namespace ft
             /* 1. Perform the normal BST insertion */
             // if the tree is empty, add first node in tree:
             // ene hurte hiisen _end g sain sudlah heregtei.
-            std::cout << "counter 1:" << '\n';
             if (tmp == ft_nullptr || this->_end == ft_nullptr)
             {
-                std::cout << "if is empty insert private function:" << '\n';
                 return (newNode);
             }
-            if (this->_compare(newNode->key.first, tmp->key.first))
+            if (!this->_compare(tmp->key.first, newNode->key.first))
             // if (newNode->key < tmp->key)
             {
-                std::cout << "if insert private function:" << '\n';
                 tmp->left = _insert(tmp->left, newNode);
                 if (tmp->left == newNode)
                     newNode->parent = tmp;
             }
             else if (this->_compare(tmp->key.first, newNode->key.first))
             {
-                std::cout << "else if insert private function:" << '\n';
                 tmp->right = _insert(tmp->right, newNode);
 
                 if (tmp->right == newNode)
                 {
                     newNode->parent = tmp;
                 }
-                // std::cout << "after if parent condition insert private function:" << '\n';
             }
             else
             {
-                std::cout << "else insert private function:" << '\n';
                 return tmp;
             }
-            // std::cout << "height is :" << tmp->height << '\n';
-            tmp->height = 1 + _max(_getHeight(tmp->left), _getHeight(tmp->right)); // do I need new funciton? in case of null subtrees?
+            _setHeight(tmp);
+            // tmp->height = 1 + _max(_getHeight(tmp->left), _getHeight(tmp->right)); // do I need new funciton? in case of null subtrees?
             tmp = _balanceTree(tmp);
             return (tmp);
         };
@@ -296,14 +285,13 @@ namespace ft
         // node deletetion in tree
         node_pointer _remove(node_pointer root, value_type key)
         {
-            if (root == ft_nullptr || root == this->_end)
+            if (root == ft_nullptr)
                 return (root);
             // Left Side
-            if (key < root->key)
+            else if (_compare(key.first, root->key.first))
                 root->left = _remove(root->left, key);
-
             // Right Side
-            else if (key > root->key)
+            else if (_compare(root->key.first, key.first))
                 root->right = _remove(root->right, key);
             // Root Node
             else
@@ -311,9 +299,13 @@ namespace ft
                 // Tree with only one child or no child
                 if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
+                    std::cout<< "root: " << root->key.first<<  '\n';
                     _node_alloc.destroy(root);
+                    std::cout<< "here: " << root->key.first<<  '\n';
                     _node_alloc.deallocate(root, 1);
+                    std::cout<< "here deallocation: " <<  '\n';
                     root = ft_nullptr;
+                    std::cout<< "here ft_nullptr: " <<   '\n';
                     return (root);
                 }
                 else if (root->right == ft_nullptr)
@@ -341,17 +333,18 @@ namespace ft
                     // AVL_Node with two children: Get the inorder
                     // successor (smallest in the right subtree)
                     node_pointer tmp = _minValTree(root->right);
-                    root->key = tmp->key;
+                    value_type k = tmp->key;
                     // Copy the inorder successor's
                     // data to this AVL_Node
                     // Delete the inorder successor
                     root->right = _remove(root->right, tmp->key);
-                    // this->_node_alloc.construct(root, k);
+                    this->_node_alloc.construct(root, k);
                 }
             }
-            root->height = 1 + _max(_getHeight(root->left), _getHeight(root->right));
+            _setHeight(root);
+            // root->height = 1 + _max(_getHeight(root->left), _getHeight(root->right));
             root = _balanceTree(root);
-            return root;
+            return (root);
         };
 
         node_pointer _search(node_pointer root, key_type key) const
@@ -361,26 +354,43 @@ namespace ft
             if (root->key.first == key)
                 return (root);
             else if (this->_compare(key, root->key.first))
-                root->left = _search(root->left, key);
+                return(_search(root->left, key));
             else if (this->_compare(root->key.first, key))
-                root->right = _search(root->right, key);
-
+                return(_search(root->right, key));
             return (this->_end);
+        };
+        void _setHeight(node_pointer tmp)
+        {
+            if (!tmp->left && !tmp->right)
+                tmp->height = 1;
+            else if (tmp->left == ft_nullptr)
+                tmp->height = 1 + tmp->right->height;
+            else if (tmp->right == ft_nullptr || tmp->right == this->_end)
+                tmp->height = 1 + tmp->left->height;
+            else
+                tmp->height = 1 + std::max(tmp->right->height, tmp->left->height);
         };
 
         // Public
     public:
         iterator begin()
         {
-            node_pointer tmp = this->_root;
-            std::cout << "_root key is : " << _root->key.first << '\n';
-            while (tmp != this->_end && tmp->left)
-                tmp = tmp->left;
-            return iterator(tmp);
+            return (iterator(getMinimum()));
+            // node_type *tmp = this->_root;
+            // while (tmp != this->_end && tmp->left)
+            //     tmp = tmp->left;
+            // return iterator(tmp);
+        }
+        const_iterator begin() const 
+        {
+            return (const_iterator(getMinimum()));
         }
         iterator end() { return (iterator(this->_end)); };
         const_iterator end() const { return (const_iterator(this->_end)); };
-        reverse_iterator rbegin() { return reverse_iterator(end()); };
+        reverse_iterator rbegin() { 
+            // std::cout << "root:" << this->_root->key.first << "->" << this->_root->key.second << '\n';
+            // std::cout << "root right :" << this->_root->right->key.first << "->" << this->_root->right->key.second << '\n';
+            return reverse_iterator(end()); };
         const_reverse_iterator rbegin() const { return (const_reverse_iterator(end())); };
         reverse_iterator rend() { return reverse_iterator(begin()); };
         const_reverse_iterator rend() const { return const_reverse_iterator(begin()); };
@@ -397,7 +407,6 @@ namespace ft
         {
             return (_node_alloc.max_size());
         };
-        // clear, destruct and deallocate:
         void _destroy(node_pointer node)
         {
             if (node != ft_nullptr)
@@ -425,7 +434,6 @@ namespace ft
         // {
         //     if (root != NULL)
         //     {
-        //         std::cout << root->key << std::endl;
         //         printTree(root->left);
         //         printTree(root->right);
         //     }
@@ -434,12 +442,10 @@ namespace ft
         {
             if (this->_root == this->_end)
             {
-                // std::cout << "seach if " << '\n';
                 return (this->_end);
             }
             else
             {
-                // std::cout << "seach else " << '\n';
                 return (_search(this->_root, key));
             }
         };
@@ -463,28 +469,36 @@ namespace ft
         node_pointer insert(const value_type &key)
         {
             node_pointer newNode = _createNewNode(key);
-            // printTree(newNode);
-            // if tree is empty:
-            std::cout << "key is : " << key.first << '\n';
-            std::cout << "value is : " << key.second << '\n';
-            if (this->_root != this->_end)
+            //if tree doesn't exist
+            if (this->_root == this->_end)
             {
                 this->_root = newNode;
-                std::cout << "if here" << '\n';
                 this->_root->parent = this->_end;
                 this->_end->left = this->_root;
                 ++this->_size;
             }
             else
             {
-                // std::cout << "else here" << '\n';
-                // if there is already tree exists:
-                this->_root = _insert(this->_root, newNode);
-                std::cout << "after insert else here" << '\n';
                 ++this->_size;
+                this->_root = _insert(this->_root, newNode);
             }
+
             return (newNode);
         };
+        //remove/delete
+        void remove(T key)
+        {
+            std::cout<< "this->root : " << this->_root->key.second << '\n';
+            this->_root = this->_remove(this->_root, key);
+        }
+        node_pointer getMinimum() const
+        {
+            node_type *tmp = this->_root;
+            while (tmp != this->_end && tmp->left)
+                tmp = tmp->left;
+            // std::cout << "here" << '\n';
+            return (tmp);
+        }
     };
 
     template <class node_pointer>

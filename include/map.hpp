@@ -24,31 +24,31 @@ namespace ft
     {
     public:
         // types:
-        typedef Key key_type;
-        typedef T mapped_type;
-        typedef pair<const key_type, mapped_type> value_type;
-        typedef Compare key_compare;
-        typedef Alloc allocator_type;
-        typedef value_type &reference;
-        typedef const value_type &const_reference;
-        typedef value_type *pointer;
-        typedef const value_type *const_pointer;
-        typedef ptrdiff_t difference_type;
-        typedef typename allocator_type::size_type size_type;
+        typedef Key                                         key_type;
+        typedef T                                           mapped_type;
+        typedef pair<const key_type, mapped_type>           value_type;
+        typedef Compare                                     key_compare;
+        typedef Alloc                                       allocator_type;
+        typedef value_type                                  &reference;
+        typedef const value_type                            &const_reference;
+        typedef value_type                                  *pointer;
+        typedef const value_type                            *const_pointer;
+        typedef ptrdiff_t                                   difference_type;
+        typedef typename allocator_type::size_type          size_type;
 
         class value_compare
         {
         private:
-            key_compare _comp;
-            value_compare(key_compare c) : _comp(c) {}
+            key_compare                                     _comp;
+            value_compare(key_compare c) :                  _comp(c) {}
             value_compare &operator=(const value_compare &o);
 
         public:
-            typedef bool result_type;
-            typedef value_type first_arg_type;
-            typedef value_type second_arg_type;
+            typedef bool                                    result_type;
+            typedef value_type                              first_arg_type;
+            typedef value_type                              second_arg_type;
             ~value_compare() {}
-            value_compare(const value_compare &o) : _comp(o._comp) {}
+            value_compare(const value_compare &o) :         _comp(o._comp) {}
             bool operator()(const value_type &x, const value_type &y) const
             {
                 return _comp(x.first, y.first);
@@ -58,16 +58,16 @@ namespace ft
         };
 
     private:
-        typedef Node<value_type> Node_type;
-        typedef Node_type *Node_ptr;
+        typedef Node<value_type>                            Node_type;
+        typedef Node_type                                   *Node_ptr;
         typedef AVLTree<value_type, key_compare, allocator_type> Tree_type;
-        typedef Tree_type *Tree_ptr;
+        typedef Tree_type                                   *Tree_ptr;
 
     public:
-        typedef typename Tree_type::iterator iterator;             // See 23.1
-        typedef typename Tree_type::const_iterator const_iterator; // See 23.1
-        typedef ft::reverse_iterator<iterator> reverse_iterator;
-        typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef typename Tree_type::iterator                iterator;            
+        typedef typename Tree_type::const_iterator          const_iterator;
+        typedef ft::reverse_iterator<iterator>              reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
 
     private:
         Tree_type _tree;
@@ -75,26 +75,25 @@ namespace ft
         key_compare _comp;
 
     public:
-        // 23.3.1.1 construct/copy/destroy:
+        // Constructor
         explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-            : _tree(comp, alloc), _alloc(alloc), _comp(comp)
-        {
-        }
+            : _tree(comp, alloc), _alloc(alloc), _comp(comp) { }
+        // Range constructor
         template <class InputIterator>
         map(InputIterator first, InputIterator last,
             const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
             : _tree(comp, alloc), _alloc(alloc), _comp(comp)
         {
-
             insert(first, last);
         }
+        //Copy constructor
         map(const map &x)
         {
             *this = x;
         }
         // Destructor
         ~map() { this->_tree.clear(); }
-        // copy constructor
+        // Copy container content 
         map &operator=(const map &x)
         {
             if (this != &x)
@@ -107,7 +106,7 @@ namespace ft
             return (*this);
         };
         // iterators:
-        iterator begin() { return (this->_tree.begin()); };
+        iterator begin()        { return (this->_tree.begin()); };
         const_iterator begin() const { return (this->_tree.begin()); };
         iterator end() { return (this->_tree.end()); };
         const_iterator end() const { return (this->_tree.end()); };
@@ -119,17 +118,12 @@ namespace ft
         bool empty() const { return (this->_tree.empty()); }
         size_type size() const { return (this->_tree.size()); }
         size_type max_size() const { return (this->_tree.max_size()); }
-        // 23.3.1.2 element access:
-
+        // element access:
         mapped_type &operator[](const key_type &k)
         {
-            // return ((*((insert(ft::make_pair(k,mapped_type()))).first)).second); //cplusplus.com
-            // return (insert(ft::make_pair(k, mapped_type())).first->second);
-            // ft::pair<iterator, bool> tmp = insert(ft::make_pair(k, mapped_type()));
-            // return (tmp);
-            ft::pair<iterator, bool> p = insert(ft::make_pair(k, mapped_type()));
-            std::cout << " in operator : " << p.first->first << ", " << p.first->second << std::endl;
-            return (p.first->second);
+            return ((*((this->insert(make_pair(k,mapped_type()))).first)).second);
+            // ft::pair<iterator, bool> p = insert(ft::make_pair(k, mapped_type()));
+            // return (p.first->second);
         };
 
         // modifiers:
@@ -138,10 +132,7 @@ namespace ft
             iterator node = iterator(this->_tree.search(val.first));
             if (node != end())
                 return (ft::make_pair<iterator, bool>(node, false));
-            std::cout << "before calling private insert" << '\n';
             Node_ptr inserted_node = this->_tree.insert(val);
-            std::cout << "inserted_node key is : " << inserted_node->key.first << '\n';
-            std::cout << "inserted_node value is : " << inserted_node->key.second << '\n';
             return (ft::pair<iterator, bool>(iterator(inserted_node), true));
         };
 
@@ -164,10 +155,32 @@ namespace ft
                 first++;
             };
         }
-        // void erase(iterator position);
-        // size_type erase(const key_type &x);
-        // void erase(iterator first, iterator last);
-        // void swap(map<Key, T, Compare, Allocator> &);
+        void erase(iterator position)
+        {
+           this->_tree.remove(*position);
+        }
+        size_type erase(const key_type &k)
+        {
+            size_type res = size();
+            this->_tree.remove(*find(k));
+            return (res - size());
+        }
+        void erase(iterator first, iterator last)
+        {
+            iterator current;
+            while (first != last)
+            {
+                current = first;
+                first++;
+                erase(current);
+            }
+        }
+
+        void swap(map& other)
+        {
+            (void)other;
+        }
+
         void clear()
         {
             return (this->_tree.clear());
