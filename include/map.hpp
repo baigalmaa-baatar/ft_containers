@@ -208,6 +208,7 @@ namespace ft
         equal_range(const key_type &x);
         pair<const_iterator, const_iterator>
         equal_range(const key_type &x) const;
+        void printTree (void) { return (this->_tree.printPreOrder()); };
     };
     template <class Key, class T, class Compare, class Allocator>
     bool operator==(const map<Key, T, Compare, Allocator> &x,

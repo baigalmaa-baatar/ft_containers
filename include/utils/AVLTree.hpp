@@ -54,7 +54,7 @@ namespace ft
         Node(T key) : key(key){};
     };
 
-    template <class T, class Compare = ft::less<T>, class Alloc = std::allocator<T> >
+    template <class T, class Compare = ft::less<T>, class Alloc = std::allocator<T>>
     class AVLTree
     {
     public:
@@ -64,7 +64,7 @@ namespace ft
         typedef Compare key_compare;
 
     private: // for Nodes:
-        typedef typename allocator_type::template rebind<Node<T> >::other node_allocator;
+        typedef typename allocator_type::template rebind<Node<T>>::other node_allocator;
         typedef typename node_allocator::reference node_reference;
         typedef typename node_allocator::const_reference node_const_reference;
         typedef typename node_allocator::difference_type node_difference_type;
@@ -107,8 +107,6 @@ namespace ft
         };
 
         ~AVLTree(){};
-        // _destroy, _remove, rebalance, reSetHeight??
-        //  newnode, getHeigth, getbalance, leftrotate, rightrotate, RLrotate, LRrotate, insert, search
 
     private:
         int _getHeight(node_pointer N)
@@ -121,14 +119,6 @@ namespace ft
         int _max(int a, int b)
         {
             return (a > b) ? a : b;
-        };
-
-        node_pointer _minValTree(node_pointer node)
-        {
-            node_pointer curr = node;
-            while (curr->left != ft_nullptr)
-                curr = curr->left;
-            return curr;
         };
 
         node_pointer _createNewNode(const value_type &key)
@@ -164,37 +154,32 @@ namespace ft
 
             if (T2 != ft_nullptr)
                 T2->parent = x;
-            x->height = _max(_getHeight(x->left),
-                             _getHeight(x->right)) +
-                        1;
-            y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
+            x->height = std::max(_getHeight(x->left), _getHeight(x->right)) + 1;
+            y->height = std::max(_getHeight(y->left), _getHeight(y->right)) + 1;
             return (y);
         };
 
-        // Right Rotate
-        node_pointer _rightRotate(node_pointer y)
+        Node_ptr _rightRotate(Node_ptr y)
         {
-            node_pointer x = y->left;
-            node_pointer T3 = x->right;
-            node_pointer tmp = y->parent;
-
+            Node_ptr child = y->left;
+            Node_ptr T3 = x->right;
+            Node_ptr p = y->parent;
             x->right = y;
             y->left = T3;
-            if (tmp != _end)
+            if (p != this->_end)
             {
-                if (tmp->left == y)
-                    tmp->left = x;
+                if (p->right == y)
+                    p->right = x;
                 else
-                    tmp->right = x;
+                    p->left = x;
             }
-            // x->parent = tmp;
             x->parent = y->parent;
             y->parent = x;
-            if (T3 != ft_nullptr)
+            if (T3 != nullptr)
                 T3->parent = y;
-            y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
-            x->height = _max(_getHeight(x->left), _getHeight(x->right)) + 1;
-            return (x);
+            y->height = std::max(_Height(y->left), _Height(y->right)) + 1;
+            x->height = std::max(_Height(x->left), _Height(x->right)) + 1;
+            return x;
         };
 
         // Left Right Rotate
@@ -214,7 +199,7 @@ namespace ft
         int _getBalance(node_pointer node)
         {
             if (node == ft_nullptr)
-                return 0;
+                return (0);
             return (_getHeight(node->left) - _getHeight(node->right));
         };
 
@@ -282,70 +267,128 @@ namespace ft
             return (tmp);
         };
 
-        // node deletetion in tree
-        node_pointer _remove(node_pointer root, value_type key)
+        node_pointer _remove(node_pointer root, T key)
         {
             if (root == ft_nullptr)
-                return (root);
-            // Left Side
-            else if (_compare(key.first, root->key.first))
+                return (ft_nullptr);
+            else if (this->_compare(key.first, root->key.first))
                 root->left = _remove(root->left, key);
-            // Right Side
-            else if (_compare(root->key.first, key.first))
+            else if (this->_compare(root->key.first, key.first))
                 root->right = _remove(root->right, key);
-            // Root Node
             else
             {
-                // Tree with only one child or no child
                 if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
-                    std::cout<< "root: " << root->key.first<<  '\n';
-                    _node_alloc.destroy(root);
-                    std::cout<< "here: " << root->key.first<<  '\n';
-                    _node_alloc.deallocate(root, 1);
-                    std::cout<< "here deallocation: " <<  '\n';
+                    this->_node_alloc.destroy(root);
+                    this->_node_alloc.deallocate(root, 1);
                     root = ft_nullptr;
-                    std::cout<< "here ft_nullptr: " <<   '\n';
-                    return (root);
-                }
-                else if (root->right == ft_nullptr)
-                {
-                    node_pointer tmp = root;
-                    root = root->left;
-                    root->parent = tmp->parent;
-                    _node_alloc.destroy(tmp);
-                    _node_alloc.deallocate(tmp, 1);
-                    tmp = ft_nullptr;
                     return (root);
                 }
                 else if (root->left == ft_nullptr)
                 {
-                    node_pointer tmp = root;
+                    node_pointer temp = root;
                     root = root->right;
-                    root->parent = tmp->parent;
-                    _node_alloc.destroy(tmp);
-                    _node_alloc.deallocate(tmp, 1);
-                    tmp = ft_nullptr;
+                    root->parent = temp->parent;
+                    this->_node_alloc.destroy(temp);
+                    this->_node_alloc.deallocate(temp, 1);
+                    temp = ft_nullptr;
+                    return (root);
+                }
+                else if (root->right == ft_nullptr)
+                {
+                    node_pointer temp = root;
+                    root = root->left;
+                    root->parent = temp->parent;
+                    this->_node_alloc.destroy(temp);
+                    this->_node_alloc.deallocate(temp, 1);
+                    temp = ft_nullptr;
                     return (root);
                 }
                 else
                 {
-                    // AVL_Node with two children: Get the inorder
-                    // successor (smallest in the right subtree)
-                    node_pointer tmp = _minValTree(root->right);
-                    value_type k = tmp->key;
-                    // Copy the inorder successor's
-                    // data to this AVL_Node
-                    // Delete the inorder successor
-                    root->right = _remove(root->right, tmp->key);
+                    node_pointer temp = _minValTree(root->right);
+                    value_type k = temp->key;
+                    root->right = _remove(root->right, temp->key);
                     this->_node_alloc.construct(root, k);
                 }
             }
+
             _setHeight(root);
-            // root->height = 1 + _max(_getHeight(root->left), _getHeight(root->right));
+            // std::cout << "here: " << root->key.second << '\n';
+
             root = _balanceTree(root);
             return (root);
         };
+        // // node deletetion in tree
+        // node_pointer _remove(node_pointer root, T key)
+        // {
+        //     if (root == ft_nullptr)
+        //         return (ft_nullptr);
+        //     // Left Side
+        //     else if (_compare(key.first, root->key.first))
+        //         root->left = _remove(root->left, key);
+        //     // Right Side
+        //     else if (_compare(root->key.first, key.first))
+        //         root->right = _remove(root->right, key);
+        //     // Root Node
+        //     else
+        //     {
+        //         // Tree with only one child or no child
+        //         if (root->left == ft_nullptr && root->right == ft_nullptr)
+        //         {
+        //             std::cout << "root: " << root->key.first << '\n';
+        //             _node_alloc.destroy(root);
+        //             std::cout << "here: " << root->key.first << '\n';
+        //             _node_alloc.deallocate(root, 1);
+        //             std::cout << "here deallocation: " << '\n';
+        //             root = ft_nullptr;
+        //             std::cout << "here ft_nullptr: " << '\n';
+        //             return (root);
+        //         }
+        //         else if (root->left == ft_nullptr)
+        //         {
+        //             //if tree has only child in right subtree
+        //             node_pointer tmp = root;
+        //             root = root->right;
+        //             root->parent = tmp->parent;
+        //             _node_alloc.destroy(tmp);
+        //             _node_alloc.deallocate(tmp, 1);
+        //             tmp = ft_nullptr;
+        //             return (root);
+        //         }
+        //         else if (root->right == ft_nullptr)
+        //         {
+        //             //if tree has only child in left subtree
+        //             node_pointer tmp = root;
+        //             root = root->left;
+        //             root->parent = tmp->parent;
+        //             _node_alloc.destroy(tmp);
+        //             _node_alloc.deallocate(tmp, 1);
+        //             tmp = ft_nullptr;
+        //             return (root);
+        //         }
+        //         else
+        //         {
+        //             node_pointer tmp_left = root->left;
+        //             // AVL_Node with two children: Get the inorder
+        //             // successor (smallest in the right subtree)
+        //             node_pointer tmp = _minValTree(root->right);
+        //             // Copy the inorder successor's
+        //             // data to this AVL_Node
+        //             // value_type k = tmp->key;
+        //             root = tmp;
+        //             // Delete the inorder successor
+        //             root->right = _remove(root->right, tmp->key);
+        //             // this->_node_alloc.construct(root, k);
+        //             root->left = tmp_left;
+        //             // root->left = tmp_parent;
+        //         }
+        //     }
+        //     _setHeight(root);
+        //     // root->height = 1 + _max(_getHeight(root->left), _getHeight(root->right));
+        //     root = _balanceTree(root);
+        //     return (root);
+        // };
 
         node_pointer _search(node_pointer root, key_type key) const
         {
@@ -354,23 +397,46 @@ namespace ft
             if (root->key.first == key)
                 return (root);
             else if (this->_compare(key, root->key.first))
-                return(_search(root->left, key));
+                return (_search(root->left, key));
             else if (this->_compare(root->key.first, key))
-                return(_search(root->right, key));
+                return (_search(root->right, key));
             return (this->_end);
         };
         void _setHeight(node_pointer tmp)
         {
             if (!tmp->left && !tmp->right)
+            {
+                // std::cout << "set height here: " << tmp->height << '\n';
+
                 tmp->height = 1;
+            }
             else if (tmp->left == ft_nullptr)
+            {
+                // std::cout << "set height here: " << tmp->height << '\n';
+
                 tmp->height = 1 + tmp->right->height;
+            }
             else if (tmp->right == ft_nullptr || tmp->right == this->_end)
+            {
                 tmp->height = 1 + tmp->left->height;
+            }
             else
+            {
+                std::cout << "left height here: " << tmp->left->height << '\n';
                 tmp->height = 1 + std::max(tmp->right->height, tmp->left->height);
+                std::cout << "set height here: " << tmp->height << '\n';
+            }
         };
 
+        void _printPreOrder(node_pointer root)
+        {
+            if (root != NULL)
+            {
+                std::cout << root->key.first << "=>" << root->key.second << "  ";
+                _printPreOrder(root->left);
+                _printPreOrder(root->right);
+            }
+        };
         // Public
     public:
         iterator begin()
@@ -381,16 +447,18 @@ namespace ft
             //     tmp = tmp->left;
             // return iterator(tmp);
         }
-        const_iterator begin() const 
+        const_iterator begin() const
         {
             return (const_iterator(getMinimum()));
         }
         iterator end() { return (iterator(this->_end)); };
         const_iterator end() const { return (const_iterator(this->_end)); };
-        reverse_iterator rbegin() { 
+        reverse_iterator rbegin()
+        {
             // std::cout << "root:" << this->_root->key.first << "->" << this->_root->key.second << '\n';
             // std::cout << "root right :" << this->_root->right->key.first << "->" << this->_root->right->key.second << '\n';
-            return reverse_iterator(end()); };
+            return reverse_iterator(end());
+        };
         const_reverse_iterator rbegin() const { return (const_reverse_iterator(end())); };
         reverse_iterator rend() { return reverse_iterator(begin()); };
         const_reverse_iterator rend() const { return const_reverse_iterator(begin()); };
@@ -469,7 +537,7 @@ namespace ft
         node_pointer insert(const value_type &key)
         {
             node_pointer newNode = _createNewNode(key);
-            //if tree doesn't exist
+            // if tree doesn't exist
             if (this->_root == this->_end)
             {
                 this->_root = newNode;
@@ -485,10 +553,10 @@ namespace ft
 
             return (newNode);
         };
-        //remove/delete
+        // remove/delete
         void remove(T key)
         {
-            std::cout<< "this->root : " << this->_root->key.second << '\n';
+            std::cout << "this->root : " << key.first << "->" << key.second << '\n';
             this->_root = this->_remove(this->_root, key);
         }
         node_pointer getMinimum() const
@@ -499,6 +567,27 @@ namespace ft
             // std::cout << "here" << '\n';
             return (tmp);
         }
+
+        void printPreOrder(void)
+        {
+            return (this->_printPreOrder(this->_root));
+        }
+    };
+
+    template <class node_pointer>
+    node_pointer _minValTree(node_pointer tmp)
+    {
+        while (tmp->left != ft_nullptr)
+            tmp = tmp->left;
+        return (tmp);
+    };
+
+    template <class node_pointer>
+    node_pointer _maxValTree(node_pointer tmp)
+    {
+        while (tmp->right != ft_nullptr)
+            tmp = tmp->right;
+        return (tmp);
     };
 
     template <class node_pointer>
@@ -532,6 +621,7 @@ namespace ft
             return (node);
         return (tmp);
     };
+
 }
 
 #endif
