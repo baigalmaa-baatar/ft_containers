@@ -91,6 +91,7 @@ namespace ft
         {
             *this = x;
         }
+
         // Destructor
         ~map() { this->_tree.clear(); }
         // Copy container content 
@@ -106,7 +107,10 @@ namespace ft
             return (*this);
         };
         // iterators:
-        iterator begin()        { return (this->_tree.begin()); };
+        iterator begin()        { 
+            // std::cout << "begin iterator value:" << '\n';
+            
+            return (this->_tree.begin()); };
         const_iterator begin() const { return (this->_tree.begin()); };
         iterator end() { return (this->_tree.end()); };
         const_iterator end() const { return (this->_tree.end()); };

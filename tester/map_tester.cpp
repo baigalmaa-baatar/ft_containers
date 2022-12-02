@@ -220,13 +220,13 @@ int main()
 
         // insert some values:
         mymap['a'] = 10;
-        mymap['b'] = 20;
-        mymap['c'] = 30;
-        mymap['d'] = 40;
-        mymap['e'] = 50;
-        mymap['f'] = 60;
+        // mymap['b'] = 20;
+        // mymap['c'] = 30;
+        // mymap['d'] = 40;
+        // mymap['e'] = 50;
+        // mymap['f'] = 60;
 
-        it = mymap.find('b');
+        it = mymap.find('a');
         mymap.erase(it); // erasing by iterator
 
         // mymap.erase('c'); // erasing by key
@@ -243,25 +243,24 @@ int main()
         ft::map<char, int>::iterator it;
 
         // insert some values:
-        mymap['1'] = 10;
+        // mymap['1'] = 10;
         mymap['2'] = 20;
-        mymap['3'] = 30;
-        mymap['4'] = 40;
-        mymap['5'] = 50;
-        mymap['6'] = 60;
+        // mymap['3'] = 30;
 
-        mymap.printTree();
-        std::cout << '\n';
+        // mymap.printTree();
+        // std::cout << '\n';
 
         it = mymap.find('2'); //ene hurtel hiisen
         mymap.erase(it); // erasing by iterator
 
-        mymap.printTree();
-        std::cout << '\n';
+        // mymap.printTree();
+        // std::cout << '\n';
 
         std::cout << "ft  show content : " << '\n';
-        for (it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
+        // for (it = mymap.begin(); it != mymap.end(); ++it)
+        //     std::cout << it->first << " => " << it->second << '\n';
+        it = mymap.begin();
+        // std::cout << it->second << '\n';
     }
     // {
     //     std::cout << "\n***************************************" << '\n';

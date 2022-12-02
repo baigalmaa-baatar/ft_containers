@@ -13,6 +13,8 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <iterator>
+
 namespace ft
 {
     typedef __PTRDIFF_TYPE__ ptrdiff_t;
@@ -55,6 +57,7 @@ namespace ft
         typedef typename Iterator::pointer pointer;
         typedef typename Iterator::reference reference;
     };
+    
     template <class T>
     struct iterator_traits<T *>
     {
