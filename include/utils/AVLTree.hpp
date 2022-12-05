@@ -240,6 +240,7 @@ namespace ft
             int balance = _getBalance(root);
             if (balance > 1)
             {
+
                 if (_getBalance(root->left) >= 0) // Left Left Case
                     return (_rightRotate(root));
                 else // Left Right Case
@@ -250,7 +251,11 @@ namespace ft
             else if (balance < -1)
             {
                 if (_getBalance(root->right) <= 0) // Right Right Case
+                {
+                    // std::cout << "root && : " << root->key.second << '\n';
+                    printPreOrder();
                     return (_leftRotate(root));
+                }
                 else // Right Left Case
                 {
                     return (_rightLeftRotate(root));
@@ -302,47 +307,55 @@ namespace ft
         {
             if (root == ft_nullptr)
                 return (ft_nullptr);
+
             else if (this->_compare(key.first, root->key.first))
             {
+                std::cout << "in left" << '\n';
                 root->left = _remove(root->left, key);
 
             }
             else if (this->_compare(root->key.first, key.first))
             {
+                std::cout << "in right" << '\n';
                 root->right = _remove(root->right, key);
             }
-            else // Tree with only one child or no child
+            else // deleting node is root node
             {
+                std::cout << "\ndeleting node is root node : " << root->key.second << '\n';
+
                 if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
                     if (_size > 1) //root has children/child
                     {
-                        std::cout <<  '\n';
-                        printPreOrder();
-                        std::cout << "___ root : " << root->key.second << '\n';
+                        // std::cout <<  '\n';
+                        // printPreOrder();
+                        // std::cout << "___ root : " << root->key.second << '\n';
+                        // // if (root->parent->left == root)
                         // if (root->parent->left == root)
-                        if (root->parent->left == root)
-                        {
-                            std::cout << "root left " << '\n';
-                            root->parent->left = ft_nullptr;
-                            root->parent = ft_nullptr;
-                        }
-                        else if (root->parent->right == root)
-                        {
-                            std::cout << "root right " << '\n';
-                            root->parent->right = ft_nullptr;
-                            root = ft_nullptr;
-                        }
-                        /**
-                         *   40
-                         *  /  \
-                         * 20  80
-                         *    /  \
-                         *   60 100 
-                        */
-                        // root = ft_nullptr;
-                        std::cout <<  "print after deleting node" << '\n';
-                        printPreOrder();
+                        // {
+                        //     std::cout << "root left " << '\n';
+                        //     root->parent->left = ft_nullptr;
+                        //     root = ft_nullptr;
+                        // }
+                        // else if (root->parent->right == root)
+                        // {
+                        //     std::cout << "root right " << '\n';
+                        //     std::cout << "root : " << root->key.second << '\n';
+                        //     std::cout << "root->parent : " << root->parent->key.second << '\n';
+                        //     std::cout << "root->parent left : " << root->parent->left->key.second << '\n';
+                        //     root->parent->right = ft_nullptr;
+                        //     root = ft_nullptr;
+                        // }
+                        // /**
+                        //  *   40                 60
+                        //  *  /  \              /   \   
+                        //  * 20  80            20   80
+                        //  *    /  \                 \
+                        //  *   60 100               100  
+                        // */
+                        // // root = ft_nullptr;
+                        // std::cout <<  "print after deleting node" << '\n';
+                        // printPreOrder();
                     }
                     else
                     {
@@ -377,16 +390,19 @@ namespace ft
 
                     node_pointer temp = _minValTree(root->right);
                     value_type k = temp->key;
+                    std::cout << "before delete recursive: " << '\n';
                     _printPreOrder(root);
-                    root->right = _remove(root->right, temp->key);
+                    std::cout << "\nafter delete recursive: " << '\n';
                     // _printPreOrder(root);
-                    // this->_node_alloc.destroy(root);
+                     std::cout << "root___***left : " << root->left->key.second << '\n';
+                    root->right = _remove(root->right, temp->key); //80 = remove(80, 80)
                     this->_node_alloc.construct(root, k);
-                    std::cout << "new root : " << this->_root->key.first << '\n';
+                    // std::cout << "root___right : " << root->right->key.second << '\n';
                 }
             }
             _setHeight(root);
             root = _balanceTree(root);
+            std::cout << "root && left : " << root->left->key.second << '\n';
             return (root);
         };
         // // node deletetion in tree

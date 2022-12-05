@@ -238,29 +238,29 @@ int main()
         for (it = mymap.begin(); it != mymap.end(); ++it)
             std::cout << it->first << " => " << it->second << '\n';
     }
-    {
-        ft::map<char, int> mymap;
-        ft::map<char, int>::iterator it;
+    // {
+    //     ft::map<char, int> mymap;
+    //     ft::map<char, int>::iterator it;
 
-        mymap['a'] = 10;
-        mymap['b'] = 20;
-        mymap['c'] = 30;
-        mymap['d'] = 40;
-        mymap['e'] = 50;
-        mymap['f'] = 60;
+    //     mymap['a'] = 10;
+    //     mymap['b'] = 20;
+    //     mymap['c'] = 30;
+    //     mymap['d'] = 40;
+    //     mymap['e'] = 50;
+    //     mymap['f'] = 60;
 
-        it = mymap.find('a');
-        mymap.erase(it); // erasing by iterator
+    //     it = mymap.find('a');
+    //     mymap.erase(it); // erasing by iterator
 
-        mymap.erase('c'); // erasing by key
+    //     mymap.erase('c'); // erasing by key
 
-        it = mymap.find('e');
-        mymap.erase(it, mymap.end()); // erasing by range
+    //     it = mymap.find('e');
+    //     mymap.erase(it, mymap.end()); // erasing by range
 
-        std::cout << "ft show content : " << '\n';
-        for (it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
-    }
+    //     std::cout << "ft show content : " << '\n';
+    //     for (it = mymap.begin(); it != mymap.end(); ++it)
+    //         std::cout << it->first << " => " << it->second << '\n';
+    // }
     {
         std::cout << "\n***************************************" << '\n';
         std::cout << "\n       6-1.  lower bound " << '\n';
@@ -289,21 +289,15 @@ int main()
     }
     {
         ft::map<char, int> mymap;
-        ft::map<char, int>::iterator itlow, itup;
+        // ft::map<char, int>::iterator itlow, itup;
 
         mymap['a'] = 20;
         mymap['b'] = 40;
-        mymap['c'] = 60;
+        // mymap['c'] = 60;
         mymap['d'] = 80;
-        mymap['e'] = 100;
+        // mymap['e'] = 100;
 
         mymap.printTree();
-        itlow = mymap.lower_bound('b'); // itlow points to b
-        itup = mymap.upper_bound('d');  // itup points to e (not d!)
-
-        std::cout << "\nitlow : " << itlow->first << '\n';
-        std::cout << "itup : " << itup->first << '\n';
-
         mymap.erase('b'); // erases [itlow,itup)
 
         std::cout << "ft show content : " << '\n';
