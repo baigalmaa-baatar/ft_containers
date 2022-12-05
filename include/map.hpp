@@ -161,10 +161,12 @@ namespace ft
         }
         void erase(iterator position)
         {
+
            this->_tree.remove(*position);
         }
         size_type erase(const key_type &k)
         {
+
             size_type res = size();
             this->_tree.remove(*find(k));
             return (res - size());
@@ -204,9 +206,9 @@ namespace ft
             return (iterator(this->_tree.search(k)));
         };
         size_type count(const key_type &x) const;
-        iterator lower_bound(const key_type &x);
+        iterator lower_bound(const key_type &k) { return (iterator(this->_tree.lower_bound(k))); };
         const_iterator lower_bound(const key_type &x) const;
-        iterator upper_bound(const key_type &x);
+        iterator upper_bound(const key_type &k) { return (iterator(this->_tree.upper_bound(k))); };
         const_iterator upper_bound(const key_type &x) const;
         pair<iterator, iterator>
         equal_range(const key_type &x);
