@@ -220,19 +220,19 @@ int main()
 
         // insert some values:
         mymap['a'] = 10;
-        // mymap['b'] = 20;
-        // mymap['c'] = 30;
-        // mymap['d'] = 40;
-        // mymap['e'] = 50;
-        // mymap['f'] = 60;
+        mymap['b'] = 20;
+        mymap['c'] = 30;
+        mymap['d'] = 40;
+        mymap['e'] = 50;
+        mymap['f'] = 60;
 
         it = mymap.find('a');
         mymap.erase(it); // erasing by iterator
 
-        // mymap.erase('c'); // erasing by key
+        mymap.erase('c'); // erasing by key
 
-        // it = mymap.find('e');
-        // mymap.erase(it, mymap.end()); // erasing by range
+        it = mymap.find('e');
+        mymap.erase(it, mymap.end()); // erasing by range
 
         std::cout << "std show content : " << '\n';
         for (it = mymap.begin(); it != mymap.end(); ++it)
@@ -242,25 +242,27 @@ int main()
         ft::map<char, int> mymap;
         ft::map<char, int>::iterator it;
 
-        // insert some values:
-        // mymap['1'] = 10;
-        mymap['2'] = 20;
-        // mymap['3'] = 30;
+        mymap['a'] = 10;
+        mymap['b'] = 20;
+        mymap['c'] = 30;
+        mymap['d'] = 40;
+        mymap['e'] = 50;
+        mymap['f'] = 60;
 
-        // mymap.printTree();
-        // std::cout << '\n';
-
-        it = mymap.find('2'); //ene hurtel hiisen
+        std::cout << "BEFORE deleting ft show content : " << '\n'   ;
+        for (it = mymap.begin(); it != mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+        it = mymap.find('a');
         mymap.erase(it); // erasing by iterator
 
-        // mymap.printTree();
-        // std::cout << '\n';
+        mymap.erase('c'); // erasing by key
 
-        std::cout << "ft  show content : " << '\n';
-        // for (it = mymap.begin(); it != mymap.end(); ++it)
-        //     std::cout << it->first << " => " << it->second << '\n';
-        it = mymap.begin();
-        // std::cout << it->second << '\n';
+        it = mymap.find('e');
+        mymap.erase(it, mymap.end()); // erasing by range
+
+        std::cout << "ft show content : " << '\n';
+        for (it = mymap.begin(); it != mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
     }
     // {
     //     std::cout << "\n***************************************" << '\n';

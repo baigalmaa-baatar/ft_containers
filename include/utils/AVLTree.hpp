@@ -44,14 +44,14 @@ namespace ft
 
     public:
         T key;
-        Node *parent;
-        Node *left;
-        Node *right;
+        Node* parent;
+        Node* left;
+        Node* right;
         int height;
 
     public:
-        Node() : key(){};
-        Node(T key) : key(key){};
+        Node() : key() {};
+        Node(T key) : key(key) {};
     };
 
     template <class T, class Compare, class Allocator>
@@ -72,7 +72,7 @@ namespace ft
         typedef typename node_allocator::const_pointer node_const_pointer;
         typedef typename node_allocator::size_type node_size_type;
         typedef Node<value_type> node_type;
-        typedef node_type *node_pointer;
+        typedef node_type* node_pointer;
 
     public:
         typedef typename allocator_type::reference reference;
@@ -98,7 +98,7 @@ namespace ft
 
     public:
         // Default constructor:
-        AVLTree(const key_compare &compare = key_compare(), const allocator_type &alloc = allocator_type())
+        AVLTree(const key_compare& compare = key_compare(), const allocator_type& alloc = allocator_type())
             : _compare(compare),
             _size(0)
         {
@@ -106,10 +106,12 @@ namespace ft
             this->_node_alloc = alloc;
             this->_end = this->_createNewNode(value_type());
             this->_root = this->_end;
+            this->_end->left = this->_end;
+            this->_end->right = this->_end;
         };
 
         // Destructor
-        ~AVLTree(){};
+        ~AVLTree() {};
 
         // Public
     public:
@@ -117,7 +119,7 @@ namespace ft
         {
             std::cout << "begin iterator value:" << this->_root->key.second << '\n';
             // return (iterator(getMinimum()));
-            node_type *tmp = this->_root;
+            node_type* tmp = this->_root;
             while (tmp != this->_end && tmp->left)
                 tmp = tmp->left;
             return iterator(tmp);
@@ -274,7 +276,7 @@ namespace ft
                 return (newNode);
             }
             if (!this->_compare(tmp->key.first, newNode->key.first))
-            // if (newNode->key < tmp->key)
+                // if (newNode->key < tmp->key)
             {
                 tmp->left = _insert(tmp->left, newNode);
                 if (tmp->left == newNode)
@@ -304,28 +306,41 @@ namespace ft
             if (root == ft_nullptr)
                 return (ft_nullptr);
             else if (this->_compare(key.first, root->key.first))
+            {
+                std::cout << "smaller than root " << '\n';
                 root->left = _remove(root->left, key);
+
+            }
             else if (this->_compare(root->key.first, key.first))
+            {
+                std::cout << "bigger than root " << '\n';
+
                 root->right = _remove(root->right, key);
+            }
             else
             {
+                std::cout << "this is the root node" << '\n';
+
                 if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
-                    std::cout << "no child child height:" << root->height << '\n';
-                    // root->height = 0;
-                    // root->parent = ft_nullptr;
-                    root = ft_nullptr;
-                    // this->_node_alloc.destroy(root);
-                    // this->_node_alloc.deallocate(root, 1);
-					// this->_size = 0;
-					// this->_root = this->_end;
-					// this->_end->left = this->_root;
-                    // this->_size = 0;
+                    std::cout << "ROOT PARENT:" << root->parent->key.second << '\n';
+                    if (_size > 1)
+                    {
+                    std::cout << "THIS END:" << this->_end->key.second << '\n';
+
+                        if (root->parent->left == root)
+                            root->parent->left = ft_nullptr;
+                        else if (root->parent->right == root)
+                            root->parent->right = ft_nullptr;
+                        root = ft_nullptr;
+                    }
+                    else
+                        root = this->_end;
                     return (root);
                 }
                 else if (root->left == ft_nullptr)
                 {
-                    std::cout << " right node height:" << root->height << '\n';
+                    std::cout << " !!!!!right node height:" << root->height << '\n';
 
                     node_pointer temp = root;
                     root = root->right;
@@ -337,7 +352,7 @@ namespace ft
                 }
                 else if (root->right == ft_nullptr)
                 {
-                    std::cout << " left node height:" << root->height << '\n';
+                    std::cout << " !!!!!left node height:" << root->height << '\n';
 
                     node_pointer temp = root;
                     root = root->left;
@@ -349,7 +364,7 @@ namespace ft
                 }
                 else
                 {
-                    // std::cout << "node with two children" << '\n';
+                    std::cout << "node with two children" << '\n';
                     node_pointer temp = _minValTree(root->right);
                     value_type k = temp->key;
                     _printPreOrder(root);
@@ -368,7 +383,7 @@ namespace ft
                     // std::cout << "root right:" << k.second << '\n';
                 }
             }
-            std::cout << "END no child child height:"  << '\n';
+            std::cout << "END no child child height:" << '\n';
             _setHeight(root);
             // std::cout << "here: " << root->key.second << '\n';
 
@@ -568,7 +583,7 @@ namespace ft
             }
             return (newnode);
         };
-        node_pointer insert(const value_type &key)
+        node_pointer insert(const value_type& key)
         {
             node_pointer newNode = _createNewNode(key);
             // if tree doesn't exist
@@ -592,11 +607,12 @@ namespace ft
         {
             std::cout << "this->root : " << key.first << "->" << key.second << '\n';
             this->_root = this->_remove(this->_root, key);
+            --_size; //need to check
         }
         node_pointer getMinimum() const
         {
             // std::cout << "const??" << '\n';
-            node_type *tmp = this->_root;
+            node_type* tmp = this->_root;
             while (tmp != this->_end && tmp->left)
                 tmp = tmp->left;
             // std::cout << "here" << '\n';
@@ -659,3 +675,11 @@ namespace ft
 }
 
 #endif
+
+
+
+/**
+ * _root = _end;
+                    _end->left = _end;
+                    _end->right = _end;
+*/

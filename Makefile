@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_ft_containers
+NAME = ft_containers
 SRCS = ./tester/map_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
