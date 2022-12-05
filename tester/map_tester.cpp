@@ -296,8 +296,12 @@ int main()
         // mymap['c'] = 60;
         mymap['d'] = 80;
         // mymap['e'] = 100;
-
         mymap.printTree();
+
+        std::cout << "before ft show content : " << '\n';
+
+        for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
         mymap.erase('b'); // erases [itlow,itup)
 
         std::cout << "ft show content : " << '\n';
