@@ -15,7 +15,7 @@ SRCS = ./tester/map_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
-CFLAGS	= -Wall -Wextra -Werror -std=c++98 -D NS=ft
+CFLAGS	= -g -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 RM		= rm -f
 
 all		:	$(NAME)

@@ -289,22 +289,19 @@ int main()
     }
     {
         ft::map<char, int> mymap;
-        // ft::map<char, int>::iterator itlow, itup;
+        ft::map<char, int>::iterator itlow, itup;
 
         mymap['a'] = 20;
         mymap['b'] = 40;
-        // mymap['c'] = 60;
+        mymap['c'] = 60;
         mymap['d'] = 80;
-        // mymap['e'] = 100;
-        mymap.printTree();
+        mymap['e'] = 100;
 
-        std::cout << "before ft show content : " << '\n';
-
-        for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
         mymap.erase('b'); // erases [itlow,itup)
+        mymap.erase('c'); // erases [itlow,itup)
+        mymap.erase('d'); // erases [itlow,itup)
 
-        std::cout << "ft show content : " << '\n';
+        std::cout << "std show content : " << '\n';
         for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
             std::cout << it->first << " => " << it->second << '\n';
     }
