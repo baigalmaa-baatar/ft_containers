@@ -336,7 +336,12 @@ namespace ft
                     this->_node_alloc.deallocate(root, 1);
                     }
                     else
-                        root = this->_end;
+                    {
+                        std::cout << "ELSE" << '\n';
+                        // root = this->_end;
+                        this->_node_alloc.destroy(root);
+                        this->_node_alloc.deallocate(root, 1);
+                    }
                     return (0);
                 }
                 else if (root->left == ft_nullptr)
@@ -374,12 +379,19 @@ namespace ft
                     // std::cout << "\nroot left:" << root->left->key.second << '\n';
                     // std::cout << "root :" << root->key.second << '\n';
                     // std::cout << "root right:" << k.second << '\n';
+                    node_pointer tr = root->right;
+                    node_pointer tl = root->left;
+                    node_pointer tp = root->parent;
+                    int th = root->height;
                     this->_node_alloc.construct(root, k);
+                    root->right = tr;
+                    root->left = tl;
+                    root->parent = tp;
+                    root->height = th;
                     std::cout << " AFTER construct node root:" << root->key.second << '\n';
                     std::cout << " AFTER construct node left:" << root->left->key.second << '\n';
                     // std::cout << " AFTER construct node right:" << root->right->key.second << '\n';
                     std::cout << " AFTER construct node parent:" << root->parent->key.second << '\n';
-
                     // root->key.first = k.first;
                     // root->key.second = k.second;
                     // std::cout << "two children left node height:" << _getHeight(root->left) << '\n';
