@@ -549,17 +549,7 @@ namespace ft
                 this->_end->left = this->_root;
             }
         };
-        // iterator find(const value_type &x)
-        // {
-        // }
-        // void printTree(node_pointer root) // Pre order traversal
-        // {
-        //     if (root != NULL)
-        //     {
-        //         printTree(root->left);
-        //         printTree(root->right);
-        //     }
-        // };
+
         node_pointer search(key_type key) const
         {
             if (this->_root == this->_end)
@@ -588,6 +578,7 @@ namespace ft
             }
             return (newnode);
         };
+
         node_pointer insert(const value_type& key)
         {
             node_pointer newNode = _createNewNode(key);
