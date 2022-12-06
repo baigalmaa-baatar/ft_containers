@@ -339,8 +339,17 @@ namespace ft
                     {
                         std::cout << "ELSE" << '\n';
                         // root = this->_end;
-                        this->_node_alloc.destroy(root);
-                        this->_node_alloc.deallocate(root, 1);
+                        // this->_node_alloc.destroy(root);
+                        // this->_node_alloc.deallocate(root, 1);
+                        this->_root = this->_end;
+                        root = this->_end;
+                        // iterator it_b = begin();
+                        // iterator it_e = end();
+                        // std::cout << "this begin : " << it_b->first << '\n';
+                        // std::cout << "this end : " << it_e->first << '\n';
+                        // std::cout << "this end : " << end() << '\n';
+                        // this->_node_alloc.destroy(root);
+                        // this->_node_alloc.deallocate(root, 1);
                     }
                     return (0);
                 }

@@ -271,15 +271,15 @@ int main()
         std::map<char, int>::iterator itlow, itup;
 
         mymap['a'] = 20;
-        mymap['b'] = 40;
-        mymap['c'] = 60;
-        mymap['d'] = 80;
-        mymap['a'] = 100;
+        // mymap['b'] = 40;
+        // mymap['c'] = 60;
+        // mymap['d'] = 80;
+        // mymap['a'] = 100;
 
-        itlow = mymap.lower_bound('b'); // itlow points to b
-        itup = mymap.upper_bound('d');  // itup points to e (not d!)
+        // itlow = mymap.lower_bound('b'); // itlow points to b
+        // itup = mymap.upper_bound('d');  // itup points to e (not d!)
 
-        mymap.erase(itlow, itup); // erases [itlow,itup)
+        mymap.erase('a'); // erases [itlow,itup)
 
         std::cout << "std show content : " << '\n';
         for (std::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
@@ -311,8 +311,13 @@ int main()
         // mymap.erase('d'); // erases [itlow,itup)
 
         std::cout << "std show content : " << '\n';
-        for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
+        ft::map<char, int>::iterator it_b = mymap.begin();
+        ft::map<char, int>::iterator it_e = mymap.end();
+
+        std::cout << "tester begin : " << it_b->first << '\n';
+        std::cout << "tester end : " << it_e->first << '\n';
+        // for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
+            // std::cout << it->first << " => " << it->second << '\n';
     }
     return 0;
 }
