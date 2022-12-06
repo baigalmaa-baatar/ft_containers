@@ -106,8 +106,8 @@ namespace ft
             this->_node_alloc = alloc;
             this->_end = this->_createNewNode(value_type());
             this->_root = this->_end;
-            this->_end->left = this->_end;
-            this->_end->right = this->_end;
+            // this->_end->left = this->_end;
+            // this->_end->right = this->_end;
         };
 
         // Destructor
@@ -321,7 +321,7 @@ namespace ft
             {
                 std::cout << "this is the root node" << '\n';
 
-                if (root->left == ft_nullptr && root->right == ft_nullptr)  
+                if (root->left == ft_nullptr && root->right == ft_nullptr)
                 {
                     std::cout << "ROOT PARENT:" << root->parent->key.second << '\n';
                     if (_size > 1)
@@ -332,11 +332,12 @@ namespace ft
                             root->parent->left = ft_nullptr;
                         else if (root->parent->right == root)
                             root->parent->right = ft_nullptr;
-                        root = ft_nullptr;
+                    this->_node_alloc.destroy(root);
+                    this->_node_alloc.deallocate(root, 1);
                     }
                     else
                         root = this->_end;
-                    return (root);
+                    return (0);
                 }
                 else if (root->left == ft_nullptr)
                 {
@@ -374,6 +375,11 @@ namespace ft
                     // std::cout << "root :" << root->key.second << '\n';
                     // std::cout << "root right:" << k.second << '\n';
                     this->_node_alloc.construct(root, k);
+                    std::cout << " AFTER construct node root:" << root->key.second << '\n';
+                    std::cout << " AFTER construct node left:" << root->left->key.second << '\n';
+                    // std::cout << " AFTER construct node right:" << root->right->key.second << '\n';
+                    std::cout << " AFTER construct node parent:" << root->parent->key.second << '\n';
+
                     // root->key.first = k.first;
                     // root->key.second = k.second;
                     // std::cout << "two children left node height:" << _getHeight(root->left) << '\n';
@@ -386,7 +392,6 @@ namespace ft
             std::cout << "END no child child height:" << '\n';
             _setHeight(root);
             // std::cout << "here: " << root->key.second << '\n';
-
             root = _balanceTree(root);
             return (root);
         };
@@ -483,7 +488,7 @@ namespace ft
             }
             else if (tmp->left == ft_nullptr)
             {
-                // std::cout << "set height here: " << tmp->height << '\n';
+                std::cout << "set height here: " << tmp->height << '\n';
 
                 tmp->height = 1 + tmp->right->height;
             }
