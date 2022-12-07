@@ -77,7 +77,9 @@ namespace ft
     public:
         // Constructor
         explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-            : _tree(comp, alloc), _alloc(alloc), _comp(comp) { }
+            : _tree(comp, alloc), _alloc(alloc), _comp(comp) { 
+
+            }
         // Range constructor
         template <class InputIterator>
         map(InputIterator first, InputIterator last,
@@ -93,12 +95,14 @@ namespace ft
         }
 
         // Destructor
-        ~map() { this->_tree.clear(); }
+        // ~map() { this->_tree.clear(); }
+        ~map() { }
         // Copy container content 
         map &operator=(const map &x)
         {
             if (this != &x)
             {
+
                 this->_tree.clear();
                 this->_comp = x._comp;
                 this->_alloc = x._alloc;
@@ -108,8 +112,6 @@ namespace ft
         };
         // iterators:
         iterator begin()        { 
-            // std::cout << "begin iterator value:" << '\n';
-            
             return (this->_tree.begin()); };
         const_iterator begin() const { return (this->_tree.begin()); };
         iterator end() { return (this->_tree.end()); };
@@ -125,7 +127,7 @@ namespace ft
         // element access:
         mapped_type &operator[](const key_type &k)
         {
-            return ((*((this->insert(make_pair(k,mapped_type()))).first)).second);
+            return ((*((this->insert(ft::make_pair(k,mapped_type()))).first)).second);
             // ft::pair<iterator, bool> p = insert(ft::make_pair(k, mapped_type()));
             // return (p.first->second);
         };
@@ -153,6 +155,7 @@ namespace ft
         template <class InputIterator>
         void insert(InputIterator first, InputIterator last)
         {
+
             while (first != last)
             {
                 this->_tree.insert(*first);
