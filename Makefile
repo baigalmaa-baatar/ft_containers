@@ -11,11 +11,13 @@
 # **************************************************************************** #
 
 NAME = ft_containers
-SRCS = ./tester/map_tester_erase.cpp
+# SRCS = ./tester/map_tester_erase.cpp
+SRCS = ./tester/map_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
-CFLAGS	= -g -Wall -Wextra -Werror -D TESTED_NAMESPACE=ft -fsanitize=address #-std=c++98
+# CFLAGS	= -Wall -Wextra -Werror -D TESTED_NAMESPACE=ft -std=c++98 #-fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -D NS=ft -std=c++98
 RM		= rm -f
 
 all		:	$(NAME)

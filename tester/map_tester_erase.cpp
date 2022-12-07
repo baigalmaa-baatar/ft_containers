@@ -64,47 +64,9 @@ int main(void)
         std::cout << "standard !!!!!" << '\n';
         printSize(mp);
 
-        // ft_erase(mp, ++mp.begin());
+        ft_erase(mp, ++mp.begin());
 
-        // ft_erase(mp, mp.begin());
-        ft_erase(mp, --mp.end());
-
-        // ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-        // ft_erase(mp, --(--(--mp.end())), --mp.end());
-
-        // mp[10] = "Hello";
-        // mp[11] = "Hi there";
-        // // printSize(mp);
-        // ft_erase(mp, --(--(--mp.end())), mp.end());
-
-        // mp[12] = "ONE";
-        // mp[13] = "TWO";
-        // mp[14] = "THREE";
-        // mp[15] = "FOUR";
-        // printSize(mp);
-    }
-        // ft_erase(mp, mp.begin(), mp.end());
-    {
-        std::list<T3> lst;
-        unsigned int lst_size = 10;
-        for (unsigned int i = 0; i < lst_size; ++i)
-            lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-        TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-        std::cout << "\nFT!!!!!!!!!!!!! !!!!!" << '\n';
-
-        // printSize(mp);
-        ft::map<T1, T2>::iterator it_begin = mp.begin();
-        
-        std::cout << "$$$$$$$$$$$it it_begin key is : " << it_begin->first << " it_begin value is : " << it_begin->second<<  '\n';
-
-        // ft_erase(mp, ++mp.begin());
-
-        // ft_erase(mp, mp.begin());
-        ft::map<T1, T2>::iterator it_end = mp.end();
-        --it_end;
-        std::cout << "$$$$$$$$$$$it end key is : " << it_end->first << " end value is : " << it_end->second<<  '\n';
-        printSize(mp);
-
+        ft_erase(mp, mp.begin());
         ft_erase(mp, --mp.end());
 
         ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
@@ -112,14 +74,45 @@ int main(void)
 
         mp[10] = "Hello";
         mp[11] = "Hi there";
+        // printSize(mp);
         ft_erase(mp, --(--(--mp.end())), mp.end());
 
-        // mp[12] = "ONE";
-        // mp[13] = "TWO";
-        // mp[14] = "THREE";
-        // mp[15] = "FOUR";
-        // printSize(mp);
+        mp[12] = "ONE";
+        mp[13] = "TWO";
+        mp[14] = "THREE";
+        mp[15] = "FOUR";
+        printSize(mp);
+    }
         // ft_erase(mp, mp.begin(), mp.end());
+    {
+        std::list<T3> lst;
+        unsigned int lst_size = 10;
+        for (unsigned int i = 0; i < lst_size; ++i)
+            lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
+        std::cout << "\nFT!!!!!!!!!!!!! !!!!!" << '\n';
+        TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+
+        std::cout << "standard !!!!!" << '\n';
+        printSize(mp);
+
+        ft_erase(mp, ++mp.begin());
+
+        ft_erase(mp, mp.begin());
+        ft_erase(mp, --mp.end());
+
+        ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
+        ft_erase(mp, --(--(--mp.end())), --mp.end());
+
+        mp[10] = "Hello";
+        mp[11] = "Hi there";
+        // printSize(mp);
+        ft_erase(mp, --(--(--mp.end())), mp.end());
+
+        mp[12] = "ONE";
+        mp[13] = "TWO";
+        mp[14] = "THREE";
+        mp[15] = "FOUR";
+        printSize(mp);
     }
     return (0);
 }

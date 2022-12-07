@@ -158,7 +158,7 @@ namespace ft
 		return !(lhs.base() == rhs.base());
 	}
 	template <class Node_pointer>
-	Node_pointer _minValTree(Node_pointer tmp)
+	Node_pointer minValTree(Node_pointer tmp)
 	{
 		while (tmp->left != ft_nullptr)
 			tmp = tmp->left;
@@ -166,7 +166,7 @@ namespace ft
 	};
 
 	template <class Node_pointer>
-	Node_pointer _maxValTree(Node_pointer tmp)
+	Node_pointer maxValTree(Node_pointer tmp)
 	{
 		while (tmp->right != ft_nullptr)
 			tmp = tmp->right;
@@ -177,7 +177,7 @@ namespace ft
 	Node_pointer successor(Node_pointer node)
 	{
 		if (node->right)
-			return (_minValTree(node->right));
+			return (minValTree(node->right));
 
 		Node_pointer tmp = node->parent;
 		while (tmp && tmp->right == node)
@@ -192,7 +192,7 @@ namespace ft
 	Node_pointer predecessor(Node_pointer node)
 	{
 		if (node->left)
-			return (_maxValTree(node->left));
+			return (maxValTree(node->left));
 
 		Node_pointer tmp = node->parent;
 		while (tmp && tmp->left == node)
