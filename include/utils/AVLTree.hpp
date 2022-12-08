@@ -515,16 +515,16 @@ namespace ft
             return (_node_alloc.max_size());
         };
 
-        void clear()
-        {
-            if (this->_root != this->_end)
-            {
-                _destroy(this->_root);
-                this->_size = 0;
-                this->_root = this->_end;
-                this->_end->left = this->_root;
-            }
-        };
+        // void clear()
+        // {
+        //     if (this->_root != this->_end)
+        //     {
+        //         _destroy(this->_root);
+        //         this->_size = 0;
+        //         this->_root = this->_end;
+        //         this->_end->left = this->_root;
+        //     }
+        // };
         node_pointer search(key_type key) const
         {
             return (_search(this->_root, key));

@@ -87,8 +87,7 @@ namespace ft
         {
             if (this != &x)
             {
-                // TODO: _tree.clear(); doesn't exist anymore
-                this->_tree.clear();
+                this->clear();
                 this->_comp = x._comp;
                 this->_alloc = x._alloc;
                 insert(x.begin(), x.end());
