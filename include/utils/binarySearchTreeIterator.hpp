@@ -18,41 +18,26 @@
 // #include "AVLTree.hpp"
 #include "reverseIterator.hpp"
 
+// Created here Binary Search Iterator and CONST Binary Search iterator 2 class
 namespace ft
 {
+	/**************************************************************************************/
+	/**                             Non const binary search iterator                          */
+	/**************************************************************************************/
+
 	template <class T, class Node_pointer>
 	class BinarySearchTreeIterator : public std::iterator<std::bidirectional_iterator_tag, T>
 	{
 	public:
 		typedef T iterator_type;
 		typedef std::bidirectional_iterator_tag iterator_category;
-		typedef typename iterator_traits<T*>::value_type value_type;
+		typedef typename iterator_traits<T *>::value_type value_type;
 		typedef typename iterator_traits<T>::pointer pointer;
 		typedef typename iterator_traits<T>::reference reference;
 		typedef typename iterator_traits<T>::difference_type difference_type;
-		// typedef Node<typename ft::remove_const<value_type>::type> 	*Node_pointer;
 
 	private:
 		Node_pointer _node;
-
-		Node_pointer minValue(Node_pointer node)
-		{
-			/* loop down to find the leftmost leaf */
-			while (node->left != NULL)
-			{
-				node = node->left;
-			}
-			return node;
-		}
-		Node_pointer maxValue(Node_pointer node)
-		{
-			/* loop down to find the rightmost leaf */
-			while (node->right != NULL)
-			{
-				node = node->right;
-			}
-			return node;
-		}
 
 	public:
 		BinarySearchTreeIterator() : _node(ft_nullptr) {}
@@ -91,19 +76,6 @@ namespace ft
 		{
 			this->_node = successor(this->_node);
 			return (*this);
-			// if (_node->right != NULL)
-			// 	_node = minValue(_node->right);
-			// else
-			// {
-			// 	Node_pointer par = _node->parent;
-			// 	while (_node != NULL && _node == par->right)
-			// 	{
-			// 		_node = par;
-			// 		par = par->parent;
-			// 	}
-			// 	_node = par;
-			// }
-			// return (*this);
 		}
 
 		BinarySearchTreeIterator operator++(int)
@@ -117,23 +89,6 @@ namespace ft
 			this->_node = predecessor(this->_node);
 			return (*this);
 		}; // pre-decrement
-
-		// BinarySearchTreeIterator &operator--()
-		// {
-		// 	if (_node->left != NULL && _node->left)
-		// 		_node = maxValue(_node->left);
-		// 	else
-		// 	{
-		// 		Node_pointer par = _node->parent;
-		// 		while (_node != NULL && _node == par->left)
-		// 		{
-		// 			_node = par;
-		// 			par = par->parent;
-		// 		}
-		// 		_node = par;
-		// 	}
-		// 	return (*this);
-		// }
 
 		BinarySearchTreeIterator &operator--(int)
 		{
@@ -205,6 +160,81 @@ namespace ft
 		return (tmp);
 	};
 
-	// check if other operators need to develop
+	/**************************************************************************************/
+	/**                             Const binary search iterator                          */
+	/**************************************************************************************/
+
+	template <class T, class Node_pointer>
+	class ConstBinarySearchTreeIterator : public std::iterator<std::bidirectional_iterator_tag, T>
+	{
+	public:
+		typedef T iterator_type;
+		typedef typename iterator_traits<const T *>::value_type const_value_type;
+		typedef typename iterator_traits<T>::pointer const_pointer;
+		typedef typename iterator_traits<T>::reference const_reference;
+		typedef typename iterator_traits<T>::difference_type const_difference_type;
+
+	private:
+		Node_pointer _const_node;
+
+	public:
+		ConstBinarySearchTreeIterator() : _const_node(ft_nullptr) {}
+		explicit ConstBinarySearchTreeIterator(Node_pointer node) : _const_node(node) {}
+		template <class Iterator>
+		ConstBinarySearchTreeIterator(const ConstBinarySearchTreeIterator<Iterator, Node_pointer> &obj) : _const_node(obj.base()) {}
+		// Copy operator
+		ConstBinarySearchTreeIterator &operator=(const ConstBinarySearchTreeIterator &rhs)
+		{
+			if (this == &rhs)
+				return (*this);
+			this->_const_node = rhs.node();
+			return (*this);
+		}
+		~ConstBinarySearchTreeIterator(void) {}
+		Node_pointer base() const { return (this->_const_node); };
+		const_reference operator*() const { return (this->_const_node->key); }
+		const_pointer operator->() const { return (&(operator*())); }
+		Node_pointer node() const { return _const_node; }
+		const_reference operator[](const_difference_type n) const { return (*(this->_const_node + n)); };
+
+		ConstBinarySearchTreeIterator &operator++()
+		{
+			this->_const_node = successor(this->_const_node);
+			return (*this);
+		}
+
+		ConstBinarySearchTreeIterator operator++(int)
+		{
+			ConstBinarySearchTreeIterator<const_value_type, Node_pointer> tmp = *this;
+			operator++();
+			return (tmp);
+		}
+		ConstBinarySearchTreeIterator &operator--()
+		{
+			this->_const_node = predecessor(this->_const_node);
+			return (*this);
+		}
+
+		ConstBinarySearchTreeIterator &operator--(int)
+		{
+			ConstBinarySearchTreeIterator<const_value_type, Node_pointer> tmp = *this;
+			operator--();
+			return (tmp);
+		}
+	};
+	template <class T, class Node_pointer>
+	bool operator==(
+		const ConstBinarySearchTreeIterator<T, Node_pointer> &lhs,
+		const ConstBinarySearchTreeIterator<T, Node_pointer> &rhs)
+	{
+		return (lhs.base() == rhs.base());
+	}
+	template <class T, class Node_pointer>
+	bool operator!=(
+		const ConstBinarySearchTreeIterator<T, Node_pointer> &lhs,
+		const ConstBinarySearchTreeIterator<T, Node_pointer> &rhs)
+	{
+		return !(lhs.base() == rhs.base());
+	}
 }
 #endif

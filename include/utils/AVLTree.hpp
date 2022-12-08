@@ -85,7 +85,7 @@ namespace ft
         typedef typename value_type::first_type key_type;
         typedef typename value_type::second_type mapped_type;
         typedef ft::BinarySearchTreeIterator<pointer, node_pointer> iterator;
-        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
+        typedef ft::ConstBinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
         typedef ft::reverse_iterator<iterator> reverse_iterator;
         typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -124,9 +124,9 @@ namespace ft
 
         // Public
     public:
-        iterator begin() { return (iterator(getMin())); };
-        const_iterator begin() const { return (const_iterator(getMin())); };
-
+        // iterator begin() { return (iterator(getMin())); };
+        iterator begin() { return (iterator(successor(_r_end))); };
+        const_iterator begin() const { return (const_iterator(successor(_r_end))); };
         iterator end() { return (iterator(this->_end)); };
         const_iterator end() const { return (const_iterator(this->_end)); };
 
@@ -318,7 +318,7 @@ namespace ft
                 if (tmp->right == newNode)
                     newNode->parent = tmp;
             }
-
+            
             _setHeight(tmp);
             tmp = _balanceTree(tmp);
             return (tmp);
@@ -332,7 +332,7 @@ namespace ft
             node_pointer parent = node->parent;
             if (node->left == ft_nullptr && node->right == ft_nullptr)
             {
-                // leaf
+                // this is the leaf node
                 if (parent != ft_nullptr)
                 {
                     if (parent->left == node)
@@ -585,9 +585,9 @@ namespace ft
             this->_root = temporary_root;
         }
 
-        node_pointer lower_bound(const key_type &k)
+        node_pointer lower_bound(const key_type &k) const
         {
-            node_pointer curr_node = getMin();
+            node_pointer curr_node = successor(_r_end);
 
             while (curr_node->key.first < k)
             {
@@ -600,10 +600,9 @@ namespace ft
             return (curr_node);
         }
 
-        node_pointer upper_bound(const key_type &k)
+        node_pointer upper_bound(const key_type &k) const
         {
-            node_pointer curr_node = getMin();
-
+            node_pointer curr_node = successor(_r_end);
             while (curr_node->key.first <= k)
             {
                 curr_node = successor(curr_node);
@@ -615,7 +614,7 @@ namespace ft
         node_pointer getMin(void) const
         {
             node_pointer tmp = this->_root;
-            while (tmp->left->left != ft_nullptr) // need to check it
+            while (tmp->left != ft_nullptr) // need to check it
                 tmp = tmp->left;
             return (tmp);
         }

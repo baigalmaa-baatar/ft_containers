@@ -118,26 +118,15 @@ namespace ft
     public:
         iterator begin()
         {
-            std::cout << "begin iterator value:" << '\n';
-            
-            // return (iterator(getMinimum()));
             node_type* tmp = this->_root;
             while (tmp != this->_end && tmp->left)
                 tmp = tmp->left;
             return iterator(tmp);
         }
-        const_iterator begin() const
-        {
-            return (const_iterator(getMinimum()));
-        }
+        const_iterator begin() const { return (const_iterator(getMinimum()));}
         iterator end() { return (iterator(this->_end)); };
         const_iterator end() const { return (const_iterator(this->_end)); };
-        reverse_iterator rbegin()
-        {
-            // std::cout << "root:" << this->_root->key.first << "->" << this->_root->key.second << '\n';
-            // std::cout << "root right :" << this->_root->right->key.first << "->" << this->_root->right->key.second << '\n';
-            return reverse_iterator(end());
-        };
+        reverse_iterator rbegin() { return reverse_iterator(end()); };
         const_reverse_iterator rbegin() const { return (const_reverse_iterator(end())); };
         reverse_iterator rend() { return reverse_iterator(begin()); };
         const_reverse_iterator rend() const { return const_reverse_iterator(begin()); };

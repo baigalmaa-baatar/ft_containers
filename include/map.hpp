@@ -149,7 +149,7 @@ namespace ft
         {
             iterator it = find(k);
             if (it == end())
-                return size();
+                return (0);
 
             size_type res = size();
             this->_tree.remove(*it);
@@ -182,8 +182,8 @@ namespace ft
 
         // 23.3.1.3 map operations:
         iterator find(const key_type &k) { return (iterator(this->_tree.search(k))); };
-        const_iterator find(const key_type &k) const { return (iterator(this->_tree.search(k))); };
-        size_type count(const key_type &k) const { return (find(k)->first) ? 1 : 0; }
+        const_iterator find(const key_type &k) const { return (const_iterator(this->_tree.search(k))); };
+        size_type count(const key_type &k) const { return (find(k)!=this->end()) ? 1 : 0; }
         iterator lower_bound(const key_type &k) { return (iterator(this->_tree.lower_bound(k))); };
         const_iterator lower_bound(const key_type &k) const { return (const_iterator(this->_tree.lower_bound(k))); };
         iterator upper_bound(const key_type &k) { return (iterator(this->_tree.upper_bound(k))); };

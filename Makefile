@@ -17,7 +17,7 @@ SRCS = ./tester/map_tester.cpp
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++
 # CFLAGS	= -Wall -Wextra -Werror -D TESTED_NAMESPACE=ft -std=c++98 #-fsanitize=address
-CFLAGS	= -Wall -Wextra -Werror -D NS=ft -std=c++98
+CFLAGS	= -g -Wall -Wextra -Werror -D NS=ft -std=c++98 
 RM		= rm -f
 
 all		:	$(NAME)

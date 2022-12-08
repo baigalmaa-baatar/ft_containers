@@ -28,7 +28,6 @@ namespace ft
         typedef pointer iterator_type;
         // this is for std::functions ask Marwa
         typedef std::random_access_iterator_tag iterator_category;
-fa
 
     public:
         RandomAccessIterator(void) : _ptr(ft_nullptr)

@@ -110,29 +110,27 @@ int main()
         for (s_it = second.begin(); s_it != second.end(); ++s_it)
             std::cout << s_it->first << " => " << s_it->second << '\n';
     }
-    // {
-    //     ft::map<char, int> first;
-    //     ft::map<char, int> second;
+    {
+        ft::map<char, int> first;
+        ft::map<char, int> second;
 
-    //     first['x'] = 8;
-    //     first['y'] = 16;
-    //     first['z'] = 32;
+        first['x'] = 8;
+        first['y'] = 16;
+        first['z'] = 32;
 
-    //     second = first;                // second now contains 3 ints
+        second = first;                // second now contains 3 ints
+        first = ft::map<char, int>(); // and first is now empty //need to fix
 
-    //     first = ft::map<char, int>(); // and first is now empty //need to fix
-    //     std::cout << "Size of first: " << first.size() << '\n';
-    //     std::cout << "Size of second: " << second.size() << '\n';
-
-    //     ft::map<char, int>::iterator s_it = second.begin();
-
-    //     std::cout << '\n';
-    //     std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-    //     std::cout << "FT mymap contains:\n";
-    //     std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-    //     for (s_it = second.begin(); s_it != second.end(); ++s_it)
-    //         std::cout << s_it->first << " => " << s_it->second << '\n';
-    // }
+        std::cout << "Size of first: " << first.size() << '\n';
+        std::cout << "Size of second: " << second.size() << '\n';
+        ft::map<char, int>::iterator s_it = second.begin();
+        std::cout << '\n';
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        std::cout << "FT mymap contains:\n";
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        for (s_it = second.begin(); s_it != second.end(); ++s_it)
+            std::cout << s_it->first << " => " << s_it->second << '\n';
+    }
 
     {
         std::cout << "\n***************************************" << '\n';
