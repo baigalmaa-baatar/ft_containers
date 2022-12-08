@@ -118,7 +118,7 @@ int main()
         first['y'] = 16;
         first['z'] = 32;
 
-        second = first;                // second now contains 3 ints
+        second = first;               // second now contains 3 ints
         first = ft::map<char, int>(); // and first is now empty //need to fix
 
         std::cout << "Size of first: " << first.size() << '\n';
@@ -845,10 +845,73 @@ int main()
     }
     {
         std::cout << "\n***************************************" << '\n';
-        std::cout << "\n       17. lexicographical_compare" << '\n';
+        std::cout << "\n       17. comp const iterator" << '\n';
         std::cout << "\n                   " << '\n';
         std::cout << "\n***************************************" << '\n';
 
+        std::map<char, float> mp;
+
+        mp['a'] = 2.3;
+        mp['b'] = 1.4;
+        mp['c'] = 0.3;
+        mp['d'] = 4.2;
+
+        std::map<char, float>::const_iterator it1 = mp.begin();
+        std::map<char, float>::const_iterator it2 = mp.begin();
+
+        for (it1 = mp.begin(); it1 != mp.end(); ++it1)
+        {
+            for (it2 = mp.begin(); it2 != mp.end(); ++it2)
+            {
+                std::cout << "it1 : << " << it1->first << " => " << it1->second << '\n';
+                std::cout << "it2 : << " << it2->first << " => " << it2->second << '\n';
+            }
+        }
     }
+    {
+        std::cout << "\n***************************************" << '\n';
+        std::cout << "\n       17. comp const iterator" << '\n';
+        std::cout << "\n                   " << '\n';
+        std::cout << "\n***************************************" << '\n';
+
+        std::map<int, std::string> mp2;
+
+        // mp.insert(std::pair<int, std::string>(42, "lol"));
+        // mp.insert(std::pair<int, std::string>(42, "mdr"));
+        // mp.insert(std::pair<int, std::string>(50, "mdr"));
+        // mp.insert(std::pair<int, std::string>(35, "funny"));
+        // mp.insert(std::pair<int, std::string>(45, "bunny"));
+        // mp.insert(std::pair<int, std::string>(21, "fizz"));
+        mp2.insert(mp2.begin(), std::pair<int, std::string>(21, "fizz"));
+        mp2.insert(mp2.begin(), std::pair<int, std::string>(1337, "beauty"));
+        mp2.insert(mp2.begin(), std::pair<int, std::string>(1000, "Hello"));
+        mp2.insert(mp2.begin(), std::pair<int, std::string>(1500, "World"));
+        
+        std::cout << '\n';
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        std::cout << "STD mymap contains:\n";
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        std::cout << "mymap contains:\n";
+        for (std::map<int, std::string>::iterator it = mp2.begin(); it != mp2.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+    }
+    {
+        ft::map<int, std::string> mp2;
+        ft::map<int, std::string>::iterator it1 = mp2.begin();
+
+        mp2.insert(mp2.begin(), ft::pair<int, std::string>(21, "fizz"));
+        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1337, "beauty"));
+        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1000, "Hello"));
+        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1500, "World"));
+        
+        std::cout << '\n';
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        std::cout << "STD mymap contains:\n";
+        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+        std::cout << "mymap contains:\n";
+        for (ft::map<int, std::string>::iterator it = mp2.begin(); it != mp2.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+    }
+
     return 0;
 }

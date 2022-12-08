@@ -85,7 +85,8 @@ namespace ft
         typedef typename value_type::first_type key_type;
         typedef typename value_type::second_type mapped_type;
         typedef ft::BinarySearchTreeIterator<pointer, node_pointer> iterator;
-        typedef ft::ConstBinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
+        // typedef ft::ConstBinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
+        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
         typedef ft::reverse_iterator<iterator> reverse_iterator;
         typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -318,7 +319,7 @@ namespace ft
                 if (tmp->right == newNode)
                     newNode->parent = tmp;
             }
-            
+
             _setHeight(tmp);
             tmp = _balanceTree(tmp);
             return (tmp);
@@ -530,14 +531,23 @@ namespace ft
             return (_search(this->_root, key));
         };
 
-        node_pointer insert_pos(node_pointer pos, T key)
+        node_pointer insert_pos(node_pointer position, T key)
         {
             node_pointer newnode = _createNewNode(key);
-            ++this->_size;
-            this->_root = _insert(pos, newnode);
-            // printPreOrder();
-            return newnode;
-        };
+            if (position == this->_end)
+            {
+                position = newnode;
+                position->parent = this->_end;
+                this->_end->left = position;
+                ++this->_size;
+            }
+            else
+            {
+                ++this->_size;
+                position = _insert(position, newnode);
+            }
+            return (newnode);
+        }
 
         node_pointer insert(const value_type &key)
         {
