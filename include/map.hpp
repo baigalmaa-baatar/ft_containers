@@ -14,7 +14,7 @@
 #define MAP_HPP
 #include "./utils/binarySearchTreeIterator.hpp"
 #include "./utils/reverseIterator.hpp"
-#include "./utils/AVLTree.hpp"
+#include "./utils/aVLTree.hpp"
 
 namespace ft
 {
