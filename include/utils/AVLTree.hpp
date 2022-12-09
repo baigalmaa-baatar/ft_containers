@@ -614,6 +614,7 @@ namespace ft
             }
             return (curr_node);
         }
+        allocator_type get_allocator() const{ return (_node_alloc); }
         node_pointer getMin(void) const
         {
             node_pointer tmp = this->_root;

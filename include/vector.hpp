@@ -149,14 +149,19 @@ namespace ft
            typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       // difference_type n = last - first;
-      size_type n = size_type(last - first);
+      //size_type n = size_type(last - first);
+      size_type n = 0;
+      for (InputIterator it = first; it != last; it++)
+        n++;
+
       _start = _allocator.allocate(n);
       _finish = _start;
       _end_of_storage = _start + n;
       while (n--)
       {
-        _allocator.construct(_finish, *(_finish));
+        _allocator.construct(_finish, *(first));
         _finish++;
+        first++;
       }
     }
 
@@ -168,10 +173,18 @@ namespace ft
 
     vector(const vector &other)
     {
-      this->_allocator = other._allocator;
-      this->_start = other._start;
-      this->_finish = other._finish;
-      this->_end_of_storage = other._end_of_storage;
+      const_iterator first = other.begin();
+      const_iterator last = other.end();
+      size_type n = size_type(last - first);
+      _start = _allocator.allocate(n);
+      _finish = _start;
+      _end_of_storage = _start + n;
+      while (n--)
+      {
+        _allocator.construct(_finish, *(first));
+        _finish++;
+        first++;
+      }
     }
     // /**
     //  * Destructor
@@ -198,12 +211,12 @@ namespace ft
         _start = _allocator.allocate(this->capacity());
       }
       _finish = _start;
+      _end_of_storage = _start + n;
       while (n--)
       {
         _allocator.construct(_finish, val);
         _finish++;
       }
-      _end_of_storage = _start + n;
     }
 
     template <class InputIterator>
@@ -211,7 +224,11 @@ namespace ft
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       this->clear();
-      size_type n = size_type(last - first);
+      // size_type n = size_type(last - first);
+      size_type n = 0;
+      for (InputIterator it = first; it != last; it++)
+        n++;
+
       if (n > this->capacity())
       {
         _start = _allocator.allocate(n);
@@ -354,10 +371,14 @@ namespace ft
     }
     const_reference at(size_type n) const
     {
+      if (size() <= n || n < 0)
+        throw std::out_of_range("out of range");
       return (*(_start + n));
     }
     reference at(size_type n)
     {
+      if (size() <= n || n < 0)
+        throw std::out_of_range("out of range");
       return (*(_start + n));
     }
     reference front()
@@ -401,24 +422,8 @@ namespace ft
     {
       _allocator.destroy(_finish--);
     }
-    /**
-     *  @brief  Inserts given rvalue into %vector before specified iterator.
-     *  @param  position  A const_iterator into the %vector.
-     *  @param  val  Data to be inserted.
-     *  @return  An iterator that points to the inserted data.
-     *
-     *  This function will insert a copy of the given rvalue before
-     *  the specified location.  Note that this kind of operation
-     *  could be expensive for a %vector and if it is frequently
-     *  used the user should consider using std::list.
-     */
-    iterator insert(iterator position, const T &val)
-    {
-      this->insert(position, 1, val);
-      return (++position);
-    }
 
-    void insert(iterator position, size_type insert_size, const T &val)
+    iterator _insert(iterator position, size_type insert_size, const T &val)
     {
       const size_type n = &(*position) - _start;
       pointer new_start;
@@ -449,6 +454,29 @@ namespace ft
       _start = new_start;
       _finish = new_finish;
       _end_of_storage = new_end_of_storage;
+
+      return iterator(_start + n);
+    }
+
+    /**
+     *  @brief  Inserts given rvalue into %vector before specified iterator.
+     *  @param  position  A const_iterator into the %vector.
+     *  @param  val  Data to be inserted.
+     *  @return  An iterator that points to the inserted data.
+     *
+     *  This function will insert a copy of the given rvalue before
+     *  the specified location.  Note that this kind of operation
+     *  could be expensive for a %vector and if it is frequently
+     *  used the user should consider using std::list.
+     */
+    iterator insert(iterator position, const T &val)
+    {
+      return this->_insert(position, 1, val);
+    }
+
+    void insert(iterator position, size_type insert_size, const T &val)
+    {
+      _insert(position, insert_size, val);
     }
 
     template <class InputIterator>
@@ -456,7 +484,11 @@ namespace ft
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       const size_type n = &(*position) - _start;
-      size_type insert_size = another_last - another_first;
+      // size_type insert_size = another_last - another_first;
+      size_type insert_size = 0;
+      for (InputIterator it = another_first; it != another_last; it++)
+        insert_size++;
+
       pointer new_start;
       pointer new_finish = _finish;
       pointer new_end_of_storage;
@@ -492,7 +524,7 @@ namespace ft
     {
       pointer new_start = _start;
       size_type n = &(*position) - _start;
-      for (size_type i = 0; i < this->size() - n; i++)
+      for (size_type i = 0; i < this->size() - n - 1; i++)
       {
         _allocator.construct((&(*position) + i), *(&(*position) + i + 1));
         _allocator.destroy((&(*position) + i));
