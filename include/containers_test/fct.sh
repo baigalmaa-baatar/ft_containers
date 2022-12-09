@@ -17,7 +17,7 @@ CC="clang++"
 CFLAGS="-Wall -Wextra -Werror -std=c++98"
 # CFLAGS+=" -fsanitize=address -g3"
 
-ft_compile_output="logs/compile.log"
+ft_compile_output="/dev/null"
 std_compile_output="/dev/null"
 
 function pheader () {
@@ -156,7 +156,6 @@ cmp_one () {
 do_test () {
 	# 1=container_name
 	test_files=$(find "${srcs}/${1}" -type f -name '*.cpp' | sort)
-	test_files="srcs/map/ite_n1.cpp"
 
 	for file in ${test_files[@]}; do
 		cmp_one "${file}"

@@ -20,7 +20,7 @@ namespace ft
   /**
    * generic template
    */
-  template <class T, class Alloc = std::allocator<T>>
+  template <class T, class Alloc = std::allocator<T> >
   class vector
   {
   public:
@@ -288,13 +288,26 @@ namespace ft
       return (Alloc().max_size());
     }
 
-    void resize(size_type n, value_type val = value_type())
-    {
-    } //ene hurtel hiisen.
     /**
      *  Returns the total number of elements that the vector can
      *  hold before needing to allocate more memory.
      */
+    void resize(size_type n, value_type val = value_type())
+    {
+      if (n > this->max_size())
+        throw(std::length_error("vector::resize"));
+      else if (n < this->size())
+      {
+        while (this->size() > n)
+        {
+          --_finish;
+          _allocator.destroy(_finish);
+        }
+      }
+      else
+        this->insert(this->end(), n - this->size(), val);
+    }
+
     size_type capacity() const
     {
       return size_type(_end_of_storage - _start);
@@ -554,42 +567,38 @@ namespace ft
   }
 
   template <typename T>
-  bool operator<(vector<T> const &lhs, vector<T> const &rhs)
-  {
-    // return (lhs < rhs)); not like this
-    //check for every elments
-  }
-
-  template <typename T>
   bool operator!=(vector<T> const &lhs, vector<T> const &rhs)
   {
     return (!(lhs == rhs));
   }
-
   template <typename T>
-  bool operator>(vector<T> const &lhs, vector<T> const &rhs)
+  bool operator<(const vector<T> &lhs, const vector<T> &rhs)
   {
-    return (lhs > rhs));
+    return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
   }
 
   template <typename T>
-  bool operator>=(vector<T> const &lhs, vector<T> const &rhs)
+  bool operator<=(const vector<T> &lhs, const vector<T> &rhs)
   {
-    return (!(lhs < rhs)));// not like this
-    //check for every elments
-
+    return (!(rhs < lhs));
   }
 
   template <typename T>
-  bool operator<=(vector<T> const &lhs, vector<T> const &rhs)
+  bool operator>(const vector<T> &lhs, const vector<T> &rhs)
   {
-    return (!(lhs > rhs));
+    return (rhs < lhs);
   }
 
   template <typename T>
-  void swap(vector<T> const &lhs, vector<T> const &rhs)
+  bool operator>=(const vector<T> &lhs, const vector<T> &rhs)
   {
-    lhs.swap(rhs);
+    return (!(lhs < rhs));
+  }
+
+  template <typename T>
+  void swap(vector<T> &x, vector<T> &y)
+  {
+    x.swap(y);
   }
 }
 

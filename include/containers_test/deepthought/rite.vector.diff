@@ -1,24 +1,8 @@
-1,23d0
-< size: 5
-< capacity: OK
-< max_size: 4611686018427387903
-< 
-< Content is:
-< - 5
-< - 10
-< - 15
-< - 20
-< - 25
-< ###############################################
-< 1
-< 0
-< 10
-< 15
-< 20
-< 20
-< TEST OFFSET
-< 15
-< 20
-< 15
-< 20
-< 25
+12a13
+> calling here a -= n
+14a16
+> calling here --a
+18a21
+> calling here --a
+20a24
+> calling here --a

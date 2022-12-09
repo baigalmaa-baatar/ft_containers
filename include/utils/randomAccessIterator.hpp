@@ -29,6 +29,8 @@ namespace ft
         // this is for std::functions ask Marwa
         typedef std::random_access_iterator_tag iterator_category;
 
+    protected:
+        pointer _ptr;
     public:
         RandomAccessIterator(void) : _ptr(ft_nullptr)
         {
