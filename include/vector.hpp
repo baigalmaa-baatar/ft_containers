@@ -546,6 +546,7 @@ namespace ft
     {
       pointer new_start = _start;
       size_type n = &(*last) - &(*first);
+      std::cout << "the gap is : " << n  << '\n';
       for (size_type i = 0; i < this->size() - n; i++)
       {
         _allocator.construct((&(*first) + i), *(&(*first) + i + n));
@@ -554,7 +555,7 @@ namespace ft
       for (size_type i = 0; i < n; i++)
       {
         _allocator.destroy(_finish);
-        _finish--;
+        --_finish;
       }
       _start = new_start;
       return (iterator(_start + n));

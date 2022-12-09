@@ -62,6 +62,11 @@ namespace ft
             // std::cout << "calling here *a=t" << '\n';
             return (*_ptr);
         }
+        reference operator*() const
+        {
+            // std::cout << "calling here *a=t" << '\n';
+            return (*_ptr);
+        }
         pointer operator->() const
         {
             return &(operator*());
@@ -153,6 +158,12 @@ namespace ft
             return (RandomAccessIterator<const T>(this->_ptr));
         }
     };
+    template <typename A>
+    bool operator==(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<A> &rhs)
+    {
+        return (lhs.base() == rhs.base());
+    }
+    //const iterator
     template <typename A, typename B>
     bool operator==(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
@@ -168,26 +179,25 @@ namespace ft
     template <typename A, typename B>
     bool operator>(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
-        return &(*lhs) > &(*rhs);
+        return (lhs.base() > rhs.base());
     }
 
     template <typename A, typename B>
     bool operator<(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
-        // return &(*lhs) < &(*rhs);
         return (lhs.base() < rhs.base());
     }
 
     template <typename A, typename B>
     bool operator<=(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
-        return &(*lhs) <= &(*rhs);
+        return (lhs.base() <= rhs.base());
     }
 
     template <typename A, typename B>
     bool operator>=(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
-        return &(*lhs) >= &(*rhs);
+        return (lhs.base() >= rhs.base());
     }
 
     template <typename A, typename B>
@@ -199,7 +209,7 @@ namespace ft
     template <typename A, typename B>
     typename ft::RandomAccessIterator<A>::difference_type operator+(const ft::RandomAccessIterator<A> &lhs, const ft::RandomAccessIterator<B> &rhs)
     {
-        return &(*lhs) + &(*rhs);
+        return (lhs.base() + rhs.base());
     }
 
     template <typename L>
@@ -208,6 +218,13 @@ namespace ft
         return (iter + a);
     }
 
+    template <typename A>
+    typename ft::RandomAccessIterator<A>::difference_type
+    operator-(const ft::RandomAccessIterator<A> lhs,
+              const ft::RandomAccessIterator<A> rhs)
+    {
+        return (lhs.base() - rhs.base());
+    }
     template <typename L>
     ft::RandomAccessIterator<L> operator-(const typename ft::RandomAccessIterator<L>::difference_type &a, const ft::RandomAccessIterator<L> &iter)
     {

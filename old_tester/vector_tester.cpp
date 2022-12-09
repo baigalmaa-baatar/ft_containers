@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 #include <vector> // std::vector
 #include "../include/vector.hpp"
 
@@ -38,6 +39,38 @@ void comparisonFunc(std::string testName, int std, int ft)
     std::cout << "✅" << '\n';
   else
     std::cout << "❌" << '\n';
+}
+
+template <typename Ite_1, typename Ite_2>
+void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
+{
+  std::cout << (first < second) << std::endl;
+  std::cout << (first <= second) << std::endl;
+  std::cout << (first > second) << std::endl;
+  std::cout << (first >= second) << std::endl;
+  if (redo)
+    ft_eq_ope(second, first, 0);
+}
+
+void checkEraseSTD(std::vector<std::string> const &vct,
+                   std::vector<std::string>::const_iterator const &it)
+{
+  static int i = 0;
+  std::cout << "[" << i++ << "] "
+            << "before it: " << *it << '\t'
+            << "before vct.begin(): " << *vct.begin() << '\n'
+            << "erase: " << it - vct.begin() << std::endl;
+  // printSize(vct);
+}
+void checkErase(ft::vector<std::string> const &vct,
+                ft::vector<std::string>::const_iterator const &it)
+{
+  static int i = 0;
+  std::cout << "[" << i++ << "] "
+            << "before it: " << *it << '\t'
+            << "before vct.begin(): " << *vct.begin() << '\n'
+            << "erase: " << it - vct.begin() << std::endl;
+  // printSize(vct);
 }
 
 void nonMemberComparison(std::string testName, bool std, bool ft)
@@ -1124,5 +1157,262 @@ int main(void)
     for (it = vct.begin(); it != vct.end(); ++it)
       std::cout << "AFTER vector memebers are :" << *it << '\n';
   }
-  return 0;
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      12. iterator arrow test" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+
+  //   const int size = 5;
+  //   std::vector<int> vct(size);
+  //   std::vector<int>::iterator it(vct.begin());
+  //   std::vector<int>::const_iterator ite(vct.end());
+
+  //   for (int i = 1; it != ite; ++i)
+  //     *it++ = i;
+
+  //   it = vct.begin();
+  //   ite = vct.begin();
+
+  //   std::cout << *(++ite) << std::endl;
+  //   std::cout << *(ite++) << std::endl;
+  //   std::cout << *ite++ << std::endl;
+  //   std::cout << *++ite << std::endl;
+
+  //   it->m();
+  //   ite->m();
+
+  //   std::cout << *(++it) << std::endl;
+  //   std::cout << *(it++) << std::endl;
+  //   std::cout << *it++ << std::endl;
+  //   std::cout << *++it << std::endl;
+
+  //   std::cout << *(--ite) << std::endl;
+  //   std::cout << *(ite--) << std::endl;
+  //   std::cout << *--ite << std::endl;
+  //   std::cout << *ite-- << std::endl;
+
+  //   (*it).m();
+  //   (*ite).m();
+
+  //   std::cout << *(--it) << std::endl;
+  //   std::cout << *(it--) << std::endl;
+  //   std::cout << *it-- << std::endl;
+  //   std::cout << *--it << std::endl;
+  // }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      13. reverse iterator" << '\n';
+    std::cout << "\n***************************************" << '\n';
+    const int size = 5;
+    std::vector<int> vct(size);
+    std::vector<int>::reverse_iterator it = vct.rbegin();
+    std::vector<int>::const_reverse_iterator ite = vct.rbegin();
+
+    for (int i = 0; i < size; ++i)
+      it[i] = (size - i) * 5;
+
+    it = it + 5;
+    it = 1 + it;
+    it = it - 4;
+    std::cout << *(it += 2) << std::endl;
+    std::cout << *(it -= 1) << std::endl;
+
+    *(it -= 2) = 42;
+    *(it += 2) = 21;
+
+    std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+  }
+  {
+    const int size = 5;
+    ft::vector<int> vct(size);
+    ft::vector<int>::reverse_iterator it = vct.rbegin();
+    ft::vector<int>::const_reverse_iterator ite = vct.rbegin();
+
+    for (int i = 0; i < size; ++i)
+      it[i] = (size - i) * 5;
+
+    it = it + 5;
+    it = 1 + it;
+    it = it - 4;
+    std::cout << *(it += 2) << std::endl;
+    std::cout << *(it -= 1) << std::endl;
+
+    *(it -= 2) = 42;
+    *(it += 2) = 21;
+
+    std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+  }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      14. reverse iterator - 2" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    const int size = 5;
+    std::vector<int> vct(size);
+    std::vector<int>::reverse_iterator it_0(vct.rbegin());
+    std::vector<int>::reverse_iterator it_1(vct.rend());
+    std::vector<int>::reverse_iterator it_mid;
+
+    std::vector<int>::const_reverse_iterator cit_0 = vct.rbegin();
+    std::vector<int>::const_reverse_iterator cit_1;
+    std::vector<int>::const_reverse_iterator cit_mid;
+
+    for (int i = size; it_0 != it_1; --i)
+      *it_0++ = i;
+    it_0 = vct.rbegin();
+    cit_1 = vct.rend();
+    it_mid = it_0 + 3;
+    cit_mid = it_0 + 3;
+    cit_mid = cit_0 + 3;
+    cit_mid = it_mid;
+
+    std::cout << std::boolalpha;
+    std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
+
+    std::cout << "\t\tft_eq_ope:" << std::endl;
+    // regular it
+    ft_eq_ope(it_0 + 3, it_mid);
+    ft_eq_ope(it_0, it_1);
+    ft_eq_ope(it_1 - 3, it_mid);
+    // const it
+    ft_eq_ope(cit_0 + 3, cit_mid);
+    ft_eq_ope(cit_0, cit_1);
+    ft_eq_ope(cit_1 - 3, cit_mid);
+    // both it
+    ft_eq_ope(it_0 + 3, cit_mid);
+    ft_eq_ope(it_mid, cit_0 + 3);
+    ft_eq_ope(it_0, cit_1);
+    ft_eq_ope(it_1, cit_0);
+    ft_eq_ope(it_1 - 3, cit_mid);
+    ft_eq_ope(it_mid, cit_1 - 3);
+  }
+  {
+    const int size = 5;
+    ft::vector<int> vct(size);
+    ft::vector<int>::reverse_iterator it_0(vct.rbegin());
+    ft::vector<int>::reverse_iterator it_1(vct.rend());
+    ft::vector<int>::reverse_iterator it_mid;
+
+    ft::vector<int>::const_reverse_iterator cit_0 = vct.rbegin();
+    ft::vector<int>::const_reverse_iterator cit_1;
+    ft::vector<int>::const_reverse_iterator cit_mid;
+
+    for (int i = size; it_0 != it_1; --i)
+      *it_0++ = i;
+    it_0 = vct.rbegin();
+    cit_1 = vct.rend();
+    it_mid = it_0 + 3;
+    cit_mid = it_0 + 3;
+    cit_mid = cit_0 + 3;
+    cit_mid = it_mid;
+
+    std::cout << std::boolalpha;
+    std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
+
+    std::cout << "\t\tft_eq_ope:" << std::endl;
+    // regular it
+    ft_eq_ope(it_0 + 3, it_mid);
+    ft_eq_ope(it_0, it_1);
+    ft_eq_ope(it_1 - 3, it_mid);
+    // const it
+    ft_eq_ope(cit_0 + 3, cit_mid);
+    ft_eq_ope(cit_0, cit_1);
+    ft_eq_ope(cit_1 - 3, cit_mid);
+    // both it
+    ft_eq_ope(it_0 + 3, cit_mid);
+    ft_eq_ope(it_mid, cit_0 + 3);
+    ft_eq_ope(it_0, cit_1);
+    ft_eq_ope(it_1, cit_0);
+    ft_eq_ope(it_1 - 3, cit_mid);
+    ft_eq_ope(it_mid, cit_1 - 3);
+  }
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      15. bidirectional iterator" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+
+  //   std::list<int> lst;
+  //   std::list<int>::iterator lst_it;
+  //   for (int i = 1; i < 5; ++i)
+  //     lst.push_back(i * 3);
+
+  //   std::vector<int> vct(lst.begin(), lst.end());
+  //   // printSize(vct);
+
+  //   lst_it = lst.begin();
+  //   for (int i = 1; lst_it != lst.end(); ++i)
+  //     *lst_it++ = i * 5;
+  //   vct.assign(lst.begin(), lst.end());
+  //   // printSize(vct);
+
+  //   vct.insert(vct.end(), lst.rbegin(), lst.rend());
+  //   // printSize(vct);
+  // }
+  {
+    std::cout << "\n***************************************" << '\n';
+    std::cout << "\n      16. erase-string" << '\n';
+    std::cout << "\n***************************************" << '\n';
+
+    std::vector<std::string> vct(10);
+
+    for (unsigned long int i = 0; i < vct.size(); ++i)
+      vct[i] = std::string((vct.size() - i), i + 65);
+
+    checkEraseSTD(vct, vct.erase(vct.begin() + 2));
+
+    checkEraseSTD(vct, vct.erase(vct.begin()));
+    checkEraseSTD(vct, vct.erase(vct.end() - 1));
+
+    checkEraseSTD(vct, vct.erase(vct.begin(), vct.begin() + 3));
+    checkEraseSTD(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+    vct.push_back("Hello");
+    vct.push_back("Hi there");
+    // printSize(vct);
+    checkEraseSTD(vct, vct.erase(vct.end() - 3, vct.end()));
+
+    vct.push_back("ONE");
+    vct.push_back("TWO");
+    vct.push_back("THREE");
+    vct.push_back("FOUR");
+    checkEraseSTD(vct, vct.erase(vct.begin(), vct.end()));
+  }
+  {
+    std::cout << "FT!!!!!!!!!" << '\n';
+    ft::vector<std::string> vct(10);
+
+    for (unsigned long int i = 0; i < vct.size(); ++i)
+      vct[i] = std::string((vct.size() - i), i + 65);
+
+    checkErase(vct, vct.erase(vct.begin() + 2));
+
+    checkErase(vct, vct.erase(vct.begin()));
+    checkErase(vct, vct.erase(vct.end() - 1));
+
+    // << "erase: " << it - vct.begin() << std::endl;
+    // std::cout << "it:" << it - vct.begin() << '\n';
+    
+    checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+    checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+    vct.push_back("Hello");
+    vct.push_back("Hi there");
+    // printSize(vct);
+    checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+    vct.push_back("ONE");
+    vct.push_back("TWO");
+    vct.push_back("THREE");
+    vct.push_back("FOUR");
+    checkErase(vct, vct.erase(vct.begin(), vct.end()));
+  }
+return 0;
 }
