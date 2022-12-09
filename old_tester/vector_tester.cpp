@@ -354,11 +354,11 @@ int main(void)
     // ft_vector1.erase(ft_vector1.begin(), ft_vector1.begin() + 3);
 
     std::cout << "std: " << '\t';
-    for (std::vector<int>::iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
+    for (std::vector<int>::const_iterator it = std_vector1.begin(); it < std_vector1.end(); it++)
       std::cout << ' ' << *it;
     std::cout << '\n';
     std::cout << " ft: " << '\t';
-    for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
+    for (ft::vector<int>::const_iterator ft_it = ft_vector1.begin(); ft_it < ft_vector1.end(); ft_it++)
       std::cout << ' ' << *ft_it;
     std::cout << '\n';
 
@@ -1010,45 +1010,119 @@ int main(void)
       std::cout << ' ' << myvector[i];
     std::cout << '\n';
   }
+  // {
+  //   std::cout << "\n***************************************" << '\n';
+  //   std::cout << "\n      10.  assign" << '\n';
+  //   std::cout << "\n***************************************" << '\n';
+
+  //   ft::vector<int> vct(7);
+  //   ft::vector<int> vct_two(4);
+  //   ft::vector<int> vct_three;
+  //   ft::vector<int> vct_four;
+
+  //   for (unsigned long int i = 0; i < vct.size(); ++i)
+  //     vct[i] = (vct.size() - i) * 3;
+  //   for (unsigned long int i = 0; i < vct_two.size(); ++i)
+  //     vct_two[i] = (vct_two.size() - i) * 5;
+  //   // printSize(vct);
+  //   // printSize(vct_two);
+
+  //   vct_three.assign(vct.begin(), vct.end());
+  //   vct.assign(vct_two.begin(), vct_two.end());
+  //   vct_two.assign(2, 42);
+  //   vct_four.assign(4, 21);
+
+  //   std::cout << "\t### After assign(): ###" << std::endl;
+
+  //   // printSize(vct);
+  //   // printSize(vct_two);
+  //   // printSize(vct_three);
+  //   // printSize(vct_four);
+
+  //   vct_four.assign(6, 84);
+  //   // printSize(vct_four);
+
+  //   std::cout << "\t### assign() on enough capacity and low size: ###" << std::endl;
+
+  //   vct.assign(5, 53);
+  //   vct_two.assign(vct_three.begin(), vct_three.begin() + 3);
+
+  //   // printSize(vct);
+  //   // printSize(vct_two);
+  // }
   {
     std::cout << "\n***************************************" << '\n';
-    std::cout << "\n      10.  assign" << '\n';
+    std::cout << "\n      11.  iterator" << '\n';
     std::cout << "\n***************************************" << '\n';
-    
-    ft::vector<int> vct(7);
-    ft::vector<int> vct_two(4);
-    ft::vector<int> vct_three;
-    ft::vector<int> vct_four;
 
-    for (unsigned long int i = 0; i < vct.size(); ++i)
-      vct[i] = (vct.size() - i) * 3;
-    for (unsigned long int i = 0; i < vct_two.size(); ++i)
-      vct_two[i] = (vct_two.size() - i) * 5;
-    // printSize(vct);
-    // printSize(vct_two);
+    const int size = 5;
+    std::vector<int> vct(size);
+    std::vector<int>::iterator it = vct.begin();
+    std::vector<int>::const_iterator ite = vct.begin();
 
-    vct_three.assign(vct.begin(), vct.end());
-    vct.assign(vct_two.begin(), vct_two.end());
-    vct_two.assign(2, 42);
-    vct_four.assign(4, 21);
+    for (int i = 0; i < size; ++i)
+      it[i] = (size - i) * 5;
+    // prepost_incdec(vct);
+    for (it = vct.begin(); it != vct.end(); ++it)
+      std::cout << "vector memebers are :" << *it << '\n';
 
-    std::cout << "\t### After assign(): ###" << std::endl;
+    it = it + 5;
+    it = 1 + it;
+    it = it - 4;
+    std::cout << *(it += 2) << std::endl;
+    std::cout << *(it -= 1) << std::endl;
 
-    // printSize(vct);
-    // printSize(vct_two);
-    // printSize(vct_three);
-    // printSize(vct_four);
+    *(it -= 2) = 42;
+    std::cout << "MIDDLE vector iterators are :" << *it << '\n';
 
-    vct_four.assign(6, 84);
-    // printSize(vct_four);
+    *(it += 2) = 21;
+    std::cout << "MIDDLE vector iterators are :" << *it << '\n';
 
-    std::cout << "\t### assign() on enough capacity and low size: ###" << std::endl;
+    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
+    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
 
-    vct.assign(5, 53);
-    vct_two.assign(vct_three.begin(), vct_three.begin() + 3);
+    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
 
-    // printSize(vct);
-    // printSize(vct_two);
+    for (it = vct.begin(); it != vct.end(); ++it)
+      std::cout << "AFTER vector memebers are :" << *it << '\n';
+
+    // printSize(vct, true);
+  }
+  {
+    const int size = 5;
+    ft::vector<int> vct(size);
+    ft::vector<int>::iterator it = vct.begin();
+    ft::vector<int>::const_iterator ite = vct.begin();
+
+    for (int i = 0; i < size; ++i)
+      it[i] = (size - i) * 5;
+    // prepost_incdec(vct);
+    for (it = vct.begin(); it != vct.end(); ++it)
+      std::cout << "vector memebers are :" << *it << '\n';
+
+    it = it + 5;
+    it = 1 + it;
+    it = it - 4;
+    std::cout << *(it += 2) << std::endl;
+    std::cout << *(it -= 1) << std::endl;
+
+    *(it -= 2) = 42;
+    std::cout << "MIDDLE vector iterators are :" << *it << '\n';
+
+    *(it += 2) = 21;
+    std::cout << "MIDDLE vector iterators are :" << *it << '\n';
+
+    std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
+    std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
+
+    std::cout << "(it == const_it): " << (ite == it) << std::endl;
+    std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+    std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+    for (it = vct.begin(); it != vct.end(); ++it)
+      std::cout << "AFTER vector memebers are :" << *it << '\n';
   }
   return 0;
 }

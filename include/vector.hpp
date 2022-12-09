@@ -63,7 +63,7 @@ namespace ft
     /**
      * A random access iterator to const value_type
      */
-    typedef typename ft::RandomAccessIterator<const value_type> const_iterator;
+    typedef ft::RandomAccessIterator<const value_type> const_iterator;
 
     /**
      * reverse_iterator<iterator>
@@ -171,21 +171,30 @@ namespace ft
     //  * in the same order.
     //  */
 
-    vector(const vector &other)
-    {
-      const_iterator first = other.begin();
-      const_iterator last = other.end();
-      size_type n = size_type(last - first);
-      _start = _allocator.allocate(n);
-      _finish = _start;
-      _end_of_storage = _start + n;
-      while (n--)
-      {
-        _allocator.construct(_finish, *(first));
-        _finish++;
-        first++;
-      }
-    }
+    // vector(const vector &other)
+    // {
+    //   const_iterator first = other.begin();
+    //   const_iterator last = other.end();
+    //   size_type n = size_type(last - first);
+    //   _start = _allocator.allocate(n);
+    //   _finish = _start;
+    //   _end_of_storage = _start + n;
+    //   while (n--)
+    //   {
+    //     _allocator.construct(_finish, *(first));
+    //     _finish++;
+    //     first++;
+    //   }
+    // }
+    vector (const vector& other)
+			:
+				_allocator(other._allocator),
+				_start(ft_nullptr),
+				_finish(ft_nullptr),
+				_end_of_storage(ft_nullptr)
+			{
+				this->insert(this->begin(), other.begin(), other.end());
+			}
     // /**
     //  * Destructor
     //  */
