@@ -14,7 +14,7 @@
 #define MAP_HPP
 #include "./utils/binarySearchTreeIterator.hpp"
 #include "./utils/reverseIterator.hpp"
-#include "./utils/aVLTree.hpp"
+#include "./utils/AVLTree.hpp"
 
 namespace ft
 {
@@ -125,6 +125,13 @@ namespace ft
 
         iterator insert(iterator pos, const value_type &val)
         {
+            if (pos == end())
+                return (insert(val).first);
+
+            iterator it = iterator(this->_tree.search(val.first));
+            if (it != end())
+                return (it);
+
             Node_ptr node = pos.base();
             if (val.first > predecessor(node)->key.first && val.first < successor(node)->key.first)
                 pos = iterator(this->_tree.insert_pos(node, val));
@@ -138,7 +145,10 @@ namespace ft
         {
             while (first != last)
             {
-                this->_tree.insert(*first);
+                iterator it = iterator(this->_tree.search(first->first));
+                if (it == end())
+                    this->_tree.insert(*first);
+
                 first++;
             };
         }
@@ -199,7 +209,7 @@ namespace ft
     template <class Key, class T, class Compare, class Allocator>
     bool operator<(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs) { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); };
     template <class Key, class T, class Compare, class Allocator>
-    bool operator>=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs) { return (!(rhs < lhs)); };
+    bool operator>=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs) { return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); };
     template <class Key, class T, class Compare, class Allocator>
     bool operator>(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs) { return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end())); };
     template <class Key, class T, class Compare, class Allocator>

@@ -534,18 +534,11 @@ namespace ft
         node_pointer insert_pos(node_pointer position, T key)
         {
             node_pointer newnode = _createNewNode(key);
-            if (position == this->_end)
-            {
-                position = newnode;
-                position->parent = this->_end;
-                this->_end->left = position;
-                ++this->_size;
-            }
+            ++this->_size;
+            if (position == _root)
+                this->_root = _insert(this->_root, newnode);
             else
-            {
-                ++this->_size;
-                position = _insert(position, newnode);
-            }
+                _insert(position, newnode);
             return (newnode);
         }
 

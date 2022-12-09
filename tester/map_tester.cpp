@@ -20,6 +20,24 @@
 #ifndef NS
 #define NS = ft
 #endif
+static unsigned int i = 0;
+
+#define T1 char
+#define T2 float
+typedef ft::map<T1, T2> _map;
+typedef _map::const_iterator const_it;
+
+void ft_comp(const _map &mp, const const_it &it1, const const_it &it2)
+{
+    bool res[2];
+
+    std::cout << "\t-- [" << ++i << "] --" << std::endl;
+    res[0] = mp.key_comp()(it1->first, it2->first);
+    res[1] = mp.value_comp()(*it1, *it2);
+    std::cout << "with [" << it1->first << " and " << it2->first << "]: ";
+    std::cout << "key_comp: " << res[0] << " | "
+              << "value_comp: " << res[1] << std::endl;
+}
 
 bool fncomp(char lhs, char rhs) { return lhs < rhs; }
 
@@ -870,23 +888,17 @@ int main()
     }
     {
         std::cout << "\n***************************************" << '\n';
-        std::cout << "\n       17. comp const iterator" << '\n';
+        std::cout << "\n       18. comp const iterator" << '\n';
         std::cout << "\n                   " << '\n';
         std::cout << "\n***************************************" << '\n';
 
         std::map<int, std::string> mp2;
 
-        // mp.insert(std::pair<int, std::string>(42, "lol"));
-        // mp.insert(std::pair<int, std::string>(42, "mdr"));
-        // mp.insert(std::pair<int, std::string>(50, "mdr"));
-        // mp.insert(std::pair<int, std::string>(35, "funny"));
-        // mp.insert(std::pair<int, std::string>(45, "bunny"));
-        // mp.insert(std::pair<int, std::string>(21, "fizz"));
         mp2.insert(mp2.begin(), std::pair<int, std::string>(21, "fizz"));
         mp2.insert(mp2.begin(), std::pair<int, std::string>(1337, "beauty"));
         mp2.insert(mp2.begin(), std::pair<int, std::string>(1000, "Hello"));
         mp2.insert(mp2.begin(), std::pair<int, std::string>(1500, "World"));
-        
+
         std::cout << '\n';
         std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
         std::cout << "STD mymap contains:\n";
@@ -895,23 +907,62 @@ int main()
         for (std::map<int, std::string>::iterator it = mp2.begin(); it != mp2.end(); ++it)
             std::cout << it->first << " => " << it->second << '\n';
     }
+    // {
+    //     ft::map<int, std::string> mp2;
+    //     ft::map<int, std::string>::iterator it1 = mp2.begin();
+
+    //     mp2.insert(mp2.begin(), ft::pair<int, std::string>(21, "fizz"));
+    //     mp2.insert(mp2.begin(), ft::pair<int, std::string>(1337, "beauty"));
+    //     mp2.insert(mp2.begin(), ft::pair<int, std::string>(1000, "Hello"));
+    //     mp2.insert(mp2.begin(), ft::pair<int, std::string>(1500, "World"));
+
+    //     std::cout << '\n';
+    //     std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+    //     std::cout << "STD mymap contains:\n";
+    //     std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+    //     std::cout << "mymap contains:\n";
+    //     for (ft::map<int, std::string>::iterator it = mp2.begin(); it != mp2.end(); ++it)
+    //         std::cout << it->first << " => " << it->second << '\n';
+    // }
     {
-        ft::map<int, std::string> mp2;
-        ft::map<int, std::string>::iterator it1 = mp2.begin();
+        std::cout << "\n***************************************" << '\n';
+        std::cout << "\n       19. const iterator" << '\n';
+        std::cout << "\n                   " << '\n';
+        std::cout << "\n***************************************" << '\n';
 
-        mp2.insert(mp2.begin(), ft::pair<int, std::string>(21, "fizz"));
-        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1337, "beauty"));
-        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1000, "Hello"));
-        mp2.insert(mp2.begin(), ft::pair<int, std::string>(1500, "World"));
-        
-        std::cout << '\n';
-        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-        std::cout << "STD mymap contains:\n";
-        std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
-        std::cout << "mymap contains:\n";
-        for (ft::map<int, std::string>::iterator it = mp2.begin(); it != mp2.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
+        // std::map<char, float> mp;
+
+        // mp['a'] = 2.3;
+        // mp['b'] = 1.4;
+        // mp['c'] = 0.3;
+        // mp['d'] = 4.2;
+
+        // // mp.printTree();
+        // for (std::map<char, float>::const_iterator it1 = mp.begin(); it1 != mp.end(); ++it1)
+        // {
+        //     for (std::map<char, float>::const_iterator it2 = mp.begin(); it2 != mp.end(); ++it2)
+        //     {
+        //         ft_comp(mp, it1, it2);
+        //     }
+        // }
     }
+    {
+        ft::map<char, float> mp;
 
+        mp['a'] = 2.3;
+        mp['b'] = 1.4;
+        mp['c'] = 0.3;
+        mp['d'] = 4.2;
+
+        // mp.printTree();
+        for (ft::map<char, float>::const_iterator it1 = mp.begin(); it1 != mp.end(); ++it1)
+        {
+            for (ft::map<char, float>::const_iterator it2 = mp.begin(); it2 != mp.end(); ++it2)
+            {
+                ft_comp(mp, it1, it2);
+            }
+        }
+
+    }
     return 0;
 }
