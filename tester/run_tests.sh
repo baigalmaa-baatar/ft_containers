@@ -103,9 +103,9 @@ function testing_performance {
 	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
 
     printf "\nRunning performance test STD -> "
-    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD performance.cpp && ./a.out > std_per_out.log & spinner)
+    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD performance.cpp && ./a.out > std_per_output.log & spinner)
     printf "\nRunning performance test FT -> "
-    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} performance.cpp && ./a.out > ft_per_out.log & spinner)
+    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} performance.cpp && ./a.out > ft_per_output.log & spinner)
     printf "\nPerformance test executed\n"
 }
 
