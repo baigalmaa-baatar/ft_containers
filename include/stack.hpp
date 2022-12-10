@@ -39,8 +39,18 @@ namespace ft
         /**
          * Default constructor
          */
-        explicit stack(const Container & = Container())
+        explicit stack(const container_type& cont = container_type()) : _container(cont)
         {
+        }
+        //Copy constructor
+        stack(const stack& other) : _container(other._container)
+        {
+        }
+        //operator =
+        stack& operator=(const stack &other)
+        {
+            this->_container = other._container;
+            return (*this);
         }
 
         /**

@@ -1,38 +1,19 @@
 #!/bin/bash
 
-vector_path='..'
-map_path='../map.hpp'
-stack_path='..'
-
-NORMAL=$(tput sgr0)
-BLACK=$(tput setaf 0)
-RED=$(tput setaf 160)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-POWDER_BLUE=$(tput setaf 153)
-BLUE=$(tput setaf 4)
-MAGENTA=$(tput setaf 5)
-CYAN=$(tput setaf 6)
-WHITE=$(tput setaf 7)
-BRIGHT=$(tput bold)
-BLINK=$(tput blink)
-REVERSE=$(tput smso)
-UNDERLINE=$(tput smul)
+vector_path='../include/vector.hpp'
+map_path='../include/map.hpp'
+stack_path='../include/stack.hpp'
 
 function title {
     echo ""
-    echo -e "⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅"
-    echo -e "⛅                                                  ⛅"
-    echo -e "⛅             FT_CONTAINERS TESTER                 ⛅"
-    echo -e "⛅                                                  ⛅"
-    echo -e "⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅⛅"
+    echo -e "⛅ !!!!!! FT_CONTAINERS TESTER !!!!! ⛅"
     echo ""
 }
 
 function spinner {
 
     # char=(⣾⣽⣻⢿⡿⣟⣯⣷)
-    char=(▁▂▃▄▅▆▇█▇▆▅▄▃▂▁)
+    char=(▌▀▐▄)
     delay=0.1
     pid=$!
     i=0
@@ -48,47 +29,50 @@ function spinner {
     echo " "
 }
 
-function testing_vector {
-    printf "${BRIGHT}${POWDER_BLUE}\n/* ************************************************************************** */\n"
-	printf "/*                                  VECTOR                                    */\n"
-    printf "/* ************************************************************************** */\n${NORMAL}"
-    printf "\n\U1F4D8 Running tests with the STL... "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -DSTL vector_tests.cpp && ./a.out > vector_stl_output.log & spinner) 
-    printf "\n\U1F530 Running tests with your vector... "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -I ${vector_path} vector_tests.cpp && ./a.out > vector_your_output.log & spinner) 
-    printf "\n\U1F440 Comparing both outputs...\n"
-    if diff vector_stl_output.log vector_your_output.log
+function testing_stack {
+	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅🔅🔅🔅🔅🔅       Testing stack          🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+
+    printf "\nRunning tests with the STD container -> "
+    c++ -Wall -Werror -Wextra -std=c++98 -DSTD stack_tester.cpp && ./a.out > stack_std_output.log & spinner
+    printf "\nRunning tests with FT container ->"
+    c++ -Wall -Werror -Wextra -std=c++98 -I ${stack_path} stack_tester.cpp && ./a.out > stack_ft_output.log & spinner
+    printf "\nComparing both outputs...\n"
+    printf "Comparing the log files : \n"
+    if diff stack_std_output.log stack_ft_output.log
     then
-        printf "${BRIGHT}\n>>> VECTOR TESTS CLEAR \u2705\n"
-        rm -rf vector*.log
+        printf "STACK FILES COMPARASION PASSED!✅\n"
+        # rm -rf stack*.log
     else
-        printf "${BRIGHT}\n>>> VECTOR TESTS KO \u274C\n"
-        printf "Compare both log files for more details.\n"
+        printf "STACK FILES COMPARASION FAILED!❌\n"
+        printf "Check log files.\n"
+    rm -rf a.out    
     fi
-    echo "${NORMAL}"
 }
 
-function testing_stack {
-    printf "${BRIGHT}${POWDER_BLUE}\n/* ************************************************************************** */\n"
-	printf "/*                                   STACK                                    */\n"
-    printf "/* ************************************************************************** */\n${NORMAL}"
-    printf "\n\ Running tests with the STL... "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -DSTL stack_tests.cpp && ./std_map.o > stack_stl_output.log & spinner) 
-    printf "\n\ Running tests with your stack... "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -I ${stack_path} stack_tests.cpp && ./ft_map.o > stack_your_output.log & spinner) 
-    printf "\n\U1F4D8 Comparing STD container's result with FT container's resutl"
-    if comp std_map.o ft_map.o
+function testing_vector {
+	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅🔅🔅🔅🔅🔅       Testing vector         🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+
+    printf "\nRunning tests with the STD container -> "
+    c++ -Wall -Werror -Wextra -std=c++98 -DSTD vector_tester.cpp && ./a.out > vector_std_output.log & spinner
+    mv a.out std_vector.o
+    printf "\nRunning tests with FT container ->"
+    c++ -Wall -Werror -Wextra -std=c++98 -I ${vector_path} vector_tester.cpp && ./a.out > vector_ft_output.log & spinner
+    mv a.out ft_vector.o
+    printf "\nComparing both outputs...\n"
+    printf "Comparing the log files : \n"
+    if diff vector_std_output.log vector_ft_output.log
     then
-        printf "${BRIGHT}\n>>> MAP TESTS BINARY RESULTS ARE SAME \u2705\n"
-    # if diff stack_stl_output.log stack_your_output.log
-    # then
-        printf "${BRIGHT}\n>>> STACK TESTS CLEAR \u2705\n"
-        rm -rf stack*.log
+        printf "VECTOR LOG FILES COMPARASION PASSED!✅\n"
+        # rm -rf vector*.log
     else
-        printf "${BRIGHT}\n>>> STACK TESTS KO \u274C\n"
-        printf "Compare both log files for more details.\n"
+        printf "VECTOR LOG FILES COMPARASION FAILED!❌\n"
+        printf "Check log files.\n"
+    rm -rf a.out
     fi
-    echo "${NORMAL}"
 }
 
 function testing_map {
@@ -97,25 +81,15 @@ function testing_map {
 	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
 
     printf "\nRunning tests with the STD container -> "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -DSTD map_tester.cpp && ./a.out > map_stl_output.log & spinner)
-    mv a.out std_map.o
+    c++ -std=c++98 -Wall -Werror -Wextra -DSTD map_tester.cpp && ./a.out > map_std_output.log & spinner
     printf "\nRunning tests with FT container ->"
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -I ${map_path} map_tester.cpp && ./a.out > map_ft_output.log & spinner)
-    mv a.out ft_map.o
+    c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} map_tester.cpp && ./a.out > map_ft_output.log & spinner
     printf "\nComparing both outputs...\n"
-    if cmp -l std_map.o std_map.o
-    then
-        printf "${YELLOW}\n>>> MAP BINARY COMPARASION PASSED!✅\n"
-        rm -rf std_map.o
-        rm -rf ft_map.o
-    else
-        printf "${YELLOW}\n>>> MAP BINARY COMPARASION FAILED!❌\n"
-    fi
     printf "Comparing the log files : \n"
-    if diff map_stl_output.log map_ft_output.log
+    if diff map_std_output.log map_ft_output.log
     then
         printf "${YELLOW}\n>>> MAP LOG FILES COMPARASION PASSED!✅\n"
-        rm -rf map*.log
+        # rm -rf map*.log
     else
         printf "${YELLOW}\n>>> MAP LOG FILES COMPARASION FAILED!❌\n"
         printf "Check log files.\n"
@@ -123,48 +97,32 @@ function testing_map {
     echo "${NORMAL}"
 }
 
-function performance_test {
+function testing_performance {
 	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅       Performance test            🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅🔅🔅🔅🔅🔅       Performance test       🔅🔅🔅🔅🔅🔅\n"
 	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
 
-    printf "\nRunning performance test -> "
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra performance_test.cpp && ./a.out & spinner)
-    mv a.out std_map.o
-    printf "\nRunning tests with FT container ->"
-    time (g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra -I ${map_path} performance_test.cpp && ./a.out & spinner)
-    mv a.out ft_map.o
-    printf "\nComparing both outputs...\n"
-    if cmp -l std_map.o ft_map.o
-    then
-        printf "${BRIGHT}\n>>> MAP BINARY COMPARASION PASSED!✅\n"
-        rm -rf std_map.o
-        rm -rf ft_map.o
-    else
-        printf "${BRIGHT}\n>>> MAP BINARY COMPARASION FAILED!❌\n"
-    fi
-    printf "Comparing the log files : \n"
-    if diff map_stl_output.log map_ft_output.log
-    then
-        printf "${BRIGHT}\n>>> MAP LOG FILES COMPARASION PASSED!✅\n"
-        rm -rf map*.log
-    else
-        printf "${BRIGHT}\n>>> MAP LOG FILES COMPARASION FAILED!❌\n"
-        printf "Check log files.\n"
-    fi
-    echo "${NORMAL}"
+    printf "\nRunning performance test STD -> "
+    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD performance.cpp && ./a.out > std_per_out.log & spinner)
+    printf "\nRunning performance test FT -> "
+    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} performance.cpp && ./a.out > ft_per_out.log & spinner)
+    printf "\nPerformance test executed\n"
 }
 
 title
-if [  "$1" == "vector" ]; then
-    testing_vector
-elif [  "$1" == "stack" ]; then
+if [  "$1" == "stack" ]; then
     testing_stack
+elif [  "$1" == "vector" ]; then
+    testing_vector
 elif [  "$1" == "map" ]; then
     testing_map
+elif [  "$1" == "per" ]; then
+    testing_performance
 else
-    testing_vector
     testing_stack
+    testing_vector
     testing_map
+    testing_performance    
 fi
 rm -f a.out
+rm -rf *output.log

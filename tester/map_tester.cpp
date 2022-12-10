@@ -22,7 +22,7 @@
 	#include <map>
 	namespace ft = std;
 #else
-	#include "../map.hpp"
+	#include "../include/map.hpp"
 #endif
 
 static unsigned int i = 0;
@@ -544,8 +544,6 @@ void testing_comp_const_iterator()
 
 int main(void)
 {
-    // srand(SEED);
-
     std::cout << "Map test starts:" << std::endl;
 
     testing_constructors();
@@ -560,7 +558,6 @@ int main(void)
     testing_find();
     testing_count();
     testing_bounds();
-    // testing_getalloc();
     testing_iterator();
     testing_iterator2();
     testing_iterator3();

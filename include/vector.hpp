@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
-#include "./utils/randomAccessIterator.hpp"
-#include "./utils/reverseIterator.hpp"
-#include <vector>
+#include "utils/randomAccessIterator.hpp"
+#include "utils/reverseIterator.hpp"
 
 namespace ft
 {
@@ -149,7 +148,7 @@ namespace ft
            typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       // difference_type n = last - first;
-      //size_type n = size_type(last - first);
+      // size_type n = size_type(last - first);
       size_type n = 0;
       for (InputIterator it = first; it != last; it++)
         n++;
@@ -186,19 +185,23 @@ namespace ft
     //     first++;
     //   }
     // }
-    vector (const vector& other)
-			:
-				_allocator(other._allocator),
-				_start(ft_nullptr),
-				_finish(ft_nullptr),
-				_end_of_storage(ft_nullptr)
-			{
-				this->insert(this->begin(), other.begin(), other.end());
-			}
+    vector(const vector &other)
+        : _allocator(other._allocator),
+          _start(ft_nullptr),
+          _finish(ft_nullptr),
+          _end_of_storage(ft_nullptr)
+    {
+      this->insert(this->begin(), other.begin(), other.end());
+    }
     // /**
     //  * Destructor
     //  */
-    ~vector() {}
+    ~vector()
+    {
+      this->clear();
+      if (this->capacity())
+        _allocator.deallocate(_start, this->capacity());
+    }
 
     vector &operator=(const vector &other)
     {
@@ -511,7 +514,8 @@ namespace ft
       }
       for (size_type j = 0; j < insert_size; j++)
       {
-        _allocator.construct(new_start + n + j, *(another_first + j));
+        _allocator.construct(new_start + n + j, *another_first);
+        another_first++;
       }
       for (size_type k = 0; k < (this->size() - n); k++)
       {
@@ -546,7 +550,6 @@ namespace ft
     {
       pointer new_start = _start;
       size_type n = &(*last) - &(*first);
-      std::cout << "the gap is : " << n  << '\n';
       for (size_type i = 0; i < this->size() - n; i++)
       {
         _allocator.construct((&(*first) + i), *(&(*first) + i + n));
@@ -558,7 +561,7 @@ namespace ft
         --_finish;
       }
       _start = new_start;
-      return (iterator(_start + n));
+      return (first);
     }
     void swap(vector &other)
     {
