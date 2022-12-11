@@ -120,7 +120,7 @@ elif [  "$1" == "map" ]; then
     testing_map
 elif [  "$1" == "vec_per" ]; then
     perf_vector
-elif [  "$1" == "vec_map" ]; then
+elif [  "$1" == "map_per" ]; then
     perf_map
 else
     testing_stack

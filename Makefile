@@ -12,8 +12,8 @@
 
 NAME = ft_containers
 # SRCS = ./tester/stack_tester.cpp 
-SRCS = ./tester/vector_tester.cpp 
-# SRCS = ./tester/map_tester.cpp
+# SRCS = ./tester/vector_tester.cpp 
+SRCS = ./tester/map_tester.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 CC		= c++

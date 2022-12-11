@@ -611,16 +611,6 @@ void testing_irerator()
   for (it = vct.begin(); it != vct.end(); ++it)
     std::cout << "vector memebers are :" << *it << '\n';
 
-  it = it + 5;
-  it = 1 + it;
-  it = it - 4;
-
-  *(it -= 2) = 42;
-  std::cout << "MIDDLE vector iterators are :" << *it << '\n';
-
-  *(it += 2) = 21;
-  std::cout << "MIDDLE vector iterators are :" << *it << '\n';
-
   std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
   std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
 

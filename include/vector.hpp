@@ -136,19 +136,16 @@ namespace ft
         _finish++;
       }
     }
-
-    // /**
-    //  * 3. Range constructor
-    //  * Constructs a container with as many elements as the range [first,last),
-    //  * with each element constructed from its corresponding element in that range,
-    //  * in the same order.
-    //  */
+    /**
+     * 3. Range constructor
+     * Constructs a container with as many elements as the range [first,last),
+     * with each element constructed from its corresponding element in that range,
+     * in the same order.
+     */
     template <class InputIterator>
     vector(InputIterator first, InputIterator last,
            typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
-      // difference_type n = last - first;
-      // size_type n = size_type(last - first);
       size_type n = 0;
       for (InputIterator it = first; it != last; it++)
         n++;
@@ -163,28 +160,11 @@ namespace ft
         first++;
       }
     }
-
-    // /**
-    //  * 4. Copy constructor
-    //  * Constructs a container with a copy of each of the elements in other,
-    //  * in the same order.
-    //  */
-
-    // vector(const vector &other)
-    // {
-    //   const_iterator first = other.begin();
-    //   const_iterator last = other.end();
-    //   size_type n = size_type(last - first);
-    //   _start = _allocator.allocate(n);
-    //   _finish = _start;
-    //   _end_of_storage = _start + n;
-    //   while (n--)
-    //   {
-    //     _allocator.construct(_finish, *(first));
-    //     _finish++;
-    //     first++;
-    //   }
-    // }
+    /**
+     * 4. Copy constructor
+     * Constructs a container with a copy of each of the elements in other,
+     * in the same order.
+     */
     vector(const vector &other)
         : _allocator(other._allocator),
           _start(ft_nullptr),
@@ -193,16 +173,15 @@ namespace ft
     {
       this->insert(this->begin(), other.begin(), other.end());
     }
-    // /**
-    //  * Destructor
-    //  */
+    /**
+     * Destructor
+     */
     ~vector()
     {
       this->clear();
       if (this->capacity())
         _allocator.deallocate(_start, this->capacity());
     }
-
     vector &operator=(const vector &other)
     {
       if (other == *this)
@@ -216,38 +195,33 @@ namespace ft
       this->clear();
       if (n > this->capacity())
       {
+        if (_start)
+          _allocator.deallocate(_start, this->capacity());
         _start = _allocator.allocate(n);
-      }
-      else
-      {
-        _start = _allocator.allocate(this->capacity());
+        _end_of_storage = _start + n;
       }
       _finish = _start;
-      _end_of_storage = _start + n;
       while (n--)
       {
         _allocator.construct(_finish, val);
         _finish++;
       }
     }
-
     template <class InputIterator>
     void assign(InputIterator first, InputIterator last,
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       this->clear();
-      // size_type n = size_type(last - first);
       size_type n = 0;
       for (InputIterator it = first; it != last; it++)
         n++;
 
       if (n > this->capacity())
       {
+        if (_start)
+          _allocator.deallocate(_start, this->capacity());
         _start = _allocator.allocate(n);
-      }
-      else
-      {
-        _start = _allocator.allocate(this->capacity());
+        _end_of_storage = _start + n;
       }
       _finish = _start;
       while (first != last)
@@ -258,65 +232,19 @@ namespace ft
       }
       _end_of_storage = _start + n;
     }
-    /**
-     *  @brief  Assigns a given value to a %vector.
-     *  @param  __n  Number of elements to be assigned.
-     *  @param  __val  Value to be assigned.
-     *
-     *  This function fills a %vector with @a __n copies of the given
-     *  value.  Note that the assignment completely changes the
-     *  %vector and that the resulting %vector's size is the same as
-     *  the number of elements assigned.
-     */
-
-    allocator_type get_allocator() const
-    {
-      return (this->_allocator);
-    }
-
+    allocator_type get_allocator() const                { return (this->_allocator);}
     // iterators:
-    iterator begin()
-    {
-      return (iterator(this->_start));
-    }
-    const_iterator begin() const
-    {
-      return (const_iterator(this->_start));
-    }
-    iterator end()
-    {
-      return (iterator(this->_finish));
-    }
-    const_iterator end() const
-    {
-      return (const_iterator(this->_finish));
-    }
-    reverse_iterator rbegin()
-    {
-      return (reverse_iterator(end()));
-    }
-    const_reverse_iterator rbegin() const
-    {
-      return (const_reverse_iterator(end()));
-    }
-    reverse_iterator rend()
-    {
-      return (reverse_iterator(begin()));
-    }
-    const_reverse_iterator rend() const
-    {
-      return (const_reverse_iterator(begin()));
-    }
-    // 23.2.4.2 capacity:
-    size_type size() const
-    {
-      return size_type(this->_finish - this->_start);
-    }
-    size_type max_size() const
-    {
-      return (Alloc().max_size());
-    }
-
+    iterator begin()                                    {return (iterator(this->_start));}
+    const_iterator begin() const                        { return (const_iterator(this->_start));}
+    iterator end()                                      { return (iterator(this->_finish));}
+    const_iterator end() const                          { return (const_iterator(this->_finish));}
+    reverse_iterator rbegin()                           { return (reverse_iterator(end()));}
+    const_reverse_iterator rbegin() const               { return (const_reverse_iterator(end())); }
+    reverse_iterator rend()                             { return (reverse_iterator(begin()));}
+    const_reverse_iterator rend() const                 { return (const_reverse_iterator(begin()));}
+    // capacity:
+    size_type size() const                              { return size_type(this->_finish - this->_start);}
+    size_type max_size() const                          { return (Alloc().max_size());}
     /**
      *  Returns the total number of elements that the vector can
      *  hold before needing to allocate more memory.
@@ -373,14 +301,8 @@ namespace ft
       }
     }
     // element access:
-    reference operator[](size_type n)
-    {
-      return (*(_start + n));
-    }
-    const_reference operator[](size_type n) const
-    {
-      return (*(_start + n));
-    }
+    reference operator[](size_type n)                     { return (*(_start + n));}
+    const_reference operator[](size_type n) const         { return (*(_start + n));}
     const_reference at(size_type n) const
     {
       if (size() <= n || n < 0)
@@ -393,22 +315,10 @@ namespace ft
         throw std::out_of_range("out of range");
       return (*(_start + n));
     }
-    reference front()
-    {
-      return (*(_start));
-    }
-    const_reference front() const
-    {
-      return (*(_start));
-    }
-    reference back()
-    {
-      return (*(_finish - 1));
-    }
-    const_reference back() const
-    {
-      return (*(_finish - 1));
-    }
+    reference front()                                     { return (*(_start));}
+    const_reference front() const                         { return (*(_start));}
+    reference back()                                      { return (*(_finish - 1));}
+    const_reference back() const                          { return (*(_finish - 1));}
     /*
     ** @brief Add new element at the end of the vector.
     ** The content of "val" is copied (moved) to the new element.
@@ -429,12 +339,7 @@ namespace ft
       _allocator.construct(_finish, val);
       _finish++;
     }
-
-    void pop_back()
-    {
-      _allocator.destroy(_finish--);
-    }
-
+    void pop_back()                                       { _allocator.destroy(--_finish);}
     iterator _insert(iterator position, size_type insert_size, const T &val)
     {
       const size_type n = &(*position) - _start;
@@ -469,27 +374,17 @@ namespace ft
 
       return iterator(_start + n);
     }
+    iterator insert(iterator position, const T &val)                    { return this->_insert(position, 1, val);}
 
-    iterator insert(iterator position, const T &val)
-    {
-      return this->_insert(position, 1, val);
-    }
-
-    void insert(iterator position, size_type insert_size, const T &val)
-    {
-      _insert(position, insert_size, val);
-    }
-
+    void insert(iterator position, size_type insert_size, const T &val) { _insert(position, insert_size, val);}
     template <class InputIterator>
     void insert(iterator position, InputIterator another_first, InputIterator another_last,
                 typename ft::enable_if<!ft::is_integral<InputIterator>::value, int>::type = 0)
     {
       const size_type n = &(*position) - _start;
-      // size_type insert_size = another_last - another_first;
       size_type insert_size = 0;
       for (InputIterator it = another_first; it != another_last; it++)
         insert_size++;
-
       pointer new_start;
       pointer new_finish = _finish;
       pointer new_end_of_storage;
@@ -521,10 +416,8 @@ namespace ft
       _finish = new_finish;
       _end_of_storage = new_end_of_storage;
     }
-    iterator erase(iterator position)
-    {
-      return erase(position, ++position);
-    }
+
+    iterator erase(iterator position)                                 { return erase(position, ++position);}
 
     iterator erase(iterator first, iterator last)
     {
@@ -534,11 +427,9 @@ namespace ft
       if (_finish <= &(*last))
         last = end();
       size_type n = &(*last) - &(*first);
-
       // destroys
       for (size_type i = 0; i < n; i++)
         _allocator.destroy(&(*first) + i);
-
       // shifts
       while (&(*last) != _finish)
       {
@@ -550,39 +441,6 @@ namespace ft
       _finish -= n;
       return (result);
     }
-    // iterator erase(iterator position)
-    // {
-    //   pointer new_start = _start;
-    //   size_type n = &(*position) - _start;
-    //   for (size_type i = 0; i < this->size() - n - 1; i++)
-    //   {
-    //     _allocator.construct((&(*position) + i), *(&(*position) + i + 1));
-    //     _allocator.destroy((&(*position) + i));
-    //   }
-    //   _allocator.destroy(_finish--);
-    //   _start = new_start;
-    //   return (position);
-    // }
-    
-
-
-    // iterator erase(iterator first, iterator last)
-    // {
-    //   pointer new_start = _start;
-    //   size_type n = &(*last) - &(*first);
-    //   for (size_type i = 0; i < this->size() - n; i++)
-    //   {
-    //     _allocator.construct((&(*first) + i), *(&(*first) + i + n));
-    //     _allocator.destroy((&(*first) + i));
-    //   }
-    //   for (size_type i = 0; i < n; i++)
-    //   {
-    //     _allocator.destroy(_finish);
-    //     --_finish;
-    //   }
-    //   _start = new_start;
-    //   return (first);
-    // }
     void swap(vector &other)
     {
       if (*this != other)
@@ -609,8 +467,6 @@ namespace ft
      *  pointed-to memory is not touched in any way.  Managing the pointer is
      *  the user's responsibility.
      */
-    // { _M_erase_at_end(this->_M_impl._M_start); }
-    // clear (_start) _start pointer-s ehelj destroy hiine.
     void clear()
     {
       while (_finish != _start)
@@ -631,40 +487,12 @@ namespace ft
     return (true);
   }
 
-  template <typename T>
-  bool operator!=(vector<T> const &lhs, vector<T> const &rhs)
-  {
-    return (!(lhs == rhs));
-  }
-  template <typename T>
-  bool operator<(const vector<T> &lhs, const vector<T> &rhs)
-  {
-    return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-  }
-
-  template <typename T>
-  bool operator<=(const vector<T> &lhs, const vector<T> &rhs)
-  {
-    return (!(rhs < lhs));
-  }
-
-  template <typename T>
-  bool operator>(const vector<T> &lhs, const vector<T> &rhs)
-  {
-    return (rhs < lhs);
-  }
-
-  template <typename T>
-  bool operator>=(const vector<T> &lhs, const vector<T> &rhs)
-  {
-    return (!(lhs < rhs));
-  }
-
-  template <typename T>
-  void swap(vector<T> &x, vector<T> &y)
-  {
-    x.swap(y);
-  }
+  template <typename T> bool operator!=(vector<T> const &lhs, vector<T> const &rhs)                   { return (!(lhs == rhs));}
+  template <typename T> bool operator<(const vector<T> &lhs, const vector<T> &rhs)                    { return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));}
+  template <typename T> bool operator<=(const vector<T> &lhs, const vector<T> &rhs)                   { return (!(rhs < lhs));}
+  template <typename T> bool operator>(const vector<T> &lhs, const vector<T> &rhs)                    { return (rhs < lhs);}
+  template <typename T> bool operator>=(const vector<T> &lhs, const vector<T> &rhs)                   { return (!(lhs < rhs));}
+  template <typename T> void swap(vector<T> &x, vector<T> &y)                                         { x.swap(y);}
 }
 
 #endif
