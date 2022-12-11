@@ -390,7 +390,7 @@ namespace ft
 
             if (root == ft_nullptr)
                 return (this->_end);
-            if (root->key.first == key)
+            if (root->key.first == key && root != this->_end && root != this->_r_end)
                 return (root);
             else if (this->_compare2(&tmp, &root->key))
                 return (_search(root->left, key));
