@@ -15,24 +15,6 @@
 #include "binarySearchTreeIterator.hpp"
 #include "utils.hpp"
 #include "reverseIterator.hpp"
-/**
- *  About custom allocators :
- *  need to create special allocators for node allocators:
-    https://docs.ros.org/en/dashing/Tutorials/Allocator-Template-Tutorial.html
-    about rebind other struct:
-    template <class Type> struct rebind {
-        typedef allocator<Type> other;
-        };
-
-    template <> class allocator<void> {
-    public:
-        typedef void* pointer;
-        typedef const void* const_pointer;
-        typedef void value_type;
-        template <class U> struct rebind { typedef allocator<U> other; };
-    };
- *
-*/
 
 namespace ft
 {
@@ -109,14 +91,12 @@ namespace ft
             _r_end->parent = _end;
             _root = _end;
         };
-
         // Destructor
         ~AVLTree()
         {
             _remove(_end);
             _remove(_r_end);
         };
-
         // Public
     public:
         iterator begin()                                                                        { return (iterator(successor(_r_end))); };
@@ -144,19 +124,16 @@ namespace ft
             // if value is between min and max, return the comparesion
             return _compare(x->first, y->first);
         };
-
         int _getHeight(node_pointer N)
         {
             if (N == ft_nullptr)
                 return (0);
             return (N->height);
         };
-
         int _max(int a, int b)
         {
             return (a > b) ? a : b;
         };
-
         node_pointer _createNewNode(value_type key)
         {
             node_pointer node = this->_node_alloc.allocate(1);
@@ -167,7 +144,6 @@ namespace ft
             node->height = 1;
             return (node);
         };
-
         node_pointer _leftRotate(node_pointer x)
         {
             node_pointer y = x->right;
@@ -194,7 +170,6 @@ namespace ft
             y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
             return (y);
         };
-
         node_pointer _rightRotate(node_pointer x)
         {
             node_pointer y = x->left;
@@ -221,28 +196,24 @@ namespace ft
             y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
             return (y);
         };
-
         // Left Right Rotate
         node_pointer _leftRightRotate(node_pointer node)
         {
             node->left = _leftRotate(node->left);
             return (_rightRotate(node));
         };
-
         // Right Left Rotate
         node_pointer _rightLeftRotate(node_pointer node)
         {
             node->right = _rightRotate(node->right);
             return (_leftRotate(node));
         };
-
         int _getBalance(node_pointer node)
         {
             if (node == ft_nullptr)
                 return (0);
             return (_getHeight(node->left) - _getHeight(node->right));
         };
-
         node_pointer _balanceTree(node_pointer root)
         {
             int balance = _getBalance(root);
@@ -270,11 +241,9 @@ namespace ft
             }
             return (root);
         };
-
         // single element (1)
         // tmp : tmp root node, newNode : adding new node
         // node_pointer insert(node_pointer tmp, value_type &key)
-
         node_pointer _insert(node_pointer tmp, node_pointer newNode)
         {
             // 1. search if key exists
@@ -301,7 +270,6 @@ namespace ft
             tmp = _balanceTree(tmp);
             return (tmp);
         };
-
         bool _remove(node_pointer node)
         {
             if (node == ft_nullptr)
@@ -363,7 +331,6 @@ namespace ft
             _balanceTree(parent);
             return (true);
         };
-
         // swaping two nodes places. x:successor node, y:deleting node
         void _swapTwoNodes(node_pointer x, node_pointer y)
         {
@@ -417,7 +384,6 @@ namespace ft
             if (y == _root)
                 _root = x;
         }
-
         node_pointer _search(node_pointer root, key_type key) const
         {
             ft::pair<key_type, mapped_type> tmp = ft::make_pair(key, mapped_type());
@@ -432,7 +398,6 @@ namespace ft
                 return (_search(root->right, key));
             return (this->_end);
         };
-
         void _setHeight(node_pointer node)
         {
             if (node == ft_nullptr)
@@ -458,7 +423,6 @@ namespace ft
                 this->_node_alloc.deallocate(node, 1);
             }
         }
-
     public:
         bool empty() const
         {
@@ -530,7 +494,6 @@ namespace ft
             other._root = this->_root;
             this->_root = temporary_root;
         }
-
         node_pointer lower_bound(const key_type &k) const
         {
             node_pointer curr_node = successor(_r_end);
@@ -545,7 +508,6 @@ namespace ft
             }
             return (curr_node);
         }
-
         node_pointer upper_bound(const key_type &k) const
         {
             node_pointer curr_node = successor(_r_end);
@@ -565,7 +527,6 @@ namespace ft
                 tmp = tmp->left;
             return (tmp);
         }
-
         void printPreOrder(const std::string &prefix, node_pointer node, bool left)
         {
             if (node != ft_nullptr)
@@ -589,7 +550,6 @@ namespace ft
                 printPreOrder(prefix + (left ? "│   " : "    "), node->right, false);
             }
         }
-
         void printPreOrder(void)
         {
             std::cout << "--------------------------------------\n";

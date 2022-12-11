@@ -612,8 +612,6 @@ void testing_irerator()
   it = it + 5;
   it = 1 + it;
   it = it - 4;
-  std::cout << *(it += 2) << std::endl;
-  std::cout << *(it -= 1) << std::endl;
 
   *(it -= 2) = 42;
   std::cout << "MIDDLE vector iterators are :" << *it << '\n';
@@ -724,17 +722,11 @@ void testing_erase_str()
   checkErase(vct, vct.erase(vct.begin()));
   checkErase(vct, vct.erase(vct.end() - 1));
 
-  // << "erase: " << it - vct.begin() << std::endl;
-  // std::cout << "it:" << it - vct.begin() << '\n';
-
   checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
   checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
 
   vct.push_back("Hello");
   vct.push_back("Hi there");
-  // printSize(vct);
-  checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
-
   vct.push_back("ONE");
   vct.push_back("TWO");
   vct.push_back("THREE");
