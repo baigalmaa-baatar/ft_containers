@@ -173,7 +173,6 @@ void testing_insert()
         std::cout << "element 'z' already existed";
         std::cout << " with a value of " << ret.first->second << '\n';
     }
-
     // second insert function version (with hint position):
     ft::map<char, int>::iterator it = mymap.begin();
     mymap.insert(it, ft::pair<char, int>('b', 300)); // max efficiency inserting
