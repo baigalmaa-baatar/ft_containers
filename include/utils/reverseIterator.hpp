@@ -18,7 +18,6 @@
 namespace ft
 {
     template <class Iterator>
-    // class reverse_iterator : public std::iterator<std::random_access_iterator_tag, Iterator>
     class reverse_iterator
     {
     private:

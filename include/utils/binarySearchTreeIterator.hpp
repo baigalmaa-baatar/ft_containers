@@ -17,13 +17,8 @@
 #include "utils.hpp"
 #include "reverseIterator.hpp"
 
-// Created here Binary Search Iterator and CONST Binary Search iterator 2 class
 namespace ft
 {
-	/**************************************************************************************/
-	/**                             Non const binary search iterator                          */
-	/**************************************************************************************/
-
 	template <class T, class Node_pointer>
 	class BinarySearchTreeIterator : public std::iterator<std::bidirectional_iterator_tag, T>
 	{

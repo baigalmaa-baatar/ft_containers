@@ -59,12 +59,10 @@ namespace ft
          */
         reference operator*()
         {
-            // std::cout << "calling here *a=t" << '\n';
             return (*_ptr);
         }
         reference operator*() const
         {
-            // std::cout << "calling here *a=t" << '\n';
             return (*_ptr);
         }
         pointer operator->() const
@@ -73,7 +71,6 @@ namespace ft
         }
         RandomAccessIterator operator++(int)
         {
-            // std::cout << "calling here a++" << '\n';
             RandomAccessIterator tmp = *this;
             operator++();
             return (tmp);
@@ -83,7 +80,6 @@ namespace ft
          */
         RandomAccessIterator &operator++()
         {
-            // std::cout << "calling here ++a" << '\n';
             _ptr++;
             return (*this);
         }
@@ -92,7 +88,6 @@ namespace ft
          */
         RandomAccessIterator operator--(int)
         {
-            // std::cout << "calling here a--" << '\n';
             RandomAccessIterator tmp = *this;
             operator--();
             return (tmp);
@@ -102,7 +97,6 @@ namespace ft
          */
         RandomAccessIterator &operator--()
         {
-            // std::cout << "calling here --a" << '\n';
             _ptr--;
             return (*this);
         }
@@ -111,7 +105,6 @@ namespace ft
          */
         RandomAccessIterator &operator+=(difference_type n)
         {
-            // std::cout << "calling here a += n" << '\n';
             this->_ptr += n;
             return (*this);
         }
@@ -120,7 +113,6 @@ namespace ft
          */
         RandomAccessIterator &operator-=(difference_type n)
         {
-            // std::cout << "calling here a -= n" << '\n';
             this->_ptr -= n;
             return (*this);
         }
@@ -145,7 +137,6 @@ namespace ft
          */
         reference operator[](difference_type n) const
         {
-            // std::cout << "calling here a[n]" << '\n';
             RandomAccessIterator tmp = operator+(n);
             return (*tmp);
         }

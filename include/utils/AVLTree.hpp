@@ -40,18 +40,18 @@ namespace ft
     struct Node
     {
     public:
-        typedef T value_type;
+        typedef T       value_type;
 
     public:
-        T key;
-        Node *parent;
-        Node *left;
-        Node *right;
-        int height;
+        T               key;
+        Node            *parent;
+        Node            *left;
+        Node            *right;
+        int             height;
 
     public:
-        Node() : key(){};
-        Node(T key) : key(key){};
+        Node() :        key(){};
+        Node(T key) :   key(key){};
     };
 
     template <class T, class Compare, class Allocator>
@@ -59,44 +59,42 @@ namespace ft
     {
     public:
         // types:
-        typedef T value_type;
-        typedef Compare key_compare;
-        typedef Allocator allocator_type;
+        typedef T                                                               value_type;
+        typedef Compare                                                         key_compare;
+        typedef Allocator                                                       allocator_type;
 
     private: // for Nodes:
-        typedef typename allocator_type::template rebind<Node<T> >::other node_allocator;
-        typedef typename node_allocator::reference node_reference;
-        typedef typename node_allocator::const_reference node_const_reference;
-        typedef typename node_allocator::difference_type node_difference_type;
-        typedef typename node_allocator::pointer node_alloc_pointer;
-        typedef typename node_allocator::const_pointer node_const_pointer;
-        typedef typename node_allocator::size_type node_size_type;
-        typedef Node<value_type> node_type;
-        typedef node_type *node_pointer;
+        typedef typename allocator_type::template rebind<Node<T> >::other       node_allocator;
+        typedef typename node_allocator::reference                              node_reference;
+        typedef typename node_allocator::const_reference                        node_const_reference;
+        typedef typename node_allocator::difference_type                        node_difference_type;
+        typedef typename node_allocator::pointer                                node_alloc_pointer;
+        typedef typename node_allocator::const_pointer                          node_const_pointer;
+        typedef typename node_allocator::size_type                              node_size_type;
+        typedef Node<value_type>                                                node_type;
+        typedef node_type                                                       *node_pointer;
 
     public:
-        typedef typename allocator_type::reference reference;
-        typedef typename allocator_type::const_reference const_reference;
-        // typedef typename std::ptrdiff_t difference_type;
-        typedef typename allocator_type::difference_type difference_type;
-        typedef typename allocator_type::pointer pointer;
-        typedef typename allocator_type::const_pointer const_pointer;
-        typedef typename allocator_type::size_type size_type;
-        typedef typename value_type::first_type key_type;
-        typedef typename value_type::second_type mapped_type;
-        typedef ft::BinarySearchTreeIterator<pointer, node_pointer> iterator;
-        // typedef ft::ConstBinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
-        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer> const_iterator;
-        typedef ft::reverse_iterator<iterator> reverse_iterator;
-        typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+        typedef typename allocator_type::reference                              reference;
+        typedef typename allocator_type::const_reference                        const_reference;
+        typedef typename allocator_type::difference_type                        difference_type;
+        typedef typename allocator_type::pointer                                pointer;
+        typedef typename allocator_type::const_pointer                          const_pointer;
+        typedef typename allocator_type::size_type                              size_type;
+        typedef typename value_type::first_type                                 key_type;
+        typedef typename value_type::second_type                                mapped_type;
+        typedef ft::BinarySearchTreeIterator<pointer, node_pointer>             iterator;
+        typedef ft::BinarySearchTreeIterator<const_pointer, node_pointer>       const_iterator;
+        typedef ft::reverse_iterator<iterator>                                  reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>                            const_reverse_iterator;
 
     private:
-        node_allocator _node_alloc;
-        key_compare _compare;
-        node_pointer _root;
-        node_pointer _end;
-        node_pointer _r_end;
-        int _size;
+        node_allocator                                                          _node_alloc;
+        key_compare                                                             _compare;
+        node_pointer                                                            _root;
+        node_pointer                                                            _end;
+        node_pointer                                                            _r_end;
+        int                                                                     _size;
 
     public:
         // Default constructor:
@@ -105,12 +103,8 @@ namespace ft
               _size(0)
         {
             this->_node_alloc = alloc;
-            // pointer for max value
             _end = _createNewNode(value_type());
-            // pointer for min value
             _r_end = _createNewNode(value_type());
-            // std::cout << "_end: " << _end << "\n";
-            // std::cout << "_r_end: " << _r_end << "\n";
             _end->left = _r_end;
             _r_end->parent = _end;
             _root = _end;
@@ -125,17 +119,14 @@ namespace ft
 
         // Public
     public:
-        // iterator begin() { return (iterator(getMin())); };
-        iterator begin() { return (iterator(successor(_r_end))); };
-        const_iterator begin() const { return (const_iterator(successor(_r_end))); };
-        iterator end() { return (iterator(this->_end)); };
-        const_iterator end() const { return (const_iterator(this->_end)); };
-
-        reverse_iterator rbegin() { return reverse_iterator(end()); };
-        const_reverse_iterator rbegin() const { return (const_reverse_iterator(end())); };
-
-        reverse_iterator rend() { return reverse_iterator(begin()); };
-        const_reverse_iterator rend() const { return const_reverse_iterator(begin()); };
+        iterator begin()                                                                        { return (iterator(successor(_r_end))); };
+        const_iterator begin() const                                                            { return (const_iterator(successor(_r_end))); };
+        iterator end()                                                                          { return (iterator(this->_end)); };
+        const_iterator end() const                                                              { return (const_iterator(this->_end)); };
+        reverse_iterator rbegin()                                                               { return reverse_iterator(end()); };
+        const_reverse_iterator rbegin() const                                                   { return (const_reverse_iterator(end())); };
+        reverse_iterator rend()                                                                 { return reverse_iterator(begin()); };
+        const_reverse_iterator rend() const                                                     { return const_reverse_iterator(begin()); };
 
     private:
         int _compare2(const value_type *x, const value_type *y) const
@@ -174,15 +165,11 @@ namespace ft
             node->right = ft_nullptr;
             node->parent = ft_nullptr;
             node->height = 1;
-            // std::cout << "new node (" << node << "): " << key.first << "\n";
             return (node);
         };
 
         node_pointer _leftRotate(node_pointer x)
         {
-            // std::cout << "before left rotate on " << x << "\n";
-            // printPreOrder();
-
             node_pointer y = x->right;
             node_pointer T2 = y->left;
             node_pointer p = x->parent;
@@ -205,17 +192,11 @@ namespace ft
                 T2->parent = x;
             x->height = _max(_getHeight(x->left), _getHeight(x->right)) + 1;
             y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
-
-            // std::cout << "after left rotate\n";
-            // printPreOrder();
             return (y);
         };
 
         node_pointer _rightRotate(node_pointer x)
         {
-            // std::cout << "before right rotate on " << x << "\n";
-            // printPreOrder();
-
             node_pointer y = x->left;
             node_pointer T2 = y->right;
             node_pointer p = x->parent;
@@ -238,9 +219,6 @@ namespace ft
                 T2->parent = x;
             x->height = _max(_getHeight(x->left), _getHeight(x->right)) + 1;
             y->height = _max(_getHeight(y->left), _getHeight(y->right)) + 1;
-
-            // std::cout << "after right rotate\n";
-            // printPreOrder();
             return (y);
         };
 
@@ -262,7 +240,6 @@ namespace ft
         {
             if (node == ft_nullptr)
                 return (0);
-            // std::cout << "balanced height is :" << (_getHeight(node->left) - _getHeight(node->right)) << '\n';
             return (_getHeight(node->left) - _getHeight(node->right));
         };
 
@@ -390,9 +367,6 @@ namespace ft
         // swaping two nodes places. x:successor node, y:deleting node
         void _swapTwoNodes(node_pointer x, node_pointer y)
         {
-            // std::cout << "before swap " << x->key.first << " and " << y->key.first << "\n";
-            // printPreOrder();
-
             node_pointer xparent = x->parent;
             node_pointer xleft = x->left;
             node_pointer xright = x->right;
@@ -442,9 +416,6 @@ namespace ft
 
             if (y == _root)
                 _root = x;
-
-            // std::cout << "after swap " << x << " and " << y << "\n";
-            // printPreOrder();
         }
 
         node_pointer _search(node_pointer root, key_type key) const
@@ -460,25 +431,12 @@ namespace ft
             else if (this->_compare2(&root->key, &tmp))
                 return (_search(root->right, key));
             return (this->_end);
-            // if (root == ft_nullptr)
-            //     return (this->_end);
-            // if (root->key.first == key)
-            //     return (root);
-            // else if (this->_compare(key, root->key.first))
-            //     return (_search(root->left, key));
-            // else if (this->_compare(root->key.first, key))
-            //     return (_search(root->right, key));
-            // return (this->_end);
         };
 
         void _setHeight(node_pointer node)
         {
             if (node == ft_nullptr)
                 return;
-
-            // std::cout << "_setHeight(" << node->key.first << ")"
-            //           << "\n";
-
             if (!node->left && !node->right)
                 node->height = 1;
             else if (node->left == ft_nullptr)
@@ -515,17 +473,6 @@ namespace ft
         {
             return (_node_alloc.max_size());
         };
-
-        // void clear()
-        // {
-        //     if (this->_root != this->_end)
-        //     {
-        //         _destroy(this->_root);
-        //         this->_size = 0;
-        //         this->_root = this->_end;
-        //         this->_end->left = this->_root;
-        //     }
-        // };
         node_pointer search(key_type key) const
         {
             return (_search(this->_root, key));
@@ -547,21 +494,17 @@ namespace ft
             node_pointer newNode = _createNewNode(key);
             ++this->_size;
             this->_root = _insert(this->_root, newNode);
-            // printPreOrder();
             return (newNode);
         };
 
         // remove/delete
         void remove(T key)
         {
-            // std::cout << "removing " << key.first << "\n";
             node_pointer n = _search(_root, key.first);
             if (n == _end)
                 return;
-            // std::cout << " locates in " << n->key.second << "\n";
             if (this->_remove(n))
                 _size--;
-            // printPreOrder();
         }
 
         void swap(AVLTree &other)
@@ -618,7 +561,7 @@ namespace ft
         node_pointer getMin(void) const
         {
             node_pointer tmp = this->_root;
-            while (tmp->left != ft_nullptr) // need to check it
+            while (tmp->left != ft_nullptr)
                 tmp = tmp->left;
             return (tmp);
         }

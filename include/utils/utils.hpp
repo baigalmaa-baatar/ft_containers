@@ -173,25 +173,6 @@ namespace ft
         static const bool value = true;
     };
 
-    // from official document C++98 : bidirectional iterator
-    //  template <class T>
-    //  struct iterator_traits<BinarySearchIterator<T> >
-    //  {
-    //      typedef ptrdiff_t difference_type;
-    //      typedef T value_type;
-    //      typedef T *pointer;
-    //      typedef T &reference;
-    //      typedef bidirectional_iterator_tag iterator_category;
-    //  };
-
-    // https://cplusplus.com/reference/type_traits/remove_const/
-
-    // const_remove is for removing constness, without it it is not possible to use erase function:
-    // template <typename T>
-    // struct remove_const<const T>
-    // {
-    //     typedef T type;
-    // };
     template <typename T>
     struct remove_const
     {
@@ -224,8 +205,6 @@ namespace ft
         /// There is also a templated constructor to convert from other pairs.
         template <typename U1, typename U2>
         pair(const pair<U1, U2> &p) : first(p.first), second(p.second) {}
-
-        // mymap.insert(std::pair<char, int>('a', 100));
 
         pair &operator=(const pair &p)
         {
