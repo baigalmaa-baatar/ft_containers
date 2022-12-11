@@ -50,7 +50,7 @@ function testing_stack {
 }
 
 function testing_vector {
-	printf "🔅 Testing vector 🔅\n"
+	printf "\n🔅 Testing vector 🔅\n"
 
     printf "\nRunning tests with the STD container -> "
     c++ -Wall -Werror -Wextra -std=c++98 -DSTD vector_tester.cpp && ./a.out > vector_std_output.log & spinner
@@ -72,7 +72,7 @@ function testing_vector {
 }
 
 function testing_map {
-	printf "🔅 Testing map 🔅\n"
+	printf "\n🔅 Testing map 🔅\n"
 
     printf "\nRunning tests with the STD container -> "
     c++ -std=c++98 -Wall -Werror -Wextra -DSTD map_tester.cpp && ./a.out > map_std_output.log & spinner
@@ -91,13 +91,23 @@ function testing_map {
     echo "${NORMAL}"
 }
 
-function testing_performance {
-	printf "🔅 Performance test 🔅\n"
+function perf_vector {
+	printf "🔅 Vector performance test 🔅\n"
 
     printf "\nRunning performance test STD -> "
-    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD performance.cpp && ./a.out > std_per_output.log & spinner)
+    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD perf_vector.cpp && ./a.out > std_per_vec_output.log & spinner)
     printf "\nRunning performance test FT -> "
-    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} performance.cpp && ./a.out > ft_per_output.log & spinner)
+    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${vector_path} perf_vector.cpp && ./a.out > ft_per_vec_output.log & spinner)
+    printf "\nPerformance test executed\n"
+}
+
+function perf_map {
+	printf "🔅 Map performance test 🔅\n"
+
+    printf "\nRunning performance test STD -> "
+    time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD perf_map.cpp && ./a.out > std_per_map_output.log & spinner)
+    printf "\nRunning performance test FT -> "
+    time (c++ -std=c++98 -Wall -Werror -Wextra -I ${map_path} perf_map.cpp && ./a.out > ft_per_map_output.log & spinner)
     printf "\nPerformance test executed\n"
 }
 
@@ -108,13 +118,16 @@ elif [  "$1" == "vector" ]; then
     testing_vector
 elif [  "$1" == "map" ]; then
     testing_map
-elif [  "$1" == "per" ]; then
-    testing_performance
+elif [  "$1" == "vec_per" ]; then
+    perf_vector
+elif [  "$1" == "vec_map" ]; then
+    perf_map
 else
     testing_stack
     testing_vector
     testing_map
-    testing_performance    
+    perf_vector
+    perf_map
 fi
 rm -f a.out
 rm -f *.o

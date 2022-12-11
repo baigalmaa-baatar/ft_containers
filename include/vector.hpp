@@ -470,17 +470,6 @@ namespace ft
       return iterator(_start + n);
     }
 
-    /**
-     *  @brief  Inserts given rvalue into %vector before specified iterator.
-     *  @param  position  A const_iterator into the %vector.
-     *  @param  val  Data to be inserted.
-     *  @return  An iterator that points to the inserted data.
-     *
-     *  This function will insert a copy of the given rvalue before
-     *  the specified location.  Note that this kind of operation
-     *  could be expensive for a %vector and if it is frequently
-     *  used the user should consider using std::list.
-     */
     iterator insert(iterator position, const T &val)
     {
       return this->_insert(position, 1, val);
@@ -532,37 +521,68 @@ namespace ft
       _finish = new_finish;
       _end_of_storage = new_end_of_storage;
     }
-
     iterator erase(iterator position)
     {
-      pointer new_start = _start;
-      size_type n = &(*position) - _start;
-      for (size_type i = 0; i < this->size() - n - 1; i++)
-      {
-        _allocator.construct((&(*position) + i), *(&(*position) + i + 1));
-        _allocator.destroy((&(*position) + i));
-      }
-      _allocator.destroy(_finish--);
-      _start = new_start;
-      return (position);
+      return erase(position, ++position);
     }
+
     iterator erase(iterator first, iterator last)
     {
-      pointer new_start = _start;
+      iterator result = first;
+      if (_finish <= &(*first))
+        return end();
+      if (_finish <= &(*last))
+        last = end();
       size_type n = &(*last) - &(*first);
-      for (size_type i = 0; i < this->size() - n; i++)
-      {
-        _allocator.construct((&(*first) + i), *(&(*first) + i + n));
-        _allocator.destroy((&(*first) + i));
-      }
+
+      // destroys
       for (size_type i = 0; i < n; i++)
+        _allocator.destroy(&(*first) + i);
+
+      // shifts
+      while (&(*last) != _finish)
       {
-        _allocator.destroy(_finish);
-        --_finish;
+        _allocator.construct(&(*first), *(&(*last)));
+        _allocator.destroy(&(*last));
+        first++;
+        last++;
       }
-      _start = new_start;
-      return (first);
+      _finish -= n;
+      return (result);
     }
+    // iterator erase(iterator position)
+    // {
+    //   pointer new_start = _start;
+    //   size_type n = &(*position) - _start;
+    //   for (size_type i = 0; i < this->size() - n - 1; i++)
+    //   {
+    //     _allocator.construct((&(*position) + i), *(&(*position) + i + 1));
+    //     _allocator.destroy((&(*position) + i));
+    //   }
+    //   _allocator.destroy(_finish--);
+    //   _start = new_start;
+    //   return (position);
+    // }
+    
+
+
+    // iterator erase(iterator first, iterator last)
+    // {
+    //   pointer new_start = _start;
+    //   size_type n = &(*last) - &(*first);
+    //   for (size_type i = 0; i < this->size() - n; i++)
+    //   {
+    //     _allocator.construct((&(*first) + i), *(&(*first) + i + n));
+    //     _allocator.destroy((&(*first) + i));
+    //   }
+    //   for (size_type i = 0; i < n; i++)
+    //   {
+    //     _allocator.destroy(_finish);
+    //     --_finish;
+    //   }
+    //   _start = new_start;
+    //   return (first);
+    // }
     void swap(vector &other)
     {
       if (*this != other)

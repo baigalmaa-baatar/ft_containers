@@ -727,6 +727,7 @@ void testing_erase_str()
 
   vct.push_back("Hello");
   vct.push_back("Hi there");
+
   vct.push_back("ONE");
   vct.push_back("TWO");
   vct.push_back("THREE");
