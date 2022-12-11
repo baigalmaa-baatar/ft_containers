@@ -32,7 +32,7 @@ int main(void)
 
     srand(time(NULL));
 
-    for (int i = 0; i < 5000000; i++)
+    for (int i = 0; i < 10000000; i++)
     {
         int key1 = rand() % 1000;
         int val1 = rand() % 1000;

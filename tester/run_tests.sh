@@ -30,9 +30,7 @@ function spinner {
 }
 
 function testing_stack {
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅       Testing stack          🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅 Testing stack 🔅\n"
 
     printf "\nRunning tests with the STD container -> "
     c++ -Wall -Werror -Wextra -std=c++98 -DSTD stack_tester.cpp && ./a.out > stack_std_output.log & spinner
@@ -52,9 +50,7 @@ function testing_stack {
 }
 
 function testing_vector {
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅       Testing vector         🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅 Testing vector 🔅\n"
 
     printf "\nRunning tests with the STD container -> "
     c++ -Wall -Werror -Wextra -std=c++98 -DSTD vector_tester.cpp && ./a.out > vector_std_output.log & spinner
@@ -76,9 +72,7 @@ function testing_vector {
 }
 
 function testing_map {
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅       Testing map            🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅 Testing map 🔅\n"
 
     printf "\nRunning tests with the STD container -> "
     c++ -std=c++98 -Wall -Werror -Wextra -DSTD map_tester.cpp && ./a.out > map_std_output.log & spinner
@@ -98,9 +92,7 @@ function testing_map {
 }
 
 function testing_performance {
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅       Performance test       🔅🔅🔅🔅🔅🔅\n"
-	printf "🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅🔅\n"
+	printf "🔅 Performance test 🔅\n"
 
     printf "\nRunning performance test STD -> "
     time (c++ -std=c++98 -Wall -Werror -Wextra -DSTD performance.cpp && ./a.out > std_per_output.log & spinner)
@@ -125,4 +117,5 @@ else
     testing_performance    
 fi
 rm -f a.out
+rm -f *.o
 rm -rf *output.log

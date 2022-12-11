@@ -20,7 +20,7 @@ namespace ft = std;
 #endif
 
 template <typename T>
-void comparisonFuncVec(std::string testName, std::vector<T> std_vector1, ft::vector<T> ft_vector1)
+void comparisonFuncVec(std::string testName, ft::vector<T> std_vector1, ft::vector<T> ft_vector1)
 {
   std::cout << "Comparision test of " << testName << " with standard func : " << '\n';
 
@@ -744,26 +744,27 @@ void testing_erase_str()
 
 int main(void)
 {
-  void testing_constructor_def();
-  void testing_constructor_fill();
-  void testing_push_back();
-  void testing_insert();
-  void testing_insert_fill();
-  void testing_insert_range();
-  void testing_erase_pos();
-  void testing_erase_range();
-  void testing_pop_back();
-  void testing_operator1();
-  void testing_swap();
-  void testing_constructor_copy(); 
-  void testing_all_constructors(); 
-  void testing_const_range();
-  void testing_assign();
-  void testing_get_alloc();
-  void testing_resize();
-  void testing_irerator();
-  void testing_reverse_iterator();
-  void testing_reverse_iterator2();
-  void testing_erase_str();
-      return 0;
+  testing_constructor_def();
+  testing_constructor_fill();
+  testing_push_back();
+  testing_insert();
+  testing_insert_fill();
+  testing_insert_range();
+  testing_erase_pos();
+  testing_erase_range();
+  testing_pop_back();
+  testing_operator1();
+  testing_swap();
+  testing_constructor_copy(); 
+  testing_all_constructors(); 
+  testing_const_range();
+  testing_assign();
+  testing_get_alloc();
+  testing_resize();
+  testing_irerator();
+  testing_reverse_iterator();
+  testing_reverse_iterator2();
+  testing_erase_str();
+  
+  return 0;
 }
