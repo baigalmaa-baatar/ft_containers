@@ -159,8 +159,7 @@ void testing_insert()
   for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
     std::cout << "Elements of  FT: " << *ft_it << '\t';
   std::cout << '\n';
-  std::cout << " ft size : " << ft_vector1.size() << " : "
-            << " ft capacity : " << ft_vector1.capacity() << '\n';
+  std::cout << " ft size : " << ft_vector1.size() << '\n';
   std::cout << ft_vector1.size() << '\n';
 }
 
@@ -174,15 +173,12 @@ void testing_insert_fill()
   ft::vector<int> ft_vector1;
 
   ft::vector<int>::iterator ft_it = ft_vector1.begin();
-  std::cout << " ft size : " << ft_vector1.size() << " : "
-            << " ft capacity : " << ft_vector1.capacity() << '\n';
+  std::cout << " ft size : " << ft_vector1.size() << '\n';
   ft_vector1.insert(ft_it, 2, 100);
   ft_it = ft_vector1.begin();
-  std::cout << " ft size : " << ft_vector1.size() << " : "
-            << " ft capacity : " << ft_vector1.capacity() << '\n';
+  std::cout << " ft size : " << ft_vector1.size() << '\n';
   ft_vector1.insert(ft_it + 1, 5, 200);
-  std::cout << " ft size : " << ft_vector1.size() << " : "
-            << " ft capacity : " << ft_vector1.capacity() << '\n';
+  std::cout << " ft size : " << ft_vector1.size() << '\n';
   for (ft::vector<int>::iterator ft_it = ft_vector1.begin(); ft_it != ft_vector1.end(); ft_it++)
     std::cout << "Elements of  FT: " << *ft_it << '\t';
   std::cout << '\n';
