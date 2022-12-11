@@ -552,6 +552,8 @@ void testing_get_alloc()
     std::cout << '\n';
   }
   std::cout << '\n';
+
+  ft_vector1.get_allocator().deallocate(ft_p, 5);
 }
 
 void testing_resize()
@@ -720,7 +722,7 @@ void testing_erase_str()
   checkErase(vct, vct.erase(vct.begin() + 2));
 
   checkErase(vct, vct.erase(vct.begin()));
-  checkErase(vct, vct.erase(vct.end() - 1));
+  vct.erase(vct.end() - 1);
 
   checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
   checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
@@ -748,8 +750,8 @@ int main(void)
   testing_pop_back();
   testing_operator1();
   testing_swap();
-  testing_constructor_copy(); 
-  testing_all_constructors(); 
+  testing_constructor_copy();
+  testing_all_constructors();
   testing_const_range();
   testing_assign();
   testing_get_alloc();
@@ -758,6 +760,6 @@ int main(void)
   testing_reverse_iterator();
   testing_reverse_iterator2();
   testing_erase_str();
-  
+
   return 0;
 }
