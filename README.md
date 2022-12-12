@@ -1,7 +1,7 @@
 # ft_containers project
 
 ## Preparation
-For each container, see and understand what are container's members, non-member overloads and iterators. Then additionally understand these keywords: friend class, difference between ```typename``` and ```class```, iterators definition, input, output, random access iterators, etc. 
+For each container, see and understand what are container's members, non-member overloads and iterators. Then additionally understand these keywords: ```friend``` class, difference between ```typename``` and ```class```, iterators definition, input, output, random access iterators, etc. 
 You can find it from [here](https://legacy.cplusplus.com/) and [here](https://en.cppreference.com/w/).
 
 ## Containers
@@ -22,7 +22,7 @@ But after implementing your own vector, you need to change ```std::vector``` to 
 ```
 
 #### 2. Vector
-It is stack medium interesting. The challenge will be creating ```Random Access Iterator```. Otherwise ```push_back``` and ```pop_back```, other functions are gonna be less interesting. 
+It is medium interesting. The challenge will be creating ```Random Access Iterator```. Otherwise ```push_back``` and ```pop_back```, other functions are gonna be less interesting. 
 
 #### 3. Map
 Map uses Binary Search Tree. If you are like me, never cared about BST, now it is your time to understand and play with BST. 
