@@ -443,23 +443,20 @@ namespace ft
     }
     void swap(vector &other)
     {
-      if (*this != other)
-      {
-        pointer tmp_start = this->_start;
-        pointer tmp_finish = this->_finish;
-        pointer tmp_end_of_storage = this->_end_of_storage;
-        Alloc tmp_allocator = this->_allocator;
+      pointer tmp_start = this->_start;
+      pointer tmp_finish = this->_finish;
+      pointer tmp_end_of_storage = this->_end_of_storage;
+      Alloc tmp_allocator = this->_allocator;
 
-        this->_start = other._start;
-        this->_finish = other._finish;
-        this->_end_of_storage = other._end_of_storage;
-        this->_allocator = other._allocator;
+      this->_start = other._start;
+      this->_finish = other._finish;
+      this->_end_of_storage = other._end_of_storage;
+      this->_allocator = other._allocator;
 
-        other._start = tmp_start;
-        other._finish = tmp_finish;
-        other._end_of_storage = tmp_end_of_storage;
-        other._allocator = tmp_allocator;
-      }
+      other._start = tmp_start;
+      other._finish = tmp_finish;
+      other._end_of_storage = tmp_end_of_storage;
+      other._allocator = tmp_allocator;
     }
     /**
      *  Erases all the elements.  Note that this function only erases the
