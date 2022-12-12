@@ -9,12 +9,17 @@ You can find it from [here](https://legacy.cplusplus.com/) and [here](https://en
 There are not many things to do.
 First I created the skeleton with std::vector, 
 ```
-    template <class T, class Container = ft::vector<T> >
+    template <class T, class Container = std::vector<T> >
     class stack
     {
 ```
 Then inherited all necessary functions from the vector. 
-But after implementing your own vector, you need to change ```std::vector``` to ```ft::vector```. 
+But after implementing your own vector, you need to change ```std::vector``` to ```ft::vector``` :
+```
+    template <class T, class Container = std::vector<T> >
+    class stack
+    {
+```
 
 #### 2. Vector
 It is stack medium interesting. The challenge will be creating ```Random Access Iterator```. Otherwise ```push_back``` and ```pop_back```, other functions are gonna be less interesting. 
