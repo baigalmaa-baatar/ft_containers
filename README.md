@@ -23,12 +23,11 @@ It is stack medium interesting. The challenge will be creating ```Random Access 
 Map uses Binary Search Tree. If you are like me, never cared about BST, now it is your time to understand and play with BST. 
 First you have to choose between AVL tree and Red Black tree. I chose AVL tree, because it seemed easier to develop. The algorithm uses basic Binary Search Tree logic. 
 AVL tree uses re-balancing for each ```inserting nodes```, ```deleting node``` actions. Re-balancing is more accurate than Red Black tree. Also, that is why it is slower when inserting node and deleting node actions, because every time it is calculating the balance of the tree. 
+
 I watched many videos about AVL tree insertion, deletion node on Youtube:
-AVl trees:
+[AVl trees insertion and deletion](https://youtu.be/otiDcwZbCo4). You can watch this channel’s videos. I really loved the BST and AVL tree videos. He explained in detail. The channel is [here](https://www.youtube.com/@SimpleSnippets). 
 
-http://www.bradapp.net/ftp/src/libs/C++/AvlTrees.html
-
-https://www.youtube.com/watch?v=otiDcwZbCo4
+My friend suggested [this method](https://www.geeksforgeeks.org/traversing-a-map-or-unordered_map-in-cpp-stl/), it was super helpful for me. 
 
 You can get an impression of AVL tree balancing from [this](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html) nice visualization.
 
