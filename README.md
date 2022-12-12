@@ -16,7 +16,7 @@ First I created the skeleton with std::vector,
 Then inherited all necessary functions from the vector. 
 But after implementing your own vector, you need to change ```std::vector``` to ```ft::vector``` :
 ```
-    template <class T, class Container = std::vector<T> >
+    template <class T, class Container = ft::vector<T> >
     class stack
     {
 ```
